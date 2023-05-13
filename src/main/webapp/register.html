@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--登录流程：点击登录->若成功，则转发至welcome.jsp页面查看所有学生信息->welcome.jsp包含内容-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>注册新用户</title>
+    <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <style>
+        body {
+            background: url("imgs/bg.jpg");
+        }
+
+        .wrapper {
+            margin: 140px 0 140px auto;
+            width: 884px;
+        }
+
+        .loginBox {
+            background-color: #F0F4F6;
+            /*上divcolor*/
+            border: 1px solid #BfD6E1;
+            border-radius: 5px;
+            color: #444;
+            font: 14px 'Microsoft YaHei', '微软雅黑';
+            margin: 0 auto;
+            width: 388px
+
+        }
+
+        .loginBox .loginBoxCenter {
+            border-bottom: 1px solid #DDE0E8;
+            padding: 24px;
+        }
+
+        .loginBox .loginBoxCenter p {
+            margin-bottom: 10px
+        }
+
+        .loginBox .loginBoxButtons {
+            /*background-color: #F0F4F6;*/
+            /*下divcolor*/
+            border-top: 0px solid #FFF;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            line-height: 28px;
+            overflow: hidden;
+            padding: 20px 24px;
+            vertical-align: center;
+            filter: alpha(Opacity=80);
+            /*-moz-opacity: 0.5;*/
+            opacity: 0.5;
+        }
+
+        .loginBox .RegInput {
+            border: 1px solid #D2D9dC;
+            border-radius: 2px;
+            color: #444;
+            font: 12px 'Microsoft YaHei', '微软雅黑';
+            padding: 8px 14px;
+            margin-bottom: 8px;
+            width: 310px;
+        }
+
+        .loginBox .RegInput:FOCUS {
+            border: 1px solid #B7D4EA;
+            box-shadow: 0 0 8px #B7D4EA;
+        }
+
+        .loginBox .loginBtn {
+            background-image: -moz-linear-gradient(bottom, blue, #85CFEE);
+            background-image: -webkit-linear-gradient(bottom, blue, #85CFEE);
+            background-image: -o-linear-gradient(bottom, blue, #85CFEE);
+            border: 1px solid #98CCE7;
+            border-radius: 20px;
+            box-shadow: inset rgba(255, 255, 255, 0.6) 0 1px 1px, rgba(0, 0, 0, 0.1) 0 1px 1px;
+            color: #303030;
+            /*登录*/
+            cursor: pointer;
+            float: right;
+            font: bold 14px Arial;
+            padding: 10px 50px;
+        }
+
+        .loginBox .loginBtn:HOVER {
+            background-image: -moz-linear-gradient(top, blue, #85CFEE);
+            background-image: -webkit-linear-gradient(top, blue, #85CFEE);
+            background-image: -o-linear-gradient(top, blue, #85CFEE);
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <form>
+        <div class="loginBox">
+            <div class="loginBoxCenter">
+                <p><label for="uname">用户名：</label></p>
+                <!--autofocus 规定当页面加载时按钮应当自动地获得焦点。 -->
+                <!-- placeholder提供可描述输入字段预期值的提示信息-->
+                <p><input type="text" id="uname" class="RegInput" autofocus autocomplete="off" required placeholder="请输入用户名" ></p>
+                <!-- required 规定必需在提交之前填写输入字段-->
+                <p><label for="pswd">密码：</label></p>
+                <p><input type="password" id="pswd" class="RegInput" autocomplete="off" required placeholder="请输入密码"></p>
+                <p>
+                    <label for="vcode">验证码：</label><input type="text" id="vcode" class="RegInput" autocomplete="off" placeholder="验证码">
+                    <img id="check-code" src="checkcode" alt="验证码" title="点击刷新" onclick="this.src='checkcode?'+Math.random()"/>
+                </p>
+                <p id="status" style="font-size:small;color:red"></p>
+            </div>
+            <div class="loginBoxButtons">
+                <input type="button" onclick="submit_register('uname','pswd','vcode','check-code')" class="loginBtn" value="注册"/>
+                <div><a href="index.html">返回登录页面</a> </div>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

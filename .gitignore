@@ -1,0 +1,5 @@
+*.jar
+*.class
+target/*
+./src/main/resources/jdbc.properties
+/bg2.jpg
