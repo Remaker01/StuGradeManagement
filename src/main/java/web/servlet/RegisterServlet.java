@@ -1,6 +1,5 @@
 package web.servlet;
 
-import dao.UserDao;
 import service.UserService;
 import util.LogUtil;
 import util.VerifyUtil;

@@ -4,12 +4,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
     <title>修改密码</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
-    <script>
-
-    </script>
 </head>
 <body>
 <% User user = (User) request.getSession().getAttribute("user");
@@ -23,7 +22,7 @@ else {
         <p>当前密码 <input type="password" id="pass-old"/></p>
         <p>新密码 <input type="password" id="pass-new"/></p>
         <input type="button" onclick="submit_updateuser(<%=user.getId()%>,'<%=user.getUsername()%>','pass-old','pass-new')" value="修改">
-        <p id="status"></p>
+        <p id="status" style="font-size: small;color:red;"></p>
     </form>
 <%
     }

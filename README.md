@@ -1,4 +1,8 @@
 ## 学生成绩管理系统
+### 目前状态
+5.14 尚未完成
+
+目标：通过采用json返回数据等方式尽量减少jsp页面
 ### 介绍
 JavaEE学生成绩管理系统项目，基于Servlet、JSP、Spring框架
 
@@ -17,22 +21,22 @@ JavaEE学生成绩管理系统项目，基于Servlet、JSP、Spring框架
 1. 首先按上面的表格配置好环境（你也可以选不同版本，但不保证能正常运行）。
 2. 新建名为stuDB的数据库，并在其中加入表：
 ```sql
-CREATE TABLE `student`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `sname` varchar(255) NOT NULL,
-  `gender` varchar(255) NOT NULL,
-  `address` varchar(255) NULL DEFAULT NULL,
-  `age` tinyint UNSIGNED NOT NULL,
-  `qq` varchar(10) CHARACTER SET latin1 NULL DEFAULT NULL,
-  `email` varchar(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+create table student
+(
+    id      int auto_increment
+        primary key,
+    sname   varchar(255)               not null,
+    gender  varchar(255)               not null,
+    address varchar(255)               null,
+    age     tinyint unsigned           not null,
+    qq      varchar(10) charset latin1 null,
+    phone   varchar(11) charset latin1 null
 ) AUTO_INCREMENT = 2000 CHARACTER SET = utf8mb4;
 
 CREATE TABLE `users`  (
-   `id` int NOT NULL AUTO_INCREMENT,
+   `id` int PRIMARY KEY AUTO_INCREMENT,
    `username` varchar(255) NOT NULL,
    `password` varchar(255) NOT NULL,
-   PRIMARY KEY (`id`) USING BTREE,
    INDEX STU__NAME(`username`) USING BTREE
 ) AUTO_INCREMENT = 1000 CHARACTER SET = utf8mb4;
 

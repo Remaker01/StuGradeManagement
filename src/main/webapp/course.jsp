@@ -1,19 +1,12 @@
 <%@ page import="java.util.List,domain.Course" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%--TODO:分页查询，按条件查询--%>
 <html>
 <head>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
     <title>Title</title>
-    <style>
-        .main-table {
-            border: 1px solid #999999;
-            border-collapse: collapse;
-            width: 80%;
-        }
-        .main-table tbody tr{text-align: center;height: 30px;}
-        .main-table tbody tr:hover {background-color: #dddddd;}
-        .main-table tr:nth-child(even){background-color: #f2f2f2;}
-        .main-table th, .main-table tr td {border: 1px solid #aaaaaa;}
-    </style>
+    <link rel="stylesheet" href="style/frames.css">
 </head>
 <body>
     <p>以下为查询结果</p>

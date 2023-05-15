@@ -15,6 +15,8 @@
         <url-pattern>/checkcode</url-pattern>
         <url-pattern>/register</url-pattern>
         <url-pattern>/updateuser</url-pattern>
+        <url-pattern>/student</url-pattern>
+        <url-pattern>/exit</url-pattern>
         <!-- TODO:加入更多内容-->
     </filter-mapping>
     <welcome-file-list>

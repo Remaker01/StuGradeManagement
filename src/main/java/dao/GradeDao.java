@@ -34,7 +34,7 @@ public class GradeDao extends AbstractDao{
      * @param cid 课程编号
      * @return 查找结果
      */
-    public List<Grade> queryByCourseId(int cid) {
+    public List<Grade> getByCourseId(int cid) {
         String sql = "select * from grade where courseid=?";
         return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),cid);
     }
@@ -43,10 +43,17 @@ public class GradeDao extends AbstractDao{
      * @param stuName 学生姓名
      * @return 查找结果
      */
-    public List<Grade> getGradesByStudent(String stuName) {
+    public List<Grade> getByStudent(String stuName) {
         String sql = "select grade.stuid, courseid, score from grade " +
                 "inner join student as s on grade.stuid = s.id " +
                 "where s.sname=?";
         return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),stuName);
+    }
+
+    public List<Grade> getByCourseName(String courseName) {
+        String sql = "select * from grade " +
+                "inner join course as c on grade.courseid = c.id " +
+                "where c.cname=?";
+        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),courseName);
     }
 }

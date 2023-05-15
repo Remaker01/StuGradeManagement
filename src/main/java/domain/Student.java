@@ -3,7 +3,7 @@ package domain;
 public class Student {
     private int id;
     private short age;
-    private String sname,gender,address,qq,email;
+    private String sname,gender,address,qq, phone;
 
     public int getId() {
         return id;
@@ -47,11 +47,11 @@ public class Student {
         this.qq = qq;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhone() {
+        return phone;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

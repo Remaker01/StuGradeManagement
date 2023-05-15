@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
+    <meta http-equiv="Pragma" content="no-cache">
     <%User u = (User) request.getSession().getAttribute("user");
     String loginMsg = (String) request.getSession().getAttribute("login_msg");
     boolean isAdmin;
@@ -11,7 +12,7 @@
     } else {
         LogUtil.log(Level.INFO, u.getUsername());
         isAdmin = u.isAdmin();
-    String redirect = u.isAdmin() ? "admin.jsp" : "teacher.jsp";
+    String redirect = isAdmin ? "admin.jsp" : "teacher.jsp";
     %>
     <title>欢迎页面</title>
     <meta http-equiv="refresh" content="1;url=<%=redirect%>">
@@ -22,27 +23,7 @@
 <%--<%if (isAdmin) {%>--%>
 <%--<p>课程、学生、用户的增、删、改操作</p>--%>
 <%--<%}%>--%>
-<%--<p>以下为学生列表</p>--%>
-<%--<%--%>
-<%--    List<Student> students = new StudentService().findAllStudents();--%>
-<%--%>--%>
-<%--<ul class="stu">--%>
-<%--    <li>学号&nbsp;&nbsp;姓名&nbsp;&nbsp;年龄</li>--%>
-<%--    <%--%>
-<%--        StringBuilder builder = new StringBuilder(12*2);--%>
-<%--        for (Student stud:students) {--%>
-<%--    %>--%>
-<%--    <li><%--%>
-<%--        builder.setLength(0);--%>
-<%--        builder.append(stud.getId()).append("&nbsp;&nbsp;");--%>
-<%--        builder.append(stud.getSname()).append("&nbsp;&nbsp;");--%>
-<%--        builder.append(stud.getAge());--%>
-<%--        %><%=builder.toString()%></li>--%>
-<%--    <%--%>
-<%--        }--%>
-<%--        %>--%>
-<%--</ul>--%>
-<a href="<%=isAdmin ? "admin.jsp" : "teacher.jsp"%>">点击跳转</a>
+<a href="<%=redirect%>">点击跳转</a>
     <%
     }
     %>

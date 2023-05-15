@@ -1,20 +1,16 @@
 package dao;
 
-import domain.Grade;
 import domain.Student;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import util.LogUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 // findall add delete findbyid update findtotalcount findbypage
 public class StudentDao extends AbstractDao {
-    //缓存学生id与姓名的map，执行删、改、按id查姓名时可能修改；为节约内存，其他情况不变
     static class StudentMapper implements RowMapper<Student> {
         @Override
         public Student mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -24,7 +20,7 @@ public class StudentDao extends AbstractDao {
             stud.setAge(resultSet.getShort("age"));
             stud.setAddress(resultSet.getString("address"));
             stud.setGender(resultSet.getString("gender"));
-            stud.setEmail(resultSet.getString("email"));
+            stud.setPhone(resultSet.getString("phone"));
             stud.setQQ(resultSet.getString("qq"));
             return stud;
         }
@@ -47,13 +43,17 @@ public class StudentDao extends AbstractDao {
                 stud.getAge(),
                 stud.getAddress(),
                 stud.getQQ(),
-                stud.getEmail()
+                stud.getPhone()
         );
     }
     @Override
     public void delete(int id) {
         String sql = "delete from student where id = ?";
-        template.update(sql, id);
+        try {
+            template.update(sql, id);
+        }catch (DataAccessException e) {
+            LogUtil.log(e);
+        }
     }
 
     public String findStudentNameById(int id) {
@@ -68,14 +68,14 @@ public class StudentDao extends AbstractDao {
     @Override
     public void update(Object obj) {
         Student student = (Student)obj;
-        String sql = "update student set sname = ?,gender = ? ,age = ? , address = ? , qq = ?, email = ? where id = ?";
+        String sql = "update student set sname = ?,gender = ? ,age = ? , address = ? , qq = ?, phone = ? where id = ?";
         template.update(sql,
                 student.getSname(),
                 student.getGender(),
                 student.getAge(),
                 student.getAddress(),
                 student.getQQ(),
-                student.getEmail(),
+                student.getPhone(),
                 student.getId()
         );
     }

@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>学生成绩管理系统</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
     <script src="http://cdn.staticfile.org/jquery-easing/1.4.1/jquery.easing.min.js"></script>
@@ -15,15 +17,15 @@
             }
         }
     </script>
-<%--    <script>--%>
-<%--        var btn = $("#btn"),body=$("#main_");--%>
-<%--        var array = ["cadetblue", "#DCDCDC", "mistyrose", "white", "pink", "#DEB887", "coral","#FFF"];--%>
-<%--        var index = 0;--%>
-<%--        btn.onclick = function () {--%>
-<%--            body.style.backgroundColor = array[index];--%>
-<%--            index = (index + 1) % array.length;--%>
-<%--        }--%>
-<%--    </script>--%>
+    <script>
+        // var btn = $("#btn"),body=$("#main_");
+        // var array = ["cadetblue", "#DCDCDC", "mistyrose", "white", "pink", "#DEB887", "coral","#FFF"];
+        // var index = 0;
+        // btn.onclick = function () {
+        //     body.style.backgroundColor = array[index];
+        //     index = (index + 1) % array.length;
+        // }
+    </script>
     <style>
         *{margin: 0;padding: 0;}
         #a1 {
@@ -141,7 +143,7 @@
             <li class="level1">
                 <a href="#none"><em class="ico ico2"></em>学生管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="学生信息.html" target="yem">学生信息</a></li>
+                    <li><a href="student.jsp" target="yem">学生信息</a></li>
                 </ul>
             </li>
             <li class="level1">
@@ -178,9 +180,9 @@
             function(){
                 $(this).addClass('current')   //给当前元素添加"current"样式
                     .find('i').addClass('down')   //小箭头向下样式
-                    .parent().next().slideDown('slow','easeOutQuad')  //下一个元素显示
+                    .parent().next().slideDown('normal','easeOutQuad')  //下一个元素显示
                     .parent().siblings().children('a').removeClass('current')//父元素的兄弟元素的子元素去除"current"样式
-                    .find('i').removeClass('down').parent().next().slideUp('slow','easeOutQuad');//隐藏
+                    .find('i').removeClass('down').parent().next().slideUp('normal','easeOutQuad');//隐藏
                 return false; //阻止默认时间
         });
     })
