@@ -4,6 +4,7 @@ import domain.Grade;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.util.List;
+import java.util.Map;
 
 public class GradeDao extends AbstractDao{
     @Override
@@ -55,5 +56,25 @@ public class GradeDao extends AbstractDao{
                 "inner join course as c on grade.courseid = c.id " +
                 "where c.cname=?";
         return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),courseName);
+    }
+
+    public List<Grade> getByTeacher(int tid) {
+        String sql = "select * from grade " +
+                "inner join course c on grade.courseid = c.id " +
+                "where c.teacher=?";
+        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),tid);
+    }
+
+    public List<Grade> getByTeacher(String name) { //TODO:这个好像不需要？
+        String sql = "select * from grade " +
+                "inner join course c on grade.courseid = c.id " +
+                "inner join users u on c.teacher = u.id " +
+                "where u.username=?";
+        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),name);
+    }
+
+    public List<Grade> findByPage(int start, int rows, Map<String,String []> conditions) {
+        String sql = "select * from grade where 1 = 1 ";
+        return super.findByPage(sql,new BeanPropertyRowMapper<>(Grade.class),start,rows,conditions);
     }
 }

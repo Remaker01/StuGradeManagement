@@ -4,14 +4,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
     <title>修改密码</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
-<% User user = (User) request.getSession().getAttribute("user");
+<% User user = (User) session.getAttribute("user");
 if (user == null) {
     out.print("您尚未登录！");
 }

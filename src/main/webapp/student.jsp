@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         <%  request.getRequestDispatcher("/student").include(request,response);
-            List<Student> students = (List<Student>) request.getSession().getAttribute("students");
+            List<Student> students = (List<Student>) session.getAttribute("students");
             StringBuilder str = new StringBuilder(48);
             for (Student c:students) {
         %>
@@ -41,4 +41,4 @@
     <div style="text-align:right;">当前第1页</div> <!--TODO:分页-->
 </body>
 </html>
-<%request.getSession().setAttribute("students",null);%>
+<%session.setAttribute("students",null);%>

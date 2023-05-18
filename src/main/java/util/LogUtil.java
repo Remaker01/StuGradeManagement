@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.logging.*;
 
 class LogFormatter extends Formatter {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss.SSS");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss.SSS");
     @Override
     public String format(LogRecord record) {
         //创建StringBuilder对象来存放后续需要打印的日志内容

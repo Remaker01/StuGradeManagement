@@ -25,6 +25,7 @@ public class StudentDao extends AbstractDao {
             return stud;
         }
     }
+
     public List<Student> findAll() {
         //使用JDBC操作数据库...
         //1.定义sql
@@ -33,7 +34,7 @@ public class StudentDao extends AbstractDao {
     }
 
     public void add(Object obj) {
-        Student stud = (Student)obj;
+        Student stud = (Student) obj;
         //1.定义sql
         String sql = "insert into student values(null,?,?,?,?,?,?)";
         //2.执行sql
@@ -46,28 +47,30 @@ public class StudentDao extends AbstractDao {
                 stud.getPhone()
         );
     }
+
     @Override
     public void delete(int id) {
         String sql = "delete from student where id = ?";
         try {
             template.update(sql, id);
-        }catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             LogUtil.log(e);
         }
     }
 
     public String findStudentNameById(int id) {
         String sql = "select sname from student where id=?";
-        return template.queryForObject(sql,String.class,id);
+        return template.queryForObject(sql, String.class, id);
     }
 
     public Student findById(int id) {
         String sql = "select * from student where id = ?";
         return template.queryForObject(sql, new StudentMapper(), id);
     }
+
     @Override
     public void update(Object obj) {
-        Student student = (Student)obj;
+        Student student = (Student) obj;
         String sql = "update student set sname = ?,gender = ? ,age = ? , address = ? , qq = ?, phone = ? where id = ?";
         template.update(sql,
                 student.getSname(),
@@ -91,55 +94,27 @@ public class StudentDao extends AbstractDao {
         for (String key : keySet) {
 
             //排除分页条件参数
-            if("currentPage".equals(key) || "rows".equals(key)){
+            if ("currentPage".equals(key) || "rows".equals(key)) {
                 continue;
             }
 
             //获取value
             String value = condition.get(key)[0];
             //判断value是否有值
-            if(value != null && !"".equals(value)){
+            if (value != null && !"".equals(value)) {
                 //有值
                 sb.append(" and ").append(key).append(" like ? ");
-                params.add("%"+value+"%");//？条件的值
+                params.add("%" + value + "%");//？条件的值
             }
         }
 //        System.out.println(sb.toString());
 //        System.out.println(params);
 
-        return template.queryForObject(sb.toString(),int.class,params.toArray());
+        return template.queryForObject(sb.toString(), int.class, params.toArray());
     }
 
     public List<Student> findByPage(int start, int rows, Map<String, String[]> condition) {
         String sql = "select * from student  where 1 = 1 ";
-
-        StringBuilder sb = new StringBuilder(sql);
-        //2.遍历map
-        Set<String> keySet = condition.keySet();
-        //定义参数的集合
-        ArrayList<Object> params = new ArrayList<>();
-        for (String key : keySet) {
-            //排除分页条件参数
-            if("currentPage".equals(key) || "rows".equals(key)){
-                continue;
-            }
-            //获取value
-            String value = condition.get(key)[0];
-            //判断value是否有值
-            if(value != null && !"".equals(value)){
-                //有值
-                sb.append(" and ").append(key).append(" like ? ");
-                params.add("%"+value+"%");//？条件的值
-            }
-        }
-        //添加分页查询
-        sb.append(" limit ?,? ");
-        //添加分页查询参数值
-        params.add(start);
-        params.add(rows);
-        sql = sb.toString();
-//        System.out.println(sql);
-//        System.out.println(params);
-        return template.query(sql, new StudentMapper(),params.toArray());
+        return super.findByPage(sql, new StudentMapper(), start, rows, condition);
     }
 }

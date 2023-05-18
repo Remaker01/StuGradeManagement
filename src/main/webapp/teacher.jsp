@@ -85,14 +85,14 @@
         .ico{ width: 20px; height: 20px; display:block;   position: absolute; left: 20px; top: 13px; background-repeat: no-repeat; background-image: url(images/ico1.png); }
 
         /*============小箭头*/
-        .level1 i{ width: 20px; height: 10px; /*background-image:url(images/arrow.png);*/ background-repeat: no-repeat; display: block; position: absolute; right: 20px; top: 20px; }
+        .level1 i{ width: 20px; height: 10px; background-image:url(imgs/arrow.png); background-repeat: no-repeat; display: block; position: absolute; right: 20px; top: 20px; }
         .level1 i.down{ background-position: 0 -10px; }
 
         .ico1{ background-position: 0 0; }
         .ico2{ background-position: 0 -20px; }
         .ico3{ background-position: 0 -40px; }
-        .ico4{ background-position: 0 -60px; }
-        .ico5{ background-position: 0 -80px; }
+        /*.ico4{ background-position: 0 -60px; }*/
+        /*.ico5{ background-position: 0 -80px; }*/
 
         /*第二层*/
         .menu li ul{ overflow: hidden; }
@@ -112,7 +112,7 @@
 </head>
 <body>
 <%
-    User user = (User) request.getSession().getAttribute("user");
+    User user = (User) session.getAttribute("user");
     if (user == null) {
         out.print("您尚未登录！");
     }

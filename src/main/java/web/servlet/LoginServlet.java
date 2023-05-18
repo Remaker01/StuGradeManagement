@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
             response.getWriter().write("验证码错误");
             //跳转登录页面
 //            request.getRequestDispatcher("index.html").forward(request, response);
-            LogUtil.log(Level.WARNING,String.format("input_vcode=%s,expected=%s",verifyCode,checkcode_server));
+            LogUtil.log(Level.WARNING,String.format("%s,input_vcode=%s,expected=%s",request.getRemoteAddr(),verifyCode,checkcode_server));
             return;
         }
         Map<String, String[]> map = request.getParameterMap();
