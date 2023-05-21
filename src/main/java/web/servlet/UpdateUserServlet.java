@@ -22,10 +22,8 @@ public class UpdateUserServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id;
         String uname,oldPswd,newPswd;
         try {
-            id = Integer.parseInt(req.getParameter("id"));
             uname = req.getParameter("uname");
             oldPswd = req.getParameter("old");
             newPswd = req.getParameter("new");
@@ -34,8 +32,8 @@ public class UpdateUserServlet extends HttpServlet {
             return;
         }
         // 参数id是为了检查用户是否存在的，若不存在，则返回
-        if(userService.findUser(id) == null) {
-            resp.getWriter().write("用户不存在");
+        if(req.getSession().getAttribute("user") == null) {
+            resp.getWriter().write("用户不未登录");
             return;
         }
         // 检查密码是否符合强度要求

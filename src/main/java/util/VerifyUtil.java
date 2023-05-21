@@ -3,7 +3,6 @@ package util;
 import java.util.logging.Level;
 
 public class VerifyUtil {
-    public static final long EXPIRE = 30L;
     public static final int PASS_MIN_LEN = 7,PASS_MAX_LEN = 30;
     public static boolean verifyTimestamp(String timestamp,Class<?> clazz) {
         long cur = System.currentTimeMillis();
@@ -11,7 +10,7 @@ public class VerifyUtil {
             long tm = Long.parseLong(timestamp);
             cur /= 1000L;
             LogUtil.log(Level.INFO,String.format("%s:cur=%d,tp=%d",clazz.getName(),cur,tm));
-            return (cur >= tm&&cur - tm <= EXPIRE);
+            return (cur >= tm-3&&cur - tm <= 30L); //防止客户端时间偏快
         } catch (NumberFormatException e) {
             return false;
         }

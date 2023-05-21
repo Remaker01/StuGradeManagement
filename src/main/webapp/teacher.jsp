@@ -113,7 +113,7 @@
 <body>
 <%
     User user = (User) session.getAttribute("user");
-    if (user == null) {
+    if (user == null||user.isAdmin()) {
         out.print("您尚未登录！");
     }
     else {
@@ -150,7 +150,8 @@
                 <a href="#none">
                     <em class="ico ico3"></em>成绩管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="成绩信息.html" target="yem">成绩信息</a></li>
+                    <li><a href="grade.jsp?type=2&para=<%=user.getId()%>" target="yem">成绩信息查询</a></li>
+                    <li><a href="about:blank" target="yem">成绩信息修改</a></li>
                 </ul>
             </li>
             <li class="level1">
@@ -163,14 +164,21 @@
             <li class="level1">
                 <a href="#none"><em class="ico ico1"></em>账户管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="modipass.jsp" target="yem">修改密码</a></li>
+                    <li><a href="modipass.jsp?uname=<%=user.getUsername()%>" target="yem">修改密码</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 </div>
 <div id="main_">
-    <iframe src="首页.html" width="100%" height="550px" name="yem" border="0" scrolling="no" frameborder="0">
+<%--    <p id="filter">--%>
+<%--        过滤条件：--%>
+<%--        <select id="options" style="padding: 0 10px;">--%>
+<%--            <option>所有</option>--%>
+<%--        </select>--%>
+<%--        <input type="text" id="opt_value" placeholder="请输入值" style="padding-left: 5px;"/>--%>
+<%--    </p>--%>
+    <iframe src="" width="100%" height="550px" id="yem" name="yem" border="0" scrolling="no" frameborder="0">
     </iframe>
 </div>
 <script>
@@ -185,7 +193,7 @@
                     .find('i').removeClass('down').parent().next().slideUp('normal','easeOutQuad');//隐藏
                 return false; //阻止默认时间
         });
-    })
+    });
 </script>
 <%
     }

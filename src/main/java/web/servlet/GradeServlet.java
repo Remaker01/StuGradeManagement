@@ -15,13 +15,12 @@ import java.util.List;
 /*
 get请求参数：
 1.type:按什么查询:
-    1.全部
 2.para:参数，按不同type:
-    2.课程名
-    3.教师id&page
-    4.学生名，目前忽略page
+    0.全部
+    1.课程名
+    2.教师id&page
+    3.学生名，目前忽略page
 3.pageno:目前只是type==1时有用
-
 post请求参数：
 1.type，含义同StudentServlet
 2.courseid及id

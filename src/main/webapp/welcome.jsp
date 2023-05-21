@@ -3,8 +3,8 @@
 <html>
 <head>
     <meta http-equiv="Pragma" content="no-cache">
-    <%User u = (User) request.getSession().getAttribute("user");
-    String loginMsg = (String) request.getSession().getAttribute("login_msg");
+    <%User u = (User) session.getAttribute("user");
+    String loginMsg = (String) session.getAttribute("login_msg");
     boolean isAdmin;
     if (u==null||loginMsg==null||loginMsg.endsWith("失败")) {
         response.sendError(500,"用户或登录信息为空");

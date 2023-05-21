@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CourseDao extends AbstractDao{
     public String getNameById(int id) {
         String sql = "select cname from course where id=?";
-        return template.queryForObject(sql,String.class);
+        return template.queryForObject(sql,String.class,id);
     }
 
     public List<Course> getByTeacherId(int tid) {

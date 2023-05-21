@@ -66,7 +66,7 @@ public class RegisterServlet extends HttpServlet {
         }
         else {
             userService.register(uname, pswd);
-            resp.getWriter().write("注册成功");
+            resp.getWriter().write("注册成功,请将注册信息告知管理员");
         }
     }
 }
