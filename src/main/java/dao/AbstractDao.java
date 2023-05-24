@@ -13,7 +13,7 @@ public abstract class AbstractDao {
     protected final JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
     public abstract void add(Object obj); //增
     public abstract void delete(int id); //删
-    public abstract void update(Object obj); //改
+    public abstract int update(Object obj); //改
     /**
      * 分页模糊查询
      * @param sql 基础语句

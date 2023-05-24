@@ -41,7 +41,7 @@ public class StudentService {
     public Student findStudentById(int id) {
         return stuDao.findById(id);
     }
-    public void update(@NotNull Student student) {
-        stuDao.update(student);
+    public int update(@NotNull Student student) {
+        return stuDao.update(student);
     }
 }

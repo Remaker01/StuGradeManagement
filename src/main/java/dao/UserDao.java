@@ -77,12 +77,12 @@ public class UserDao extends AbstractDao{
      * @param obj 用户
      */
     @Override
-    public void update(Object obj) {
+    public int update(Object obj) {
         User user = (User) obj;
         String uname = user.getUsername(),pswd = user.getPassword();
         pswd = EncryptUtil.encrypt(pswd,StandardCharsets.ISO_8859_1);
         String sql = "update users set `password`=? where username=?";
-        template.update(sql,pswd,uname);
+        return template.update(sql,pswd,uname);
     }
 
     public int getAdminCount() {

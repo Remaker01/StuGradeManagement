@@ -60,19 +60,27 @@ public class StudentDao extends AbstractDao {
 
     public String findStudentNameById(int id) {
         String sql = "select sname from student where id=?";
-        return template.queryForObject(sql, String.class, id);
+        try {
+            return template.queryForObject(sql, String.class, id);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     public Student findById(int id) {
         String sql = "select * from student where id = ?";
-        return template.queryForObject(sql, new StudentMapper(), id);
+        try {
+            return template.queryForObject(sql, new StudentMapper(), id);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
-    public void update(Object obj) {
+    public int update(Object obj) {
         Student student = (Student) obj;
         String sql = "update student set sname = ?,gender = ? ,age = ? , address = ? , qq = ?, phone = ? where id = ?";
-        template.update(sql,
+        return template.update(sql,
                 student.getSname(),
                 student.getGender(),
                 student.getAge(),

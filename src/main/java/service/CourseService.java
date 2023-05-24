@@ -18,6 +18,8 @@ public class CourseService {
         return courseDao.getByTeacherId(tid);
     }
 
+    public Course getByCourseId(int id) {return courseDao.getById(id);}
+
     public List<Course> getAllCourses() {return courseDao.getAll();}
 
     public void addCourse(String cname,String ctype,int teacher) {
@@ -37,7 +39,7 @@ public class CourseService {
         courseDao.delete(id);
     }
 
-    public void updateCourse(Course course) {
-        courseDao.update(course);
+    public int updateCourse(Course course) {
+         return courseDao.update(course);
     }
 }

@@ -1,5 +1,5 @@
-<%@ page import="domain.User" %><%--教师页面--%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="domain.User" contentType="text/html;charset=UTF-8"%><%--教师页面--%>
+<!doctype html>
 <html>
 <head>
     <title>学生成绩管理系统</title>
@@ -53,7 +53,7 @@
             text-decoration: none;}
         #aa1 a:hover{color: #BD0A01;}
         #aa2 a:hover{color: #BD0A01;}
-        #tab1{float: left;width: 220px;height: 550px;text-align: left;margin-top: 0;border: 1px solid #6495ED;background:#6495ED;margin-left: 5px;box-shadow: 0px 0px 35px 0px #DDDDDD;}
+        #tab1{float: left;width: 220px;height: 550px;text-align: left;margin-top: 0;border: 1px solid #6495ED;background:#6495ED;margin-left: 5px;box-shadow: 0 0 35px 0px #DDDDDD;}
         #tab2{float: left;width: 100%;height: 170px;text-align: center;border-bottom: 1px solid #000000;color: #DDDDDD;}
         #t2{height: 150px;width: 100%;}
         #t2 tr th{height: 30px;font-size: x-large;}
@@ -151,7 +151,7 @@
                     <em class="ico ico3"></em>成绩管理<i></i></a>
                 <ul class="level2">
                     <li><a href="grade.jsp?type=2&para=<%=user.getId()%>" target="yem">成绩信息查询</a></li>
-                    <li><a href="about:blank" target="yem">成绩信息修改</a></li>
+                    <li><a href="about:blank" target="yem">成绩信息添加</a></li>
                 </ul>
             </li>
             <li class="level1">

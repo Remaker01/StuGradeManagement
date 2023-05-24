@@ -53,7 +53,7 @@ public class GradeService {
         gradeDao.delete(stuId,courseId);
     }
 
-    public void updateGrade(Grade grade) {
-        gradeDao.update(grade);
+    public int updateGrade(Grade grade) {
+        return gradeDao.update(grade);
     }
 }

@@ -2,6 +2,7 @@ package web.servlet;
 
 import domain.Grade;
 import domain.User;
+import service.CourseService;
 import service.GradeService;
 
 import javax.servlet.ServletException;
@@ -23,12 +24,13 @@ get请求参数：
 3.pageno:目前只是type==1时有用
 post请求参数：
 1.type，含义同StudentServlet
-2.courseid及id
+2.courseid sid tid
 3.score:分数，删除时忽略
  */
 @WebServlet("/grade")
 public class GradeServlet extends HttpServlet {
     private GradeService gradeService = null;
+    private CourseService courseService = null;
 
     @Override
     public void init() throws ServletException {
@@ -98,13 +100,20 @@ public class GradeServlet extends HttpServlet {
             resp.sendError(403);
             return;
         }
-        int type,courseId,sid;
+        int type,courseId,sid,tid;
         try {
             type = Integer.parseInt(req.getParameter("type"));
             courseId = Integer.parseInt(req.getParameter("courseid"));
             sid = Integer.parseInt(req.getParameter("sid"));
+            tid = Integer.parseInt(req.getParameter("tid"));
         } catch (NumberFormatException e) {
             resp.sendError(400,"参数错误");
+            return;
+        }
+        if (courseService == null)
+            courseService = new CourseService();
+        if (courseService.getByCourseId(courseId).getTeacher() != tid) {
+            resp.getWriter().write("教师与课程不匹配");
             return;
         }
         switch (type) {
@@ -127,7 +136,11 @@ public class GradeServlet extends HttpServlet {
                     g.setStuId(sid);
                     g.setCourseId(courseId);
                     g.setScore(score);
-                    gradeService.updateGrade(g);
+                    if (gradeService.updateGrade(g) == 0) {
+                        resp.getWriter().write("修改失败");
+                    }
+                    else
+                        resp.getWriter().write("修改成功");
                 } catch (NumberFormatException e) {
                     resp.sendError(400, "参数错误");
                     break;

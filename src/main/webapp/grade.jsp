@@ -8,6 +8,16 @@
     <script src="script.js"></script>
     <title>Title</title>
     <link rel="stylesheet" href="style/frames.css">
+    <style>
+        tbody .btn-in-table {
+            width: 50px;
+            height: 30px;
+            color: #ffffff;
+            border: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <% User user = (User) session.getAttribute("user");
@@ -27,6 +37,7 @@
             <th>学生</th>
             <th>课程</th>
             <th>分数</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -47,16 +58,20 @@
             int sid = g.getStuId();
             str.append("<td>").append(stuDao.findStudentNameById(sid)).append("</td>\n");
             str.append("\t\t<td>").append(coDao.getNameById(g.getCourseId())).append("</td>\n");
-            str.append("\t\t<td>").append(g.getScore()).append("</td>\n");
+            short s = g.getScore();
+            String style = (s < 60) ? "style='color:red;'" : "";
+            str.append("\t\t<td ").append(style).append(">").append(s).append("</td>\n");
             %><%=str.toString()%>
+            <td>
+                <input type="button" value="修改" class="btn-in-table" style="background-color: #5050ff"/>
+                <input type="button" value="删除" class="btn-in-table" style="background-color: red"/>
+            </td>
         </tr>
-        </tbody>
         <%
             }
-        %>
+        %></tbody>
     </table>
-</body>
-<%
+</body><%
     }
 %>
 </html>

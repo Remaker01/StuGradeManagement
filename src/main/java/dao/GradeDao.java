@@ -18,10 +18,10 @@ public class GradeDao extends AbstractDao{
         throw new RuntimeException("Call to delete(int) in GradeDao is not allowed");
     }
     @Override
-    public void update(Object obj) {
+    public int update(Object obj) {
         Grade grade = (Grade) obj;
         String sql = "update grade set score=? where stuid=? and courseid=?";
-        template.update(sql,grade.getScore(),grade.getStuId(),grade.getCourseId());
+        return template.update(sql,grade.getScore(),grade.getStuId(),grade.getCourseId());
     }
     /**
      * 删除学号为sid的学生与课程编号为cid的课程的成绩
