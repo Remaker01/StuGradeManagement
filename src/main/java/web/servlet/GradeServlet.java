@@ -1,9 +1,11 @@
 package web.servlet;
 
+import domain.Course;
 import domain.Grade;
 import domain.User;
 import service.CourseService;
 import service.GradeService;
+import util.LogUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -108,11 +110,17 @@ public class GradeServlet extends HttpServlet {
             tid = Integer.parseInt(req.getParameter("tid"));
         } catch (NumberFormatException e) {
             resp.sendError(400,"参数错误");
+            LogUtil.log(e);
             return;
         }
         if (courseService == null)
             courseService = new CourseService();
-        if (courseService.getByCourseId(courseId).getTeacher() != tid) {
+        Course c = courseService.getByCourseId(courseId);
+        if (c == null) {
+            resp.getWriter().write("课程不存在");
+            return;
+        }
+        if (c.getTeacher() != tid) {
             resp.getWriter().write("教师与课程不匹配");
             return;
         }
@@ -120,10 +128,15 @@ public class GradeServlet extends HttpServlet {
             case 0:
                 try {
                     short score = Short.parseShort(req.getParameter("score"));
-                    gradeService.addGrade(sid,courseId,score);
+                    if(score >= 0&&score <= 100)
+                        gradeService.addGrade(sid,courseId,score);
+                    else {
+                        resp.getWriter().write("添加失败，分数不合法，必须大于0且小于100");
+                        return;
+                    }
                 } catch (NumberFormatException e) {
                     resp.sendError(400, "参数错误");
-                    break;
+                    return;
                 }
                 break;
             case 1:
@@ -132,20 +145,27 @@ public class GradeServlet extends HttpServlet {
             case 2:
                 try {
                     short score = Short.parseShort(req.getParameter("score"));
-                    Grade g = new Grade();
-                    g.setStuId(sid);
-                    g.setCourseId(courseId);
-                    g.setScore(score);
-                    if (gradeService.updateGrade(g) == 0) {
-                        resp.getWriter().write("修改失败");
+                    if (score >= 0&&score <= 100) {
+                        Grade g = new Grade();
+                        g.setStuId(sid);
+                        g.setCourseId(courseId);
+                        g.setScore(score);
+                        if (gradeService.updateGrade(g) == 0) {
+                            resp.getWriter().write("修改失败");
+                        } else
+                            resp.getWriter().write("修改成功");
                     }
-                    else
-                        resp.getWriter().write("修改成功");
+                    else {
+                        resp.getWriter().write("修改失败，分数不合法，必须大于0且小于100");
+                        return;
+                    }
                 } catch (NumberFormatException e) {
                     resp.sendError(400, "参数错误");
-                    break;
+                    return;
                 }
-            default: resp.sendError(400, "参数错误");break;
+                break;
+            default: resp.sendError(400, "参数错误");return;
         }
+        resp.getWriter().write("操作成功");
     }
 }

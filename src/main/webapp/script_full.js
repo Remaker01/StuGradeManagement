@@ -48,3 +48,24 @@ function submit_updateuser(id,uname,old_pswd_id,new_pswd_id) {
         success:function (f) {$("#status").text(f);}
     });
 }
+function getCurrentParam(name) {
+    var params = document.location.search.split("&"),index = -1;
+    for (var i = 0; i < params.length; i++) {
+        if (params[i].indexOf(name) >= 0) {
+            index = i;
+            break;
+        }
+    }
+    if (index < 0)
+        return "";
+    return params[index].split("=")[1];
+}
+//modipass head部分源码
+// $(document).ready(function () {
+//         if (window.parent.location === this.location) {
+//             $.ajax({url:_root_+"404.html",type:"get",success:function (f){document.write(f);}});
+//             return;
+//         }
+//         $("#uname").text("当前用户：" + decodeURI(getCurrentParam('uname')));
+//     }
+// );

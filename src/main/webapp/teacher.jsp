@@ -1,4 +1,5 @@
-<%@ page import="domain.User" contentType="text/html;charset=UTF-8"%><%--教师页面--%>
+<%@ page import="domain.User" contentType="text/html;charset=UTF-8"%>
+<%@ page import="java.net.URLEncoder" %><%--教师页面--%>
 <!doctype html>
 <html>
 <head>
@@ -43,17 +44,17 @@
             /* background: linear-gradient(to right,#6495ED,mistyrose);
                    -webkit-background-clip: text;
                    color: transparent; */
-            color: #6495ED;
+            color: #6495DD;
         }
         #a2{width: 18%;height: 70px;float: left;margin-bottom: 10px;padding-top: 20px;
             margin-top: 5px;box-shadow: 0 0 1500px 0 #DDDDDD;z-index: 1;}
         #aa1,#aa2{width: 35%;height: 45px;float: left;margin-right: 10px;
             border-radius: 5px 5px 5px 5px;box-shadow: 0 0 20px 0 #DCDCDC;}
-        #aa2 a,#aa1 a{font-size: larger;width: 100%;height: 42px;color: #6495ED;line-height: 42px;
+        #aa2 a,#aa1 a{font-size: larger;width: 100%;height: 42px;color: #6495DD;line-height: 42px;
             text-decoration: none;}
         #aa1 a:hover{color: #BD0A01;}
         #aa2 a:hover{color: #BD0A01;}
-        #tab1{float: left;width: 220px;height: 550px;text-align: left;margin-top: 0;border: 1px solid #6495ED;background:#6495ED;margin-left: 5px;box-shadow: 0 0 35px 0px #DDDDDD;}
+        #tab1{float: left;width: 220px;height: 550px;text-align: left;margin-top: 0;border: 1px solid #6495DD;background:#6495DD;margin-left: 5px;box-shadow: 0 0 35px 0px #DDDDDD;}
         #tab2{float: left;width: 100%;height: 170px;text-align: center;border-bottom: 1px solid #000000;color: #DDDDDD;}
         #t2{height: 150px;width: 100%;}
         #t2 tr th{height: 30px;font-size: x-large;}
@@ -96,7 +97,7 @@
 
         /*第二层*/
         .menu li ul{ overflow: hidden; }
-        .menu li ul.level2{ display: none;background: #6495ED; }
+        .menu li ul.level2{ display: none;background: #6495DD; }
         .menu li ul.level2 li a{
             display: block;
             height: 45px;
@@ -151,7 +152,7 @@
                     <em class="ico ico3"></em>成绩管理<i></i></a>
                 <ul class="level2">
                     <li><a href="grade.jsp?type=2&para=<%=user.getId()%>" target="yem">成绩信息查询</a></li>
-                    <li><a href="about:blank" target="yem">成绩信息添加</a></li>
+                    <li><a href="grade_add.jsp?uid=<%=user.getId()%>" target="yem">成绩信息添加</a></li>
                 </ul>
             </li>
             <li class="level1">
@@ -164,7 +165,7 @@
             <li class="level1">
                 <a href="#none"><em class="ico ico1"></em>账户管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="modipass.jsp?uname=<%=user.getUsername()%>" target="yem">修改密码</a></li>
+                    <li><a href="modipass.html?uname=<%=URLEncoder.encode(user.getUsername(),"UTF-8")%>" target="yem">修改密码</a></li>
                 </ul>
             </li>
         </ul>
@@ -188,9 +189,9 @@
             function(){
                 $(this).addClass('current')   //给当前元素添加"current"样式
                     .find('i').addClass('down')   //小箭头向下样式
-                    .parent().next().slideDown('normal','easeOutQuad')  //下一个元素显示
+                    .parent().next().slideDown(500,'easeOutQuad')  //下一个元素显示
                     .parent().siblings().children('a').removeClass('current')//父元素的兄弟元素的子元素去除"current"样式
-                    .find('i').removeClass('down').parent().next().slideUp('normal','easeOutQuad');//隐藏
+                    .find('i').removeClass('down').parent().next().slideUp(500,'easeOutQuad');//隐藏
                 return false; //阻止默认时间
         });
     });

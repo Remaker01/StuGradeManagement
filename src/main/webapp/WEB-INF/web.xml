@@ -17,6 +17,7 @@
         <url-pattern>/updateuser</url-pattern>
         <url-pattern>/student</url-pattern>
         <url-pattern>/exit</url-pattern>
+        <url-pattern>/grade</url-pattern>
         <!-- TODO:加入更多内容-->
     </filter-mapping>
     <welcome-file-list>
