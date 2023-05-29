@@ -10,7 +10,7 @@ public class VerifyUtil {
             long tm = Long.parseLong(timestamp);
             cur /= 1000L;
             LogUtil.log(Level.INFO,String.format("%s:cur=%d,tp=%d",clazz.getName(),cur,tm));
-            return (cur >= tm-3&&cur - tm <= 30L); //防止客户端时间偏快
+            return (cur >= tm-20L&&cur - tm <= 120L); //防止客户端时间偏快
         } catch (NumberFormatException e) {
             return false;
         }

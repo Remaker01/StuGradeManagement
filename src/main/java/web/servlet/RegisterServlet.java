@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 /*
-注册要求的参数：用户名、密码、验证码。不校验时间戳
+注册要求的参数：用户名、密码、验证码、是否为管理员。不校验时间戳
 注册流程：
 1.校验用户名密码，如果用户名被用过或密码长度过短，则注册失败
 2.调用服务注册用户
@@ -47,11 +47,11 @@ public class RegisterServlet extends HttpServlet {
             resp.getWriter().write("验证码错误");
             //跳转登录页面
 //            request.getRequestDispatcher("index.html").forward(request, response);
-            LogUtil.log(Level.WARNING,String.format("Register:input_vcode=%s,expected=%s",verifyCode,checkcode_server));
+            LogUtil.log(Level.WARNING,String.format("(Register)ip=%s,input_vcode=%s,expected=%s",req.getRemoteAddr(),verifyCode,checkcode_server));
             return;
         }
         //开始调用注册服务注册
-        String uname = req.getParameter("username"),pswd = req.getParameter("password");
+        String uname = req.getParameter("username"),pswd = req.getParameter("password"),role = req.getParameter("role");
         if (uname == null||pswd == null) {
             resp.sendError(400,"至少一个参数缺失或出现错误");
             return;
@@ -65,7 +65,19 @@ public class RegisterServlet extends HttpServlet {
             );
         }
         else {
-            userService.register(uname, pswd);
+            if (role == null||role.equalsIgnoreCase("user"))
+                userService.register(uname, pswd);
+            else if (role.equalsIgnoreCase("admin")) {
+                if (userService.adminCount() >= 10) {
+                    resp.getWriter().write("管理员人数已达上限10");
+                    return;
+                }
+                userService.addUser(uname, pswd, true);
+            }
+            else {
+                resp.sendError(400,"参数错误");
+                return;
+            }
             resp.getWriter().write("注册成功,请将注册信息告知管理员");
         }
     }

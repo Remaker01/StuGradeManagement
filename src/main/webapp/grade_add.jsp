@@ -30,6 +30,10 @@
         function submit_() {
             var sid=$("#stu-option").val(),courseid=$("#course-option").val(),score=$("#score-text").val();
             var para = "type=0&courseid="+courseid+"&sid="+sid+"&tid=<%=uid%>&score="+score;
+            if (score == null||score.length === 0) {
+                $("#status").text("成绩不能为空");
+                return;
+            }
             $.ajax({url:_root_+"grade",
                 type:"post",
                 data:para,

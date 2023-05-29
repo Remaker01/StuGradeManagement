@@ -1,7 +1,5 @@
 package web.servlet;
 
-import util.LogUtil;
-
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +10,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Level;
 
 /**
  * 验证码产生
@@ -23,7 +20,7 @@ public class CheckCodeServlet extends HttpServlet {
     private Random random = new Random();
     private static final char[] BASE = "0123456789ABCDEFGHIabcdefghi".toCharArray(); //不定义为字符串，方便使用
     private static final int WIDTH = 80, HEIGHT = 30;
-    private static final Color[] COLORS = {Color.green, Color.white, Color.yellow, Color.lightGray, Color.cyan};
+    private static final Color[] COLORS = {Color.green, Color.white, Color.yellow, Color.lightGray, Color.cyan,Color.orange};
 
     private Color getRandomColor() {
         int index = random.nextInt(COLORS.length);
@@ -32,7 +29,6 @@ public class CheckCodeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 //服务器通知浏览器不要缓存
-//        LogUtil.log(Level.INFO,"checkcode-servlet");
         response.setHeader("pragma", "no-cache");
         response.setHeader("cache-control", "no-cache");
         response.setHeader("Content-type", "image/jpeg");
@@ -59,15 +55,7 @@ public class CheckCodeServlet extends HttpServlet {
         g.setColor(getRandomColor());
         g.drawArc(0, 0, WIDTH, HEIGHT, random.nextInt(180), random.nextInt(180));
 //将内存中的图片输出到浏览器
-//参数一：图片对象
-//参数二：图片的格式，如PNG,JPG,GIF
-//参数三：图片输出到哪里
-//        response.getOutputStream().write();
-//        DataOutputStream dout = new DataOutputStream(response.getOutputStream());
-//        ByteArrayOutputStream bout = new ByteArrayOutputStream();
         ImageIO.write(image, "JPG", response.getOutputStream());
-//        byte[] b = bout.toByteArray();
-//        dout.write(b);
     }
 
     private String getCheckCode() {

@@ -60,12 +60,3 @@ function getCurrentParam(name) {
         return "";
     return params[index].split("=")[1];
 }
-//modipass head部分源码
-// $(document).ready(function () {
-//         if (window.parent.location === this.location) {
-//             $.ajax({url:_root_+"404.html",type:"get",success:function (f){document.write(f);}});
-//             return;
-//         }
-//         $("#uname").text("当前用户：" + decodeURI(getCurrentParam('uname')));
-//     }
-// );
