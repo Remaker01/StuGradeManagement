@@ -120,7 +120,7 @@ public class GradeServlet extends HttpServlet {
             resp.getWriter().write("课程不存在");
             return;
         }
-        if (c.getTeacher() != tid) {
+        if (c.getTeacher() != tid&&!user.isAdmin()) {
             resp.getWriter().write("教师与课程不匹配");
             return;
         }
@@ -152,8 +152,8 @@ public class GradeServlet extends HttpServlet {
                         g.setScore(score);
                         if (gradeService.updateGrade(g) == 0) {
                             resp.getWriter().write("修改失败");
-                        } else
-                            resp.getWriter().write("修改成功");
+                            return;
+                        }
                     }
                     else {
                         resp.getWriter().write("修改失败，分数不合法，必须大于0且小于100");

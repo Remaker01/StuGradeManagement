@@ -18,7 +18,6 @@
         <url-pattern>/student</url-pattern>
         <url-pattern>/exit</url-pattern>
         <url-pattern>/grade</url-pattern>
-        <!-- TODO:加入更多内容-->
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
@@ -27,4 +26,10 @@
         <error-code>404</error-code>
         <location>/404.html</location>
     </error-page>
+    <resource-ref>
+        <description>数据库连接</description>
+        <res-ref-name>jdbc/stu</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 </web-app>
