@@ -132,7 +132,7 @@
                 <a href="#none"><em class="ico ico2"></em>学生管理<i></i></a>
                 <ul class="level2">
                     <li><a href="student.jsp" target="yem">学生信息</a></li>
-                    <li><a href="about:blank" target="yem">新增学生</a> </li>
+                    <li><a href="stu_add.jsp" target="yem">新增学生</a> </li>
                 </ul>
             </li>
             <li class="level1">
@@ -140,7 +140,7 @@
                     <em class="ico ico3"></em>成绩管理<i></i></a>
                 <ul class="level2">
                     <li><a href="grade.jsp?type=0" target="yem">成绩信息查询</a></li>
-                    <li><a href="about:blank" target="yem">成绩信息添加</a></li>
+                    <li><a href="grade_add_admin.jsp" target="yem">成绩信息添加</a></li>
                 </ul>
             </li>
             <li class="level1">

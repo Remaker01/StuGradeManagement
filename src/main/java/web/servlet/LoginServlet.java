@@ -2,6 +2,7 @@ package web.servlet;
 
 import domain.User;
 import service.UserService;
+import util.EncryptUtil;
 import util.LogUtil;
 import util.VerifyUtil;
 
@@ -27,7 +28,6 @@ public class LoginServlet extends HttpServlet {
         super.init();
         userService = new UserService();
     }
-    //时间戳极限：30s
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //2.获取数据
@@ -62,6 +62,7 @@ public class LoginServlet extends HttpServlet {
             response.sendError(400,"至少一个参数缺失或出现错误");
             return;
         }
+        password = EncryptUtil.base64Decode(password);
         user.setUsername(username);
         user.setPassword(password);
         //5.调用Service查询

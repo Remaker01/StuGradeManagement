@@ -45,7 +45,9 @@ CREATE TABLE `course` (
   `id` int NOT NULL AUTO_INCREMENT,
   `cname` varchar(10) CHARACTER SET utf8mb4 NOT NULL,
   `ctype` varchar(10) CHARACTER SET utf8mb4 NOT NULL COMMENT '课程类型：公共课、专业基础课、专业课、选修课',
-  PRIMARY KEY (`id`) USING BTREE
+  `teacher` int(0) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  CONSTRAINT `TEA_ID` FOREIGN KEY (`teacher`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) CHARACTER SET = utf8mb4;
 
 create table grade

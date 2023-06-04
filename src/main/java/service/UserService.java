@@ -2,12 +2,15 @@ package service;
 
 import dao.UserDao;
 import domain.User;
-import util.LogUtil;
 
-import java.util.logging.Level;
+import java.util.List;
 
 public class UserService {
     private UserDao userDao = new UserDao();
+
+    public List<User> findAll() {return userDao.findAll();}
+
+    public List<User> findByRole(boolean isAdmin) {return userDao.findByRole(isAdmin);}
     /**
      * 由id查找用户
      */

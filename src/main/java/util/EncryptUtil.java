@@ -1,8 +1,11 @@
 package util;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 /**
  * 密码加密工具类。用Hash算法给密码加密
  */
@@ -16,6 +19,20 @@ public class EncryptUtil {
             digest = null;
             LogUtil.log(e);
         }
+    }
+    public static String base64Decode(String base64) {
+        base64 = new StringBuilder(base64).reverse().toString();
+        byte[] bytes;
+        try {
+            bytes = Base64.getDecoder().decode(base64);
+        } catch (IllegalArgumentException e) {
+            try {
+                bytes = Base64.getDecoder().decode(base64+'=');
+            } catch (IllegalArgumentException ex) {
+                bytes = Base64.getDecoder().decode(base64+"==");
+            }
+        }
+        return new String(bytes, StandardCharsets.ISO_8859_1);
     }
     /**
      * 对指定字节串进行加密

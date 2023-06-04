@@ -9,6 +9,7 @@ import util.LogUtil;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 // findbyusernameandpswd add
 /**
@@ -25,6 +26,16 @@ public class UserDao extends AbstractDao{
             u.setAdmin(resultSet.getByte("isadmin") == 1);
             return u;
         }
+    }
+
+    public List<User> findAll() {
+        String sql = "select * from users";
+        return template.query(sql,new UserMapper());
+    }
+
+    public List<User> findByRole(boolean admin) {
+        String sql = "select * from users where isadmin=?";
+        return template.query(sql,new UserMapper(),admin ? 1 : 0);
     }
 
     public User findById(int id) {

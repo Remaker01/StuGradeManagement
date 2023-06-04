@@ -6,6 +6,7 @@
     <title>Title</title>
     <style>
         .i2{border-radius: 5px 5px 5px 5px;height: 7mm;width: 200px;padding: 3px 2px;}
+        form select {padding: 2px 4px;}
     </style>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
@@ -45,19 +46,18 @@
 </head>
 <body>
 <form>
-    <p>学生：<select id="stu-option" style="padding: 2px 4px;">
+    <p>学生：<select id="stu-option">
         <% StringBuilder str = new StringBuilder(32);
             for (Student student : students) {
                 str.setLength(0);
-                str.append("<option value='").append(student.getId())
-                        .append("'>")
+                str.append(String.format("<option value='%d'>",student.getId()))
                         .append(student.getSname())
                         .append("</option>\n");
         %><%=str.toString()%>
         <%
             }
         %></select></p>
-    <p>课程：<select id="course-option" style="padding: 2px 4px;">
+    <p>课程：<select id="course-option">
         <%for (Course c : courses) {
             str.setLength(0);
             str.append("<option value='").append(c.getId())

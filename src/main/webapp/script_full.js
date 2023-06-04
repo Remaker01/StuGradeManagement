@@ -12,7 +12,8 @@ function _callback(f,loc,vcode_id) {
 ///提交到后端
 function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不能为submit，否则调用不了这个函数
     var uname = $("#"+uname_id).val(),pswd = $("#"+pswd_id).val(),vcode = $("#"+vcode_text_id).val(),token = Date.parse(new Date())/1000;//这里不能.value，否则均为undefined
-    var data_ = "username=" + uname + "&password=" + pswd + "&verifycode=" + vcode + "&token=" + token; //前面不能加'?'，否则后端无法处理
+    pswd = window.btoa(pswd).replace(/=/g,'');
+    var data_ = "username=" + uname + "&password=" + pswd.split('').reverse().join('') + "&verifycode=" + vcode + "&token=" + token; //前面不能加'?'，否则后端无法处理
     // console.debug(data_);
     $.ajax({
         url:_root_+"login",
@@ -59,4 +60,15 @@ function getCurrentParam(name) {
     if (index < 0)
         return "";
     return params[index].split("=")[1];
+}
+function getPass(data) {
+    var _new = '';
+    data = window.btoa(data).replace('=','');
+    for (var i = 0; i < data.length; i += 2) {
+        if (i+1>data.length)
+            break;
+        _new += data[i+1];
+        _new += data[i];
+    }
+    return _new;
 }

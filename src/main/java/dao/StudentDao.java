@@ -36,13 +36,13 @@ public class StudentDao extends AbstractDao {
     public void add(Object obj) {
         Student stud = (Student) obj;
         //1.定义sql
-        String sql = "insert into student values(null,?,?,?,?,?,?)";
+        String sql = "insert into student(sname, gender, address, age, qq, phone) values(?,?,?,?,?,?)";
         //2.执行sql
         template.update(sql,
                 stud.getSname(),
                 stud.getGender(),
-                stud.getAge(),
                 stud.getAddress(),
+                stud.getAge(),
                 stud.getQQ(),
                 stud.getPhone()
         );
