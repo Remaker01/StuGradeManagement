@@ -3,8 +3,10 @@ package web.servlet;
 /*
 参数
 1. 若为get方法则认为是查询信息。需校验用户是否已登录，否则拒绝查询。
-    1.页数：pageno(可选，默认为1)
-    2.学生姓名：name(可选)
+    type==0:根据学号查询单个学生信息
+    type==1:查询所有学生信息，或根据姓名查询
+        1.页数：pageno(可选，默认为1)
+        2.学生姓名：name(可选，模糊查询)
 2. 若post方法认为是要修改信息，参数为1.type,2.学生id(删除)学生的各项信息(其他)。需要校验是否为管理员。
  */
 import domain.Student;
@@ -20,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 //TODO:像StudentServlet这样整合用户有关的servlet
 @WebServlet("/student")
@@ -39,31 +40,53 @@ public class StudentServlet extends HttpServlet {
             resp.sendError(403);
             return;
         }
-        String name = req.getParameter("name"),pagenoStr = req.getParameter("pageno");
-        List<Student> students;
-        if (pagenoStr == null)
-            pagenoStr = "1";
-        //name为null
-        if (name == null) {
-            try {
-                students = studentService.findStudents(Integer.parseInt(pagenoStr));
-            } catch (NumberFormatException e) {
-                resp.sendError(400,"参数错误");
-                LogUtil.log(e);
-                return;
-            }
+        int type;
+        try {
+            type = Integer.parseInt(req.getParameter("type"));
+        } catch (NumberFormatException e) {
+            resp.sendError(400,"参数type错误");
+            return;
         }
-        //name不为null
-        else {
-            try {
-                students = studentService.findStudentsByName(name,Integer.parseInt(pagenoStr));
-            } catch (NumberFormatException e) {
-                resp.sendError(400,"参数错误");
-                LogUtil.log(e);
-                return;
-            }
+        switch (type) {
+            case 0:
+                String name = req.getParameter("name"), pagenoStr = req.getParameter("pageno");
+                List<Student> students;
+                if (pagenoStr == null)
+                    pagenoStr = "1";
+                //name为null
+                if (name == null) {
+                    try {
+                        students = studentService.findStudents(Integer.parseInt(pagenoStr));
+                    } catch (NumberFormatException e) {
+                        resp.sendError(400, "参数错误");
+                        LogUtil.log(e);
+                        return;
+                    }
+                }
+                //name不为null
+                else {
+                    try {
+                        students = studentService.findStudentsByName(name, Integer.parseInt(pagenoStr));
+                    } catch (NumberFormatException e) {
+                        resp.sendError(400, "参数错误");
+                        LogUtil.log(e);
+                        return;
+                    }
+                }
+                req.getSession().setAttribute("students", students);
+                break;
+            case 1:
+                try {
+                    int id = Integer.parseInt(req.getParameter("id"));
+                    Student student = studentService.findStudentById(id);
+                    req.getSession().setAttribute("student",student);
+                    break;
+                } catch (NumberFormatException e) {
+                    resp.sendError(400,"参数id错误");
+                }
+                break;
+            default:resp.sendError(400,"参数type错误");
         }
-        req.getSession().setAttribute("students", students);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

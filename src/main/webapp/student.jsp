@@ -20,7 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        <%  request.getRequestDispatcher("/student").include(request,response);
+        <%  request.getRequestDispatcher("/student?type=0").include(request,response);
             List<Student> students = (List<Student>) session.getAttribute("students");
             StringBuilder str = new StringBuilder(48);
             for (Student c:students) {

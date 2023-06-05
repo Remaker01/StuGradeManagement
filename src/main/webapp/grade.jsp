@@ -1,4 +1,4 @@
-<%@ page import="domain.User,java.util.List,domain.Grade,dao.StudentDao,dao.CourseDao" %>
+<%@ page import="domain.User,java.util.List,domain.Grade,dao.CourseDao,domain.Student" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <!doctype html>
 <%User user = (User) session.getAttribute("user");
@@ -45,8 +45,8 @@
             var course=td.prev();
             var sid=course.prev();
             var param="type=2&courseid="+course.attr("value")+"&sid="+sid.attr("value")+"&tid=<%=user.getId()%>&score="+new_score;
-            $.ajax({url:_root_+"grade", type: "post", data:param, processData: false, contentType:"application/x-www-form-urlencoded",
-                success:function (d) {$("#status").text(d);delayedReload(400);}
+            $.ajax({
+                url:_root_+"grade", type: "post", data:param, processData: false, contentType:"application/x-www-form-urlencoded", success:function (d) {$("#status").text(d);delayedReload(400);}
             });
         }
         function del(obj) {
@@ -59,16 +59,15 @@
                 // console.log(sid.attr("value"));console.log(course.attr("value"));
                 var param="type=1&courseid="+course.attr("value")+"&sid="+sid.attr("value")+"&tid=<%=user.getId()%>";
                 console.log(param);
-                $.ajax({url:_root_+"grade", type:"post", data:param, processData:false, contentType:"application/x-www-form-urlencoded",
-                    success:function (d) {$("#status").text(d);td.parent().remove();}
+                $.ajax({
+                    url:_root_+"grade", type:"post", data:param, processData:false, contentType:"application/x-www-form-urlencoded", success:function (d) {$("#status").text(d);td.parent().remove();}
                 });
             }
         }
     </script>
 </head>
 <body>
-    <%  StudentDao stuDao = new StudentDao();
-        CourseDao coDao = new CourseDao();%>
+    <%CourseDao coDao = new CourseDao();%>
     <p>以下为查询结果</p>
     <table class="main-table">
         <thead>
@@ -95,11 +94,13 @@
         <tr>
             <% str.setLength(0);
             int sid = g.getStuId(),cid=g.getCourseId();
-            str.append("<td value='"+sid+"'>").append(stuDao.findStudentNameById(sid)).append("</td>\n");
-            str.append("\t\t<td value='"+cid+"'>").append(coDao.getNameById(cid)).append("</td>\n");
+            request.getRequestDispatcher("student?type=1&id="+sid).include(request,response);
+            Student student = (Student) session.getAttribute("student");
+            str.append(String.format("<td value='%d'>", sid)).append(student.getSname()).append("</td>\n");
+            str.append(String.format("\t\t<td value='%d'>", cid)).append(coDao.getNameById(cid)).append("</td>\n");
             short s = g.getScore();
             String style = (s < 60) ? "style='color:red;'" : "";
-            str.append("\t\t<td ").append(style).append(">").append(s).append("</td>\n");
+            str.append(String.format("\t\t<td %s>",style)).append(s).append("</td>\n");
             %><%=str.toString()%>
             <td>
                 <input type="button" value="修改" class="btn-in-table" style="background-color: #5050ff" onclick="modify(this)"/>
@@ -115,4 +116,4 @@
 </html>
 <%
     }
-%><%session.removeAttribute("grades");%>
+%><%session.removeAttribute("grades");session.removeAttribute("student");%>

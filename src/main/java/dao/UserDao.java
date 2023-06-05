@@ -69,11 +69,11 @@ public class UserDao extends AbstractDao{
     public void add(Object obj) {
         User user = (User)obj;
         //1.定义sql
-        String sql = "insert into users(username, `password`) values(?,?)";
+        String sql = "insert into users(username, `password`,isadmin) values(?,?,?)";
         //2.执行sql
         String pswd = EncryptUtil.encrypt(user.getPassword(), StandardCharsets.ISO_8859_1);
         try {
-            template.update(sql, user.getUsername(),pswd);
+            template.update(sql, user.getUsername(),pswd,user.isAdmin()?1:0);
         }catch (DataAccessException e) {
             LogUtil.log(e);
         }

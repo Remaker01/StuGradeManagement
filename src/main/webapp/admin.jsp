@@ -12,7 +12,7 @@
     <script src="http://cdn.staticfile.org/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script>
         function confirm_close() {
-            if(confirm('确认要退出吗？')===true) {
+            if(confirm('确认要退出吗？')) {
                 window.open(_root_+'exit','_self');
             }
         }
@@ -146,14 +146,14 @@
             <li class="level1">
                 <a href="#none"><em class="ico ico3"></em>课程管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="about:blank" target="yem">新增课程</a></li>
+                    <li><a href="course_add.jsp" target="yem">新增课程</a></li>
                     <li><a href="course.jsp" target="yem">全部课程查询</a></li>
                 </ul>
             </li>
             <li class="level1">
                 <a href="#none"><em class="ico ico1"></em>用户管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="about:blank" target="yem">新增用户</a></li>
+                    <li><a href="user_add.jsp" target="yem">新增用户</a></li>
                     <li><a href="about:blank" target="yem">用户信息管理</a></li>
                     <li><a href="modipass.html?uname=<%=URLEncoder.encode(user.getUsername(),"UTF-8")%>" target="yem">修改密码</a></li>
                 </ul>
