@@ -14,6 +14,7 @@
         <tr>
             <th>学号</th>
             <th>姓名</th>
+            <th>性别</th>
             <th>年龄</th>
             <th>地址</th>
             <th>联系方式</th>
@@ -29,6 +30,7 @@
             <%  str.setLength(0);
                 str.append("<td>").append(c.getId()).append("</td>\n");
                 str.append("\t\t<td>").append(c.getSname()).append("</td>\n");
+                str.append("\t\t<td>").append(c.getGender()).append("</td>\n");
                 str.append("\t\t<td>").append(c.getAge()).append("</td>\n");
                 str.append("\t\t<td>").append(c.getAddress() == null ? "" : c.getAddress()).append("</td>\n");
                 str.append("\t\t<td>").append(c.getPhone() == null ? "" : c.getPhone()).append("</td>\n");
@@ -38,7 +40,7 @@
         %>
         </tbody>
     </table>
-    <div style="text-align:right;">当前第1页</div> <!--TODO:分页-->
+    <div style="text-align:right;"><p>当前第1页</p></div> <!--TODO:分页-->
 </body>
 </html>
 <%session.setAttribute("students",null);%>

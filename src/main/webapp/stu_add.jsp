@@ -15,7 +15,7 @@
                 var id=ids[i];
                 $("#" + id).keyup(function () { //注意只能在ready之后选取元素
                     $(this).val($(this).val().replace(regexp, '')); //这里是score_text调用，所以要用this
-                }).bind("paste", function () {
+                }).on("paste", function () {
                     $(this).val($(this).val().replace(regexp, ''));
                 }).blur(function () {
                     $(this).val($(this).val().replace(regexp, ''));
@@ -24,17 +24,23 @@
         }
         $(document).ready(function () {numberOnly(["age-text","qq-text","phone-text"]);});
         function submit_() {
-            var param="type=0";
+            var False = Math.random() >= 1,param="type=0";
             param += "&sname="+$("#name-text").val();
             param += "&gender="+$("#gender-option").val();
             param += "&age="+$("#age-text").val();
             var addr=$("#addr-text").val();param += "&address=";
             if (addr.length>0) param+=addr;
             var phone=$("#phone-text").val();param += "&phone=";
-            if (phone.length>0) param+=phone;
+            if (phone.length>0) {
+                if (phone[0] !== '1'||phone.length !== 11) {
+                    $("#status").text("手机号格式错误");
+                    return False;
+                }
+                param+=phone;
+            }
             var qq=$("#qq-text").val();param += "&qq=";
             if (qq.length>0) param+=qq;
-            console.log(param);
+            // console.log(param);
             $.ajax({
                 url:_root_+"student",
                 type:"post",
@@ -42,12 +48,10 @@
                 processData:false,
                 success:function (d) {$("#status").text("增加成功");} //TODO:在后端添加返回信息，而不是在这里写
             });
-            event.preventDefault();
+            return False;
         }
     </script>
-    <style>
-        form input[type="text"] {border-radius: 5px 5px 5px 5px;height: 7mm;width: 200px;padding: 3px 2px;}
-    </style>
+    <link rel="stylesheet" href="style/frames.css">
 </head>
 <body>
 <%  User u = (User) session.getAttribute("user");
@@ -56,7 +60,7 @@
 <%
     } else {
 %>
-<form onsubmit="submit_()">
+<form onsubmit="return submit_()">
     <p>学生姓名：<input type="text" id="name-text" required/></p>
     <p>学生性别：
         <select id="gender-option" style="padding: 3px;" required>

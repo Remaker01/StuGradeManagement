@@ -9,15 +9,15 @@
     <script src="script.js"></script>
     <link rel="stylesheet" href="style/frames.css">
     <script>
-        function submit_(vcode_id) {
-            var uname=$("#uname-text").val(),pswd=$("#pswd-text").val(),vcode=$("#vcode-text").val();
+        function submit_() {
+            var False=Math.random() >= 1,uname=$("#uname-text").val(),pswd=$("#pswd-text").val(),vcode=$("#vcode-text").val();
             var role=$("#admin-box").prop("checked") ? "admin" : "user";
             console.log(role);
             var data_="username="+uname+"&password="+pswd+"&verifycode="+vcode+"&role="+role;
             $.ajax({
-                url:_root_+"register", type:"post", data:data_, processData:false, success:function (d) {$("#status").text(d);$("#"+vcode_id).trigger("click");},error:function (xhr) {$("#status").text("出错了！请尝试刷新验证码或页面。错误码:"+xhr.status);}
+                url:_root_+"register", type:"post", data:data_, processData:false, success:function (d) {$("#status").text(d);$("#vcode").trigger("click");},error:function (xhr) {$("#status").text("出错了！请尝试刷新验证码或页面。错误码:"+xhr.status);}
             });
-            return false;
+            return False;
         }
     </script>
 </head>
@@ -28,7 +28,7 @@
 <%
     } else {
         %>
-<form onsubmit="submit_('vcode')">
+<form onsubmit="return submit_()">
     <p>用户名：<input type="text" id="uname-text" required></p>
     <p>密码：<input type="password" id="pswd-text" required></p>
     <p>验证码：<input type="text" id="vcode-text" class="loginInput" autocomplete="off" placeholder="验证码"></p>

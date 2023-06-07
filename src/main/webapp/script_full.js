@@ -4,7 +4,7 @@ function _callback(f,loc,vcode_id) {
     if(f.indexOf("成功")>=0) {
         setTimeout(function () {
             document.location.href=_root_+loc;
-        },200);
+        },400);
     }
     else if (vcode_id != null)
         $("#"+vcode_id).click();
