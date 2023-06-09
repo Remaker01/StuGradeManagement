@@ -55,5 +55,6 @@
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="spring-core-5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="jquery.easing" level="application" />
+    <orderEntry type="library" name="md5" level="application" />
   </component>
 </module>

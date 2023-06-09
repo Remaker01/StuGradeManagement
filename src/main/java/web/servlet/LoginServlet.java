@@ -19,6 +19,13 @@ import java.util.logging.Level;
  * 登录servlet
  */
 // ajax请求，带body,默认且仅允许post
+/*
+TODO:前端改用MD5加密
+1.数据库密码改为MD5+SHA256加密后的结果
+2.更新index.html,register.html,user_add.jsp,modipass.html
+3.LoginServlet去掉base64部分
+4.更新Register与UpdateUser
+ */
 @WebServlet("/login")
 // 访问流程：servlet->service->dao
 public class LoginServlet extends HttpServlet {
@@ -62,7 +69,7 @@ public class LoginServlet extends HttpServlet {
             response.sendError(400,"至少一个参数缺失或出现错误");
             return;
         }
-        password = EncryptUtil.base64Decode(password);
+//        password = EncryptUtil.base64Decode(password);
         user.setUsername(username);
         user.setPassword(password);
         //5.调用Service查询

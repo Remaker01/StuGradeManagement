@@ -53,13 +53,21 @@ public class RegisterServlet extends HttpServlet {
         //开始调用注册服务注册
         String uname = req.getParameter("username"),pswd = req.getParameter("password"),role = req.getParameter("role");
         if (uname == null||pswd == null) {
-            resp.sendError(400,"至少一个参数缺失或出现错误");
+            resp.sendError(400,"至少一个参数缺失");
+            return;
+        }
+        String pswdOriginal = null; //明文密码
+        try {
+            pswdOriginal = pswd.substring(32);
+            pswd = pswd.substring(0,32); //MD5密码
+        } catch (IndexOutOfBoundsException e) {
+            resp.sendError(400,"参数错误");
             return;
         }
         if (userService.findUser(uname) != null) {
             resp.getWriter().write("用户已存在");
         }
-        else if (!VerifyUtil.verifyPassword(pswd)) {
+        else if (!VerifyUtil.verifyPassword(pswdOriginal)) {
             resp.getWriter().write(
                     String.format("密码强度不合要求，要求必须不少于%d位且不大于%d位",VerifyUtil.PASS_MIN_LEN,VerifyUtil.PASS_MAX_LEN)
             );
