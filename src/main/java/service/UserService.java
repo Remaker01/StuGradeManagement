@@ -54,8 +54,14 @@ public class UserService {
      * 注销账户
      * @param uid 要注销的账户id
      */
-    public void deleteAccount(int uid) {
-        userDao.delete(uid);
+    public boolean deleteAccount(int uid) {
+        try {
+            userDao.delete(uid);
+            return true;
+        } catch (org.springframework.core.NestedRuntimeException e) {
+            // 仍有教师任教课程
+            return false;
+        }
     }
 
     public int adminCount() {
@@ -73,6 +79,19 @@ public class UserService {
         if (user == null)
             return false;
         user.setPassword(after);
+        userDao.update(user);
+        return true;
+    }
+    /**
+     * 在不知道原密码的情况下，修改用户密码
+     * @param userName 用户名
+     * @param password 密码
+     */
+    public boolean updateUser(String userName,String password) {
+        User user = userDao.findUserByName(userName);
+        if (user == null)
+            return false;
+        user.setPassword(password);
         userDao.update(user);
         return true;
     }

@@ -1,4 +1,5 @@
 package web.servlet;
+import domain.User;
 import service.UserService;
 import util.VerifyUtil;
 
@@ -22,24 +23,15 @@ public class UpdateUserServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("user") == null) {
+        // 这是为了检查用户是否存在的，若不存在，则返回
+        User u = (User) req.getSession().getAttribute("user");
+        if (u == null) {
             resp.getWriter().write("<p>您尚未登录！</p>");
             return;
         }
-        String uname,oldPswd,newPswd;
-        try {
-            uname = req.getParameter("uname");
-            oldPswd = req.getParameter("old");
-            newPswd = req.getParameter("new");
-        } catch (NumberFormatException e) {
-            resp.sendError(400,"至少一个参数缺失或错误");
-            return;
-        }
-        // 这是为了检查用户是否存在的，若不存在，则返回
-        if(req.getSession().getAttribute("user") == null) {
-            resp.getWriter().write("用户未登录");
-            return;
-        }
+        String uname = req.getParameter("uname"),oldPswd,newPswd;
+        oldPswd = req.getParameter("old");
+        newPswd = req.getParameter("new");
         String newPswdOriginal = newPswd.substring(32);
         newPswd = newPswd.substring(0,32);
         // 检查密码是否符合强度要求
@@ -49,10 +41,18 @@ public class UpdateUserServlet extends HttpServlet {
             );
             return;
         }
-        if(!userService.modifyPassword(uname,oldPswd,newPswd)) {
-            resp.getWriter().write("更新失败！原密码错误。");
-        } else {
-            resp.getWriter().write("更新成功！");
+        if (!u.isAdmin()) {
+            if(!userService.modifyPassword(uname,oldPswd,newPswd)) {
+                resp.getWriter().write("更新失败！用户名或原密码错误。");
+            } else {
+                resp.getWriter().write("更新成功！");
+            }
+        }
+        else {
+            if(userService.updateUser(uname,newPswd))
+                resp.getWriter().write("更新成功！");
+            else
+                resp.getWriter().write("更新失败！用户名错误。");
         }
     }
     @Override

@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge" />
     <title>学生成绩管理系统 - 管理页</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
@@ -154,7 +154,7 @@
                 <a href="#none"><em class="ico ico1"></em>用户管理<i></i></a>
                 <ul class="level2">
                     <li><a href="user_add.jsp" target="yem">新增用户</a></li>
-                    <li><a href="about:blank" target="yem">用户信息管理</a></li>
+                    <li><a href="users.jsp?type=0" target="yem">用户信息管理</a></li>
                     <li><a href="modipass.html?uname=<%=URLEncoder.encode(user.getUsername(),"UTF-8")%>" target="yem">修改密码</a></li>
                 </ul>
             </li>

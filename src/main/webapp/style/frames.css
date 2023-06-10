@@ -8,3 +8,11 @@
 .main-table tr:nth-child(even){background-color: #f2f2f2;}
 .main-table th, .main-table tr td {border: 1px solid #aaaaaa;}
 form input[type="text"],form input[type="password"] {border-radius: 5px 5px 5px 5px;height: 7mm;width: 200px;padding: 3px 2px;}
+tbody .btn-in-table {
+    width: 50px;
+    height: 30px;
+    color: #ffffff;
+    border: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+}
