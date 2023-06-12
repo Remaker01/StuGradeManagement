@@ -27,7 +27,6 @@
         }
     </style>
     <script>
-        function delayedReload(delay) {setTimeout(function (){location.reload();;},delay);}
         function modify(obj) {
             // 思路：弹出对话框输入成绩，点击确认后将成绩作为参数发到后端进行ajax请求，请求结束后刷新
             // TODO:能不能不弹对话框，直接在网页上生成一个input?
@@ -40,7 +39,6 @@
                 $("#status").text("新成绩不合法，无法修改！");
                 return;
             }
-            console.log("old="+old_score+",new="+new_score);
             //2.发送Ajax请求
             var course=td.prev();
             var sid=course.prev();

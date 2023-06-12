@@ -17,10 +17,12 @@ import java.util.Random;
 // 不带body,故使用get
 @WebServlet("/checkcode")
 public class CheckCodeServlet extends HttpServlet {
-    private Random random = new Random();
+    private final Random random = new Random();
     private static final char[] BASE = "0123456789ABCDEFGHIabcdefghi".toCharArray(); //不定义为字符串，方便使用
     private static final int WIDTH = 80, HEIGHT = 30;
-    private static final Color[] COLORS = {Color.green, Color.white, Color.yellow, Color.lightGray, Color.cyan,Color.orange};
+    private static final Color[] COLORS = {
+            Color.green, Color.white, Color.yellow, new Color(208,208,208), Color.cyan,Color.orange
+    };
 
     private Color getRandomColor() {
         int index = random.nextInt(COLORS.length);
@@ -40,7 +42,6 @@ public class CheckCodeServlet extends HttpServlet {
         g.setColor(Color.gray);
 //填充图片
         g.fillRect(0, 0, WIDTH, HEIGHT);
-
 //产生随机验证码
         String checkCode = getCheckCode();
 //将验证码放入session回话中
@@ -60,7 +61,7 @@ public class CheckCodeServlet extends HttpServlet {
 
     private String getCheckCode() {
         StringBuffer sbuffer = new StringBuffer();
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 0; i < 4; i++) {
 //产生0到size-1的随机值
             int index = random.nextInt(BASE.length);
 //在base字符串中获取下标为index的字符

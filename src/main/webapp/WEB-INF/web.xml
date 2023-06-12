@@ -18,6 +18,7 @@
         <url-pattern>/student</url-pattern>
         <url-pattern>/exit</url-pattern>
         <url-pattern>/grade</url-pattern>
+        <url-pattern>/deluser</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
@@ -27,7 +28,7 @@
         <location>/404.html</location>
     </error-page>
     <resource-ref>
-        <description>数据库连接</description>
+        <description>DB connection</description>
         <res-ref-name>jdbc/stu</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>

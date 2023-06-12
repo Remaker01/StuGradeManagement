@@ -8,6 +8,7 @@
     <meta http-equiv = "X-UA-Compatible" content = "IE=edge"/>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
+    <script src="http://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <link rel="stylesheet" href="style/frames.css">
     <script>
         $(document).ready(function () {
@@ -16,9 +17,29 @@
             var selected = $("#type-option>option[value='"+type_+"']");
             selected.attr("selected","true");
             $("#type-option").change(function () {
-                document.location.href=_root_+"users.jsp?type="+$(this).val();
+                document.location.href=_root_+"users.jsp?type="+this.value;
             });
         });
+        function del(obj) {
+            if (confirm("确认删除吗？")) {
+                var td=$(obj).parent();
+                var uid=td.prev().prev().prev().text();
+                var param="id="+uid;
+                console.log(param);
+                $.ajax({
+                    url:_root_+"deluser",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(500);}
+                });
+            }
+        }
+        function modify(obj) {
+            var pswd=prompt("请输入该用户的新密码"),td=$(obj).parent();
+            var uid=td.prev().prev().prev().text();
+            pswd=md5(pswd,null,false)+pswd;
+            var param="id="+uid+"&new="+pswd;
+            $.ajax({
+                url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);delayedReload(500);}
+            });
+        }
     </script>
 </head>
 <body>
@@ -56,14 +77,15 @@
                 str.append(String.format("\t\t<td>%s</td>\n",user.isAdmin() ? "管理员" : "教师"));
             %><%=str.toString()%>
         <td>
-            <input type="button" value="修改密码" class="btn-in-table" style="background-color: #5050ff;width: 70px"/>
-            <input type="button" value="删除" class="btn-in-table" style="background-color: red"/>
+            <input type="button" value="修改密码" class="btn-in-table" style="background-color: #5050ff;width: 70px" onclick="modify(this)"/>
+            <input type="button" value="删除" class="btn-in-table" style="background-color: red" onclick="del(this)"/>
         </td>
     </tr>
     <%
         }
     %></tbody>
 </table>
+<p id="status" style="color: red;font-size: small;font-weight: bold"></p>
 <%
     }
 %></body>

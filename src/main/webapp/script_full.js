@@ -64,6 +64,9 @@ function getCurrentParam(name) {
         return "";
     return params[index].split("=")[1];
 }
+function delayedReload(delay) {
+    setTimeout(function (){location.reload();;},delay);
+}
 function getPass(data) {
     var _new = '';
     data = window.btoa(data).replace('=','');
