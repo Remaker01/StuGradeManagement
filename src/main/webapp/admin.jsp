@@ -5,7 +5,8 @@
 <html>
 <head>
     <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv = "X-UA-Compatible" content = "IE=edge" />
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge"/>
+    <meta name="viewport" content="width=device-width"/>
     <title>学生成绩管理系统 - 管理页</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>

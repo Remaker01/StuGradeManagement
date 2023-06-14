@@ -5,10 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width"/>
     <title>欢迎使用学生成绩管理系统</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        $(document).ready(function () {
+            document.onkeyup = function (ev) {
+                if (ev.key === "Enter"&&$("#vcode").is(":focus"))
+                    $("#loginBtn").trigger("click");
+            }
+        });
+    </script>
     <style>
         body {
             background: url("imgs/bg.jpg");
@@ -123,7 +132,7 @@
                 <p id="status" style="font-size:small;color:red"></p>
             </div>
             <div class="loginBoxButtons">
-                <input type="button" onclick="submit_login('uname','pswd','vcode','check-code')" class="loginBtn" value="登录"/>
+                <input type="button" onclick="submit_login('uname','pswd','vcode','check-code')" class="loginBtn" id="loginBtn" value="登录"/>
                 <div><a href="register.html">新用户注册</a> </div>
             </div>
         </div>

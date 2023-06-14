@@ -2,8 +2,7 @@ package domain;
 
 public class User {
     private int id;
-    private String username,password; //TODO:密码有时候是明文，有时候是加密过的，可否统一？
-
+    private String username,password;
     private boolean isAdmin;
 
     public boolean isAdmin() {

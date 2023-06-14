@@ -25,7 +25,7 @@
                 var td=$(obj).parent();
                 var uid=td.prev().prev().prev().text();
                 var param="id="+uid;
-                console.log(param);
+                // console.log(param);
                 $.ajax({
                     url:_root_+"deluser",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(500);}
                 });
@@ -33,9 +33,11 @@
         }
         function modify(obj) {
             var pswd=prompt("请输入该用户的新密码"),td=$(obj).parent();
-            var uid=td.prev().prev().prev().text();
-            pswd=md5(pswd,null,false)+pswd;
-            var param="id="+uid+"&new="+pswd;
+            if (pswd == null||pswd.length === 0)
+                return;
+            var uid=td.prev().prev().text();
+            pswd=md5(pswd,null,false)+pswd.toLowerCase();
+            var param="uname="+uid+"&new="+pswd;
             $.ajax({
                 url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);delayedReload(500);}
             });

@@ -20,7 +20,6 @@ import java.util.logging.Level;
  */
 // ajax请求，带body,默认且仅允许post
 /*
-TODO:前端改用MD5加密
 1.数据库密码改为MD5+SHA256加密后的结果
 2.更新index.html,register.html,user_add.jsp,modipass.html
 3.LoginServlet去掉base64部分
