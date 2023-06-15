@@ -56,5 +56,6 @@
     <orderEntry type="library" name="spring-core-5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="jquery.easing" level="application" />
     <orderEntry type="library" name="md5" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
   </component>
 </module>

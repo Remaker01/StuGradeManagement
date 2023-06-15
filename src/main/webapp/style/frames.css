@@ -1,8 +1,5 @@
-.main-table {
-    border: 1px solid #999999;
-    border-collapse: collapse;
-    width: 80%;
-}
+form {width:290px;margin-left: 10px;margin-top: 10px;}
+.main-table {border: 1px solid #999999;border-collapse: collapse;width: 80%;}
 .main-table tbody tr{text-align: center;height: 40px;}
 .main-table tbody tr:hover {background-color: #dddddd;}
 .main-table tr:nth-child(even){background-color: #f2f2f2;}

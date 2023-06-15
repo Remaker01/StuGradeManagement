@@ -19,6 +19,7 @@
         <url-pattern>/exit</url-pattern>
         <url-pattern>/grade</url-pattern>
         <url-pattern>/deluser</url-pattern>
+        <url-pattern>/updatecourse</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

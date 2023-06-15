@@ -27,9 +27,10 @@ public class EncryptUtil {
             bytes = Base64.getDecoder().decode(base64);
         } catch (IllegalArgumentException e) {
             try {
-                bytes = Base64.getDecoder().decode(base64+'=');
+                base64 += '=';
+                bytes = Base64.getDecoder().decode(base64);
             } catch (IllegalArgumentException ex) {
-                bytes = Base64.getDecoder().decode(base64+"==");
+                bytes = Base64.getDecoder().decode(base64+'=');
             }
         }
         return new String(bytes, StandardCharsets.ISO_8859_1);
@@ -61,7 +62,7 @@ public class EncryptUtil {
     private static String byteArrayToHexString(byte[] bytes) {
         if (bytes == null)
             return null;
-        StringBuffer bf = new StringBuffer();
+        StringBuilder bf = new StringBuilder(bytes.length);
         for (byte b : bytes) {
             //java.lang.Integer.toHexString() 方法的参数是int(32位)类型，
             //如果输入一个byte(8位)类型的数字，这个方法会把这个数字的高24为也看作有效位，可能会出现错误

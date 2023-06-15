@@ -7,6 +7,7 @@
 <head>
     <title>Title</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="script.js"></script>
     <script>
         var regexp = /[^\d]/g;
@@ -63,7 +64,7 @@
 <form onsubmit="return submit_()">
     <p>学生姓名：<input type="text" id="name-text" required/></p>
     <p>学生性别：
-        <select id="gender-option" style="padding: 3px;" required>
+        <select id="gender-option" class="form-control" style="width: 200px;display: inline" required>
             <option value="男">男</option>
             <option value="女">女</option>
         </select></p>
@@ -71,7 +72,7 @@
     <p>地址：<input type="text" id="addr-text"></p>
     <p>QQ：<input type="text" maxlength="12" id="qq-text"></p>
     <p>手机号：<input type="text" maxlength="11" id="phone-text"></p>
-    <input type="submit" value="提交" style="padding: 3px 6px;">
+    <input type="submit" value="提交" class="btn btn-primary">
     <p style="color:red;font-size: small;font-weight: bold" id="status"></p>
 </form>
 <%}%>

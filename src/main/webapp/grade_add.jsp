@@ -10,6 +10,8 @@
     </style>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/frames.css">
     <%  if (session.getAttribute("user") == null) {
             response.getWriter().write("您尚未登录！");
         }
@@ -43,10 +45,11 @@
             );
         }
     </script>
+    <style>select.form-control {width: 200px;display: inline;}</style>
 </head>
 <body>
 <form>
-    <p>学生：<select id="stu-option">
+    <p>学生：<select id="stu-option" class="form-control">
         <% StringBuilder str = new StringBuilder(32);
             for (Student student : students) {
                 str.setLength(0);
@@ -57,7 +60,7 @@
         <%
             }
         %></select></p>
-    <p>课程：<select id="course-option">
+    <p>课程：<select id="course-option" class="form-control">
         <%for (Course c : courses) {
             str.setLength(0);
             str.append("<option value='").append(c.getId())
@@ -69,7 +72,7 @@
             }
         %></select></p>
     <p>分数：<input type="text" id="score-text" placeholder="请输入分数" class="i2" maxlength="3"/></p>
-    <p><input type="button" value="提交" style="padding: 3px 6px;" onclick="submit_()"/></p>
+    <p><input type="button" value="提交" onclick="submit_()" class="btn btn-primary"/></p>
     <p style="color: red;font-size: small" id="status"></p>
 </form>
 </body>

@@ -38,8 +38,8 @@ public class CourseDao extends AbstractDao{
     @Override
     public void add(Object obj) {
         Course course = (Course) obj;
-        String sql = "insert into course(cname,ctype) values(?,?);";
-        template.update(sql,course.getCname(),course.getCtype());
+        String sql = "insert into course(cname,ctype,teacher) values(?,?,?);";
+        template.update(sql,course.getCname(),course.getCtype(),course.getTeacher());
     }
     @Override
     public void delete(int id) {

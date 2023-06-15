@@ -8,6 +8,7 @@
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/frames.css">
     <script>
         function submit_() {
@@ -36,7 +37,7 @@
     <p>验证码：<input type="text" id="vcode-text" class="loginInput" autocomplete="off" placeholder="验证码"></p>
         <p><img id="vcode" src="checkcode" onclick="this.src='checkcode?'+Math.random()"> </p>
     <p><input type="checkbox" id="admin-box">注册为管理员</p>
-    <p><input type="submit" value="提交"></p>
+    <p><input type="submit" value="提交" class="btn btn-primary"></p>
     <p id="status" style="font-size: small;font-weight: bold;color:red;"></p>
 </form>
 <%
