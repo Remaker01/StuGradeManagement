@@ -1,4 +1,4 @@
-<%@ page import="domain.User,java.util.List,domain.Grade,dao.CourseDao,domain.Student" %>
+<%@ page import="domain.*,java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <!doctype html>
 <%User user = (User) session.getAttribute("user");
@@ -65,7 +65,6 @@
     </script>
 </head>
 <body>
-    <%CourseDao coDao = new CourseDao();%>
     <p>以下为查询结果</p>
     <table class="main-table">
         <thead>
@@ -94,8 +93,10 @@
             int sid = g.getStuId(),cid=g.getCourseId();
             request.getRequestDispatcher("student?type=1&id="+sid).include(request,response);
             Student student = (Student) session.getAttribute("student");
+            request.getRequestDispatcher("findcourse?type=1&id="+cid).include(request,response);
+            Course course = (Course)  session.getAttribute("course");
             str.append(String.format("<td value='%d'>", sid)).append(student.getSname()).append("</td>\n");
-            str.append(String.format("\t\t<td value='%d'>", cid)).append(coDao.getNameById(cid)).append("</td>\n");
+            str.append(String.format("\t\t<td value='%d'>", cid)).append(course.getCname()).append("</td>\n");
             short s = g.getScore();
             String style = (s < 60) ? "style='color:red;'" : "";
             str.append(String.format("\t\t<td %s>",style)).append(s).append("</td>\n");

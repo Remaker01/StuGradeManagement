@@ -8,12 +8,14 @@
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/frames.css">
     <script>//防直接访问
+        var x=getCurrentParam('uname');
         $(document).ready(function () {
             if (window.parent.location===this.location) {
                 $.ajax({url:_root_+"404.html",type:"get",success:function (f){document.write(f);}});return;
             }
-            var x=getCurrentParam('uname');
             $("#uname").text("当前用户：" + decodeURI(x));
         }
         );
@@ -24,10 +26,11 @@
 </head>
 <body>
     <form>
-        <label id="uname">当前用户：<!--<%=request.getParameter("uname")%>--></label>
+        <label id="uname">当前用户：</label>
         <p>当前密码：<input type="password" id="pass-old" class="i2"/></p>
         <p>新密码： <input type="password" id="pass-new" class="i2" /></p>
-        <input type="button" onclick="submit_updateuser(decodeURI(getCurrentParam('uname')),'pass-old','pass-new')" value="修改" style="padding: 3px 6px;">
+        <p><input type="button" onclick="submit_updateuser(decodeURI(x),'pass-old','pass-new')" value="修改"
+                  class="btn btn-primary"></p>
         <p id="status" style="font-size: small;color:red;"></p>
     </form>
 </body>

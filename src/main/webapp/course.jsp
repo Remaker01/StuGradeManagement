@@ -29,7 +29,7 @@
         </thead>
         <tbody>
     <%  String uid = request.getParameter("userid");
-        request.getRequestDispatcher("/findcourse?userid="+uid).include(request,response);
+        request.getRequestDispatcher("/findcourse?type=0&userid="+uid).include(request,response);
         List<Course> courses = (List<Course>) session.getAttribute("courses");
         StringBuilder str = new StringBuilder(32);
         for (Course c:courses) {

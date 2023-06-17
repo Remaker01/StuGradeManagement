@@ -41,7 +41,7 @@ public class UpdateUserServlet extends HttpServlet {
             );
             return;
         }
-        if (!u.isAdmin()) {
+        if (!u.isAdmin()||u.getUsername().equals(uname)) { //管理员改自己的密码
             if(!userService.modifyPassword(uname,oldPswd,newPswd)) {
                 resp.getWriter().write("更新失败！用户名或原密码错误。");
             } else {

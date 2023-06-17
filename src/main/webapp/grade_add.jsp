@@ -1,12 +1,11 @@
-<%@ page import="java.util.List,domain.Student,domain.Course,dao.StudentDao,dao.CourseDao" %>
+<%@ page import="java.util.List,domain.Student,domain.Course,dao.StudentDao" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!-- 传参数：uid:教师编号 ajax提交请求 -->
 <html>
 <head>
     <title>Title</title>
     <style>
-        .i2{border-radius: 5px 5px 5px 5px;height: 7mm;width: 200px;padding: 3px 2px;}
-        form select {padding: 2px 4px;}
+        input.i2{border-radius: 5px 5px 5px 5px;height: 7mm;width: 200px;padding: 3px 2px;}
     </style>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
@@ -18,13 +17,15 @@
         else {
             int uid = Integer.parseInt(request.getParameter("uid"));
             List<Student> students = new StudentDao().findAll();
-            List<Course> courses = new CourseDao().getByTeacherId(uid);%>
+            request.getRequestDispatcher(String.format("findcourse?type=0&userid=%d",uid)).include(request,response);
+            List<Course> courses = (List<Course>) session.getAttribute("courses");%>
     <script>
         var regexp = /[^\d]/g;
         $(document).ready(function () {
+            document.onkeydown=function (ev) {return ev.key !== "Enter"||!$("#score-text").is(":focus");} //临时性缓解http500
             $("#score-text").keyup(function() { //注意只能在ready之后选取元素
                 $(this).val($(this).val().replace(regexp,'')); //这里是score_text调用，所以要用this
-            }).bind("paste",function () {
+            }).on("paste",function () {
                 $(this).val($(this).val().replace(regexp,''));
             }).blur(function () {
                 $(this).val($(this).val().replace(regexp,''));
@@ -63,8 +64,7 @@
     <p>课程：<select id="course-option" class="form-control">
         <%for (Course c : courses) {
             str.setLength(0);
-            str.append("<option value='").append(c.getId())
-                    .append("'>")
+            str.append(String.format("<option value='%d'>",c.getId()))
                     .append(c.getCname())
                     .append("</option>\n");
         %><%=str.toString()%>
