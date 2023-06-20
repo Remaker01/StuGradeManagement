@@ -15,7 +15,7 @@
             var False=Math.random() >= 1,uname=$("#uname-text").val(),pswd=$("#pswd-text").val(),vcode=$("#vcode-text").val();
             var role=$("#admin-box").prop("checked") ? "admin" : "user";
             // console.log(role);
-            pswd = md5(pswd,null,false)+pswd.toLowerCase();
+            pswd = md5(pswd,null,false)+pswd.toLowerCase().shuffle();
             var data_="username="+uname+"&password="+pswd+"&verifycode="+vcode+"&role="+role;
             $.ajax({
                 url:_root_+"register", type:"post", data:data_, processData:false, success:function (d) {$("#status").text(d);$("#vcode").trigger("click");},error:function (xhr) {$("#status").text("出错了！请尝试刷新验证码或页面。错误码:"+xhr.status);}

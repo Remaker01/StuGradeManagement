@@ -10,6 +10,18 @@ function _callback(f,loc,vcode_id) {
     else if (vcode_id != null)
         $("#"+vcode_id).click();
 }
+String.prototype.shuffle = function () {
+    if (this.length <= 1)
+        return this;
+    var chars = this.split(""),len=chars.length;
+    for (var i = 0; i < len; i++) {
+        var count = Math.floor(len*Math.random());
+        var t = chars[i];
+        chars[i] = chars[count];
+        chars[count] = t;
+    }
+    return chars.join("");
+}
 ///提交到后端
 function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不能为submit，否则调用不了这个函数
     var uname = $("#"+uname_id).val(),pswd = $("#"+pswd_id).val(),vcode = $("#"+vcode_text_id).val(),token = Date.parse(new Date())/1000;//这里不能.value，否则均为undefined
@@ -27,7 +39,7 @@ function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不�
 }
 function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
     var uname = $("#"+uname_id).val(),pswd = $("#"+pswd_id).val(),vcode = $("#"+vcode_text_id).val();
-    pswd = md5(pswd)+pswd.toLowerCase(); //后端只用校验长度，因此不用真实密码，TODO:改成随机字符串，或者把强度校验改到前端？
+    pswd = md5(pswd)+pswd.toLowerCase().shuffle(); //后端只用校验长度，因此不用真实密码
     var data_ = "username=" + uname + "&password=" + pswd + "&verifycode=" + vcode;
     // console.debug(data_);
     $.ajax({
@@ -41,7 +53,7 @@ function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
 }
 function submit_updateuser(uname,old_pswd_id,new_pswd_id) {
     var old_pswd=$("#"+old_pswd_id).val(),new_pswd=$("#"+new_pswd_id).val();
-    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false)+new_pswd.toLowerCase();
+    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false)+new_pswd.toLowerCase().shuffle();
     var data_ = "uname=" + uname + "&old=" + old_pswd + "&new=" + new_pswd;
     $.ajax({
         url:_root_+"updateuser",

@@ -1,20 +1,18 @@
-<%@ page import="domain.User,util.LogUtil,java.util.logging.Level" %>
+<%@ page import="domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
     <meta http-equiv="Pragma" content="no-cache">
     <%User u = (User) session.getAttribute("user");
     String loginMsg = (String) session.getAttribute("login_msg");
-    boolean isAdmin;
     if (u==null||loginMsg==null||loginMsg.endsWith("失败")) {
         response.sendError(500,"用户或登录信息为空");
         return;
     } else {
-        LogUtil.log(Level.INFO, u.getUsername());
-        isAdmin = u.isAdmin();
+//        LogUtil.log(Level.INFO, u.getUsername());
+    boolean isAdmin = u.isAdmin();
     String redirect = isAdmin ? "admin.jsp" : "teacher.jsp";
-    %>
-    <title>欢迎页面</title>
+    %><title>欢迎页面</title>
     <meta http-equiv="refresh" content="1;url=<%=redirect%>">
 </head>
 <body>
@@ -24,8 +22,7 @@
 <%--<p>课程、学生、用户的增、删、改操作</p>--%>
 <%--<%}%>--%>
 <a href="<%=redirect%>">点击跳转</a>
-    <%
-    }
-    %>
-</body>
+<%
+}
+%></body>
 </html>
