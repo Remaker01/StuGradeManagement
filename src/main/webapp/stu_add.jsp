@@ -47,7 +47,7 @@
                 type:"post",
                 data:param,
                 processData:false,
-                success:function (d) {$("#status").text("增加成功");} //TODO:在后端添加返回信息，而不是在这里写
+                success:function (d) {$("#status").text(d);}
             });
             return False;
         }
@@ -62,15 +62,15 @@
     } else {
 %>
 <form onsubmit="return submit_()">
-    <p>学生姓名：<input type="text" id="name-text" required/></p>
+    <p>学生姓名：<input type="text" id="name-text" maxlength="10" required/></p>
     <p>学生性别：
         <select id="gender-option" class="form-control" style="width: 200px;display: inline" required>
             <option value="男">男</option>
             <option value="女">女</option>
         </select></p>
     <p>学生年龄：<input type="text" maxlength="2" id="age-text" required></p>
-    <p>地址：<input type="text" id="addr-text"></p>
-    <p>QQ：<input type="text" maxlength="12" id="qq-text"></p>
+    <p>地址：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="addr-text"></p>
+    <p>QQ：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" maxlength="12" id="qq-text"></p>
     <p>手机号：<input type="text" maxlength="11" id="phone-text"></p>
     <input type="submit" value="提交" class="btn btn-primary">
     <p style="color:red;font-size: small;font-weight: bold" id="status"></p>

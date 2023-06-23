@@ -11,7 +11,7 @@
     <script src="script.js"></script>
     <script src="http://cdn.staticfile.org/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script>
-        function custom_close() {
+        function confirm_close() {
             if(confirm('确认要退出吗？')===true) {
                 // window.opener=null;
                 window.open(_root_+'exit','_self');
@@ -128,7 +128,7 @@
 <div id="a2">
     <span style="text-align: center">
         <div id="aa1">
-            <a href="#" onclick="custom_close()"><span id="top"><b>退出</b></span></a>
+            <a href="#" onclick="confirm_close()"><span id="top"><b>退出</b></span></a>
         </div>
     </span>
 </div>
@@ -180,7 +180,7 @@
 <%--        </select>--%>
 <%--        <input type="text" id="opt_value" placeholder="请输入值" style="padding-left: 5px;"/>--%>
 <%--    </p>--%>
-    <iframe src="" width="100%" height="550px" id="yem" name="yem" border="0" scrolling="no" frameborder="0">
+    <iframe src="frame_index.html" width="100%" height="550px" id="yem" name="yem" border="0" scrolling="no" frameborder="0">
     </iframe>
 </div>
 <script>

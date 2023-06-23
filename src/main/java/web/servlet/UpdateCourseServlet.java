@@ -58,6 +58,8 @@ public class UpdateCourseServlet extends HttpServlet {
                 } catch (NumberFormatException e) {
                     resp.sendError(400,"参数id错误");
                     return;
+                } catch (RuntimeException e) {
+                    resp.getWriter().write("删除失败，请确认该");
                 }
                 break;
             case 2:

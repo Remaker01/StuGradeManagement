@@ -23,7 +23,8 @@ get请求参数：
     1.课程名
     2.教师id&page
     3.学生名，目前忽略page
-3.pageno:目前只是type==1时有用
+    4.课程名
+3.pageno:目前只是type==0时有用
 post请求参数：
 1.type，含义同StudentServlet
 2.courseid sid tid
@@ -65,7 +66,7 @@ public class GradeServlet extends HttpServlet {
                     break;
                 }
                 break;
-            case 1: //按课程查询
+            case 4: //按课程名查询
                  if (para == null) {
                      resp.sendError(400,"参数错误");
                      break;
@@ -91,6 +92,17 @@ public class GradeServlet extends HttpServlet {
                 }
                 grades = gradeService.getGradesByStudentName(para);
                 break;
+            case 1: //按课程id查询，这个比上面的4可能更合理
+                try {
+                    int cid = Integer.parseInt(para);
+                    grades = gradeService.getGradesByCourseId(cid);
+                    resp.setHeader("Content-type","application/json");
+                    resp.getWriter().write(String.format("{\"cid\":%d,\"result\":%d}",cid,grades.size())); //json
+                    break;
+                } catch (NumberFormatException e) {
+                    resp.sendError(400,"参数错误");
+                    return;
+                }
             default:resp.sendError(400,"参数错误");break;
         }
         req.getSession().setAttribute("grades",grades);
@@ -131,7 +143,7 @@ public class GradeServlet extends HttpServlet {
                     if(score >= 0&&score <= 100)
                         gradeService.addGrade(sid,courseId,score);
                     else {
-                        resp.getWriter().write("添加失败，分数不合法，必须大于0且小于100");
+                        resp.getWriter().write("添加失败，分数不合法，必须不小于0且不大于100");
                         return;
                     }
                 } catch (NumberFormatException e) {

@@ -163,7 +163,7 @@
     </div>
 </div>
 <div id="main_">
-    <iframe src="" width="100%" height="550px" id="yem" name="yem" border="0" scrolling="no" frameborder="0">
+    <iframe src="frame_index.html" width="100%" height="550px" id="yem" name="yem" border="0" scrolling="no" frameborder="0">
     </iframe>
 </div>
 <script>

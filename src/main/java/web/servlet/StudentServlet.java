@@ -104,26 +104,36 @@ public class StudentServlet extends HttpServlet {
             return;
         }
         switch (type) {
-            case 0:addStudent(paraMap,req,resp);break;
-            case 1:deleteStudent(paraMap.get("id")[0],resp);break;
-            case 2:modifyStudent(paraMap,req,resp);
-            default:resp.sendError(400,"参数错误");break;
+            case 0:
+                try {
+                    addStudent(paraMap,req,resp);
+                    break;
+                } catch (RuntimeException e) {
+                    resp.sendError(400,"参数缺失或错误");
+                    return;
+                }
+            case 1:
+                try {
+                    deleteStudent(paraMap.get("id")[0],resp);
+                    break;
+                } catch (RuntimeException e) {
+                    resp.sendError(400,"参数id错误");
+                    return;
+                }
+            case 2:modifyStudent(paraMap,req,resp);break;
+            default:resp.sendError(400,"参数type错误");return;
         }
+        resp.getWriter().write("更新成功");
     }
     //paraMap需要除id外的各项信息
-    private void addStudent(Map<String, String[]> paraMap,HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void addStudent(Map<String, String[]> paraMap,HttpServletRequest req, HttpServletResponse resp) throws RuntimeException {
         String [] infos = new String[6];
-        try {
-            infos[0] = paraMap.get("sname")[0];
-            infos[1] = paraMap.get("age")[0];
-            infos[2] = paraMap.get("gender")[0];
-            infos[3] = paraMap.get("address")[0];
-            infos[4] = paraMap.get("phone")[0];
-            infos[5] = paraMap.get("qq")[0];
-        } catch (RuntimeException e) {
-            resp.sendError(400);
-            return;
-        }
+        infos[0] = paraMap.get("sname")[0];
+        infos[1] = paraMap.get("age")[0];
+        infos[2] = paraMap.get("gender")[0];
+        infos[3] = paraMap.get("address")[0];
+        infos[4] = paraMap.get("phone")[0];
+        infos[5] = paraMap.get("qq")[0];
 //        for (int i = 0; i < infos.length; i++) {
 //            if (infos[i].length() == 0)
 //                infos[i] = null;
@@ -138,13 +148,9 @@ public class StudentServlet extends HttpServlet {
         studentService.addStudent(student);
     }
 
-    private void deleteStudent(String id, HttpServletResponse resp) throws IOException {
-        try {
-            int i = Integer.parseInt(id);
-            studentService.delStudent(i);
-        } catch (NumberFormatException e) {
-            resp.sendError(400);
-        }
+    private void deleteStudent(String id, HttpServletResponse resp) throws IOException,RuntimeException {
+        int i = Integer.parseInt(id);
+        studentService.delStudent(i);
     }
     //paraMap需要学生的所有信息，包括id
     private void modifyStudent(Map<String, String[]> paraMap,HttpServletRequest req, HttpServletResponse resp) throws IOException {

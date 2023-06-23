@@ -8,7 +8,7 @@ function _callback(f,loc,vcode_id) {
         },400);
     }
     else if (vcode_id != null)
-        $("#"+vcode_id).click();
+        $("#"+vcode_id).trigger("click");
 }
 String.prototype.shuffle = function () {
     if (this.length <= 1)
