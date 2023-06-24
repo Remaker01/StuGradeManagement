@@ -36,9 +36,7 @@ public class UpdateUserServlet extends HttpServlet {
         newPswd = newPswd.substring(0,32);
         // 检查密码是否符合强度要求
         if (!VerifyUtil.verifyPassword(newPswdOriginal)) {
-            resp.getWriter().write(
-                    String.format("密码强度不合要求，要求必须不少于%d位且不大于%d位", VerifyUtil.PASS_MIN_LEN, VerifyUtil.PASS_MAX_LEN)
-            );
+            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
             return;
         }
         if (!u.isAdmin()||u.getUsername().equals(uname)) { //管理员改自己的密码

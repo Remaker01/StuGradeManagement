@@ -68,9 +68,7 @@ public class RegisterServlet extends HttpServlet {
             resp.getWriter().write("用户已存在");
         }
         else if (!VerifyUtil.verifyPassword(pswdOriginal)) {
-            resp.getWriter().write(
-                    String.format("密码强度不合要求，要求必须不少于%d位且不大于%d位",VerifyUtil.PASS_MIN_LEN,VerifyUtil.PASS_MAX_LEN)
-            );
+            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
         }
         else {
             if (role == null||role.equalsIgnoreCase("user"))

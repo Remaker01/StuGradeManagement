@@ -4,7 +4,6 @@
 <html>
 <head>
     <title>学生成绩管理系统</title>
-    <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width"/>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
@@ -12,7 +11,7 @@
     <script src="http://cdn.staticfile.org/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script>
         function confirm_close() {
-            if(confirm('确认要退出吗？')===true) {
+            if(confirm('确认要退出吗？')) {
                 // window.opener=null;
                 window.open(_root_+'exit','_self');
                 // window.close();

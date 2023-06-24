@@ -1,6 +1,7 @@
 import org.junit.Test;
 import util.EncryptUtil;
 import util.JDBCUtils;
+import util.VerifyUtil;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -20,6 +21,16 @@ public class UnitTest {
         DataSource source = JDBCUtils.getDataSource();
         File file = new File("stu.log");
         if (!file.exists())
+            throw new AssertionError();
+    }
+    @Test
+    public void testVerifyPass() {
+        //用例1：只有1种
+        if (VerifyUtil.verifyPassword("11111111"))
+            throw new AssertionError();
+        if (VerifyUtil.verifyPassword("21111111"))
+            throw new AssertionError();
+        if (!VerifyUtil.verifyPassword("21111133"))
             throw new AssertionError();
     }
 }
