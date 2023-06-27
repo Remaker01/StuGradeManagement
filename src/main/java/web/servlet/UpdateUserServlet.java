@@ -39,11 +39,11 @@ public class UpdateUserServlet extends HttpServlet {
             resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
             return;
         }
-        if (!u.isAdmin()||u.getUsername().equals(uname)) { //管理员改自己的密码
-            if(!userService.modifyPassword(uname,oldPswd,newPswd)) {
-                resp.getWriter().write("更新失败！用户名或原密码错误。");
-            } else {
+        if (u.getUsername().equals(uname)) { //管理员只可通过修改密码页面改自己的密码
+            if (oldPswd.equals(newPswd)||userService.modifyPassword(uname, oldPswd, newPswd)) { //如和原密码相同则不修改
                 resp.getWriter().write("更新成功！");
+            } else {
+                resp.getWriter().write("更新失败！用户名或原密码错误。");
             }
         }
         else {

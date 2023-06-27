@@ -49,8 +49,8 @@ public class CourseDao extends AbstractDao{
     @Override
     public int update(Object obj) {
         Course course = (Course) obj;
-        String sql = "update course set cname=? and ctype=? where id=?";
+        String sql = "update course set cname=?, ctype=?, teacher=? where id=?";
         final String cname = course.getCname();
-        return template.update(sql,cname,course.getCtype(),course.getId());
+        return template.update(sql,cname,course.getCtype(),course.getTeacher(),course.getId());
     }
 }

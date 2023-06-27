@@ -39,7 +39,7 @@ function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不�
 }
 function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
     var uname = $("#"+uname_id).val(),pswd = $("#"+pswd_id).val(),vcode = $("#"+vcode_text_id).val();
-    pswd = md5(pswd)+pswd.toLowerCase().shuffle(); //后端只用校验长度，因此不用真实密码
+    pswd = md5(pswd)+pswd.shuffle(); //后端只用校验长度，因此不用真实密码
     var data_ = "username=" + uname + "&password=" + pswd + "&verifycode=" + vcode;
     // console.debug(data_);
     $.ajax({
@@ -53,7 +53,7 @@ function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
 }
 function submit_updateuser(uname,old_pswd_id,new_pswd_id) {
     var old_pswd=$("#"+old_pswd_id).val(),new_pswd=$("#"+new_pswd_id).val();
-    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false)+new_pswd.toLowerCase().shuffle();
+    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false)+new_pswd.shuffle();
     var data_ = "uname=" + uname + "&old=" + old_pswd + "&new=" + new_pswd;
     $.ajax({
         url:_root_+"updateuser",
