@@ -1,5 +1,4 @@
-<%@ page import="domain.*,java.util.List" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" import="domain.*,java.util.List" %>
 <!doctype html>
 <%User user = (User) session.getAttribute("user");
     if (user == null) {
@@ -27,6 +26,7 @@
         }
     </style>
     <script>
+        <% if (!user.isAdmin()) {%>
         function modify(obj) {
             // 思路：弹出对话框输入成绩，点击确认后将成绩作为参数发到后端进行ajax请求，请求结束后刷新
             // TODO:能不能不弹对话框，直接在网页上生成一个input?
@@ -47,7 +47,9 @@
                 url:_root_+"grade", type: "post", data:param, processData: false, contentType:"application/x-www-form-urlencoded", success:function (d) {$("#status").text(d);delayedReload(400);}
             });
         }
-        function del(obj) {
+        <%
+        }
+        %>function del(obj) {
             // 思路：选取第1，2列，获得其中的name，把两个name作为http参数进行ajax请求至/grade执行真正删除，success后删除该行
             if (confirm("确认删除吗？")) {
                 var td = $(obj).parent();
@@ -102,8 +104,11 @@
             str.append(String.format("\t\t<td %s>",style)).append(s).append("</td>\n");
             %><%=str.toString()%>
             <td>
+                <% if (!user.isAdmin()) {%>
                 <input type="button" value="修改" class="btn-in-table" style="background-color: #5050ff" onclick="modify(this)"/>
-                <input type="button" value="删除" class="btn-in-table" style="background-color: red" onclick="del(this)"/>
+                <%
+                }
+                %><input type="button" value="删除" class="btn-in-table" style="background-color: red" onclick="del(this)"/>
             </td>
         </tr>
         <%

@@ -69,7 +69,7 @@ create table grade
 <Resource name="jdbc/Stu" auth="Container"  
           type="javax.sql.DataSource" maxActive="100" maxIdle="30"  
           maxWait="10000" username="" password=""  
-          driverClassName="com.mysql.jdbc.Driver"  
+          driverClassName="com.mysql.cj.jdbc.Driver" 
           url="jdbc:mysql://localhost:3306/StuDB"/>
 ```
 记得把`username`与`password`改为你数据库的用户名和密码。最后一行可换成你的数据库地址。
@@ -83,7 +83,7 @@ create table grade
     password=你的数据库密码
    ```
 ### 注意事项
-- 本项目所有用户密码均使用SHA256加密后存储在数据库中，如要在数据库中新建用户，请不要忘了加密。
+- 本项目所有用户密码均使用MD5+SHA256加密后存储在数据库中，如要在数据库中新建用户，请不要忘了加密。
 - 本项目前端不考虑旧版浏览器(如IE9以下版本)兼容性(Updated 230524：经实测IE11正常)
 - 本项目使用MIT协议。
 
