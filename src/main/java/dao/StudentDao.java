@@ -51,11 +51,7 @@ public class StudentDao extends AbstractDao {
     @Override
     public void delete(int id) {
         String sql = "delete from student where id = ?";
-        try {
-            template.update(sql, id);
-        } catch (DataAccessException e) {
-            LogUtil.log(e);
-        }
+        template.update(sql, id);
     }
 
     public String findStudentNameById(int id) {

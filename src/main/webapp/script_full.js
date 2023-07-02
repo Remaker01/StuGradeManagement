@@ -14,7 +14,7 @@ String.prototype.shuffle = function () {
     if (this.length <= 1)
         return this;
     var chars = this.split(""),len=chars.length;
-    for (var i = 0; i < len; i++) {
+    for (var i = 0; i < len-1; i++) {
         var count = Math.floor(len*Math.random());
         var t = chars[i];
         chars[i] = chars[count];
@@ -34,7 +34,8 @@ function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不�
         data:data_,
         processData: false,
         contentType:"application/x-www-form-urlencoded",
-        success:function (f) {_callback(f,"welcome.jsp",vcode_id);}
+        success:function (f) {_callback(f,"welcome.jsp",vcode_id);},
+        error:function (xhr) {$("#status").text("登陆失败，请尝试刷新页面或验证码。错误码："+xhr.status);}
     });
 }
 function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
@@ -48,7 +49,8 @@ function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
         data:data_,
         processData: false,
         contentType:"application/x-www-form-urlencoded",
-        success:function (f) {_callback(f,"index.html",vcode_id);}
+        success:function (f) {_callback(f,"index.html",vcode_id);},
+        error:function (xhr) {$("#status").text("注册失败，请尝试刷新页面或验证码。错误码："+xhr.status);}
     });
 }
 function submit_updateuser(uname,old_pswd_id,new_pswd_id) {

@@ -3,6 +3,7 @@ package service;
 import com.sun.istack.internal.NotNull;
 import dao.StudentDao;
 import domain.Student;
+import util.LogUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +31,14 @@ public class StudentService {
         stuDao.add(student);
     }
 
-    public void delStudent(int id) {
-        stuDao.delete(id);
+    public boolean delStudent(int id) {
+        try {
+            stuDao.delete(id);
+            return true;
+        } catch (org.springframework.core.NestedRuntimeException e) {
+            LogUtil.log(e);
+            return false;
+        }
     }
 
     public String findNameById(int id) {

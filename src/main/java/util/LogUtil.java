@@ -6,13 +6,13 @@ import java.util.Date;
 import java.util.logging.*;
 
 class LogFormatter extends Formatter {
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss.SSS");
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMdd HH:mm:ss.SSS");
     @Override
     public String format(LogRecord record) {
         //创建StringBuilder对象来存放后续需要打印的日志内容
         StringBuilder builder = new StringBuilder();
         //获取时间
-        String dateStr = sdf.format(new Date());
+        String dateStr = SDF.format(new Date());
 
         builder.append(dateStr);
         builder.append(" - ");
@@ -41,16 +41,21 @@ class LogFormatter extends Formatter {
  */
 public class LogUtil {
     private static Logger logger = Logger.getLogger("StuGradeManagement");
+    private static FileHandler handler;
     private static final Thread ON_EXIT = new Thread(new Runnable() {
         @Override
         public void run() {
-            Handler[] handlers = logger.getHandlers();
-            for(Handler h:handlers) {
-                if(h instanceof FileHandler) {
-                    logger.removeHandler(h);
-                    h.close();
-                }
+            if (handler != null) {
+                logger.removeHandler(handler);
+                handler.close();
             }
+//            Handler[] handlers = logger.getHandlers();
+//            for(Handler h:handlers) {
+//                if(h instanceof FileHandler) {
+//                    logger.removeHandler(h);
+//                    h.close();
+//                }
+//            }
         }
     });
     static {
@@ -98,7 +103,11 @@ public class LogUtil {
     public static void setFile(String file) throws IOException {
         FileHandler fHandler = new FileHandler(file,true);
         fHandler.setFormatter(new LogFormatter());
-        logger.addHandler(fHandler);
+        synchronized (LogUtil.class) {
+            logger.removeHandler(handler);
+            logger.addHandler(fHandler);
+            handler = fHandler;
+        }
     }
     /**设置全局日志等级*/
     public static void setLevel(Level level) {logger.setLevel(level);}
