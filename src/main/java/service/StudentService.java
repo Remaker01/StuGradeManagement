@@ -1,9 +1,8 @@
 package service;
 
-import com.sun.istack.internal.NotNull;
 import dao.StudentDao;
 import domain.Student;
-import util.LogUtil;
+import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,7 @@ public class StudentService {
         return stuDao.findByPage((pageno-1) * PAGE_SIZE,PAGE_SIZE,condition);
     }
 
-    public void addStudent(@NotNull Student student) {
+    public void addStudent(@NonNull Student student) {
         stuDao.add(student);
     }
 
@@ -36,7 +35,7 @@ public class StudentService {
             stuDao.delete(id);
             return true;
         } catch (org.springframework.core.NestedRuntimeException e) {
-            LogUtil.log(e);
+//            LogUtil.log(e);
             return false;
         }
     }
@@ -48,7 +47,7 @@ public class StudentService {
     public Student findStudentById(int id) {
         return stuDao.findById(id);
     }
-    public int update(@NotNull Student student) {
+    public int update(@NonNull Student student) {
         return stuDao.update(student);
     }
 }

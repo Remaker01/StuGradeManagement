@@ -135,7 +135,9 @@
     <div id="tab2">
         <table style="border: 0;" cellspacing="0" cellpadding="0" id="t2">
 <%--            <tr><th>管 理 员 信 息</th></tr>--%>
-            <tr><td ><img src="imgs/3d84e1a572d7a401ad5c01661b571b06.jpg" width="100px" height="100px" id="img1"></td></tr>
+            <tr><td >
+                <img src="imgs/3d84e1a572d7a401ad5c01661b571b06.jpg" width="100px" height="100px" id="img1" onclick="$('#yem')[0].src='frame_index.html'">
+            </td></tr>
 <%--            <tr><td height="30px">20202607010146</td></tr>--%>
         </table>
     </div>

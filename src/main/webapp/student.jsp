@@ -18,7 +18,7 @@
                 var param="type=1&id="+id_.innerText;
                 $.ajax(
                     {url:_root_+"student",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(550);}}
-                )
+                );
             }
         }
         function modify(obj){}
@@ -34,7 +34,7 @@
             <th>性别</th>
             <th>年龄</th>
             <th>地址</th>
-            <th>联系方式</th>
+            <th>手机号</th>
             <% if (u != null&&u.isAdmin()) {
             %><th>操作</th>
             <%
@@ -70,7 +70,7 @@
         </tbody>
     </table>
     <p id="status" style="color: red;font-size: small;font-weight: bold"></p>
-    <div style="text-align:right;"><p>当前第1页</p></div> <!--TODO:分页-->
+    <div style="text-align:right;"><p>当前第1页</p></div>
 </body>
 </html>
 <%session.setAttribute("students",null);%>
