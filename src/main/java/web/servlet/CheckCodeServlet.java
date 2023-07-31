@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -19,7 +22,7 @@ import java.util.Random;
 public class CheckCodeServlet extends HttpServlet {
     private final Random random = new Random();
     private static final char[] BASE = "0123456789ABCDEFGHIabcdefghi".toCharArray(); //不定义为字符串，方便使用
-    private static final int WIDTH = 80, HEIGHT = 30;
+    private static final int WIDTH = 90, HEIGHT = 30;
     private static final Color[] COLORS = {
             Color.green, Color.white, Color.yellow, new Color(208,208,208), Color.cyan,Color.orange
     };
@@ -43,36 +46,44 @@ public class CheckCodeServlet extends HttpServlet {
 //填充图片
         g.fillRect(0, 0, WIDTH, HEIGHT);
 //产生随机验证码
-        String checkCode = getCheckCode();
+        Map.Entry<String, String> checkCode = getArithmeticCheckCode();
+        String expression = checkCode.getKey();
 //将验证码放入session回话中
-        request.getSession().setAttribute("CHECKCODE_SERVER", checkCode);
+        request.getSession().setAttribute("CHECKCODE_SERVER", checkCode.getValue());
 //设置画笔颜色为黄色
         g.setColor(getRandomColor());
 //设置字体
-        g.setFont(new Font("宋体", Font.BOLD, 24));
+        g.setFont(new Font("宋体", Font.BOLD, 20));
 //向图片上写入验证码
-        g.drawString(checkCode, 15, 25);
+        g.drawString(expression, 10, 25);
 //添加随机曲线干扰
         g.setColor(getRandomColor());
         g.drawArc(0, 0, WIDTH, HEIGHT, random.nextInt(180), random.nextInt(180));
 //将内存中的图片输出到浏览器
         ImageIO.write(image, "JPG", response.getOutputStream());
     }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendError(405);
+    }
 
-    private String getCheckCode() {
+    private String getSimpleCheckCode() {
         StringBuffer sbuffer = new StringBuffer();
         for (int i = 0; i < 4; i++) {
-//产生0到size-1的随机值
             int index = random.nextInt(BASE.length);
-//在base字符串中获取下标为index的字符
-//将c放入到StringBuffer中去
             sbuffer.append(BASE[index]);
         }
         return sbuffer.toString();
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendError(405);
+    /**算术验证码，生成加减法算式*/
+    private Map.Entry<String, String> getArithmeticCheckCode() {
+        int first = random.nextInt(60),second = random.nextInt(60);
+        boolean subt = random.nextBoolean();
+        if (subt) {
+            if (first < second)
+                return new SimpleImmutableEntry<>(String.format("%d-%d=?",second,first),Integer.toString(second-first));
+            return new SimpleImmutableEntry<>(String.format("%d-%d=?",first,second),Integer.toString(first-second));
+        }
+        return new SimpleImmutableEntry<>(String.format("%d+%d=?",first,second),Integer.toString(first+second));
     }
 }

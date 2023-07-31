@@ -1,6 +1,7 @@
 package web.servlet;
 import domain.User;
 import service.UserService;
+import util.EncryptUtil;
 import util.VerifyUtil;
 
 import javax.servlet.ServletException;
@@ -32,7 +33,7 @@ public class UpdateUserServlet extends HttpServlet {
         String uname = req.getParameter("uname"),oldPswd,newPswd;
         oldPswd = req.getParameter("old");
         newPswd = req.getParameter("new");
-        String newPswdOriginal = newPswd.substring(32);
+        String newPswdOriginal = EncryptUtil.base64Decode(newPswd.substring(32));
         newPswd = newPswd.substring(0,32);
         // 检查密码是否符合强度要求
         if (!VerifyUtil.verifyPassword(newPswdOriginal)) {

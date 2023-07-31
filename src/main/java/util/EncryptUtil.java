@@ -21,16 +21,17 @@ public class EncryptUtil {
         }
     }
     public static String base64Decode(String base64) {
-        base64 = new StringBuilder(base64).reverse().toString();
+//        base64 = new StringBuilder(base64).reverse().toString();
         byte[] bytes;
+        Base64.Decoder decoder = Base64.getDecoder();
         try {
-            bytes = Base64.getDecoder().decode(base64);
+            bytes = decoder.decode(base64);
         } catch (IllegalArgumentException e) {
             try {
                 base64 += '=';
-                bytes = Base64.getDecoder().decode(base64);
+                bytes = decoder.decode(base64);
             } catch (IllegalArgumentException ex) {
-                bytes = Base64.getDecoder().decode(base64+'=');
+                bytes = decoder.decode(base64+'=');
             }
         }
         return new String(bytes, StandardCharsets.ISO_8859_1);

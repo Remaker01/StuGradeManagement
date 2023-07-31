@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.logging.Level;
 
 public class VerifyUtil {
-    public static final int PASS_MIN_LEN = 7,PASS_MAX_LEN = 30;
-    public static final String PASSWORD_REQUIREMENT = String.format("密码长度不能小于%d位或大于%d位,且至少含3个不同字符",PASS_MIN_LEN,PASS_MAX_LEN);
+    public static final int PASS_MIN_LEN = 8,PASS_MAX_LEN = 30;
+    public static final String PASSWORD_REQUIREMENT = String.format("密码长度不能小于%d位或大于%d位，且至少含3个不同字符",PASS_MIN_LEN,PASS_MAX_LEN);
     public static boolean verifyTimestamp(String timestamp,Class<?> clazz) {
         long cur = System.currentTimeMillis();
         try {

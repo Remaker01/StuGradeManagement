@@ -36,7 +36,7 @@
             if (pswd == null||pswd.length === 0)
                 return;
             var uid=td.prev().prev().text();
-            pswd=md5(pswd,null,false)+pswd.shuffle();
+            pswd=md5(pswd,null,false)+pswd.shuffle().encodeb();
             var param="uname="+uid+"&new="+pswd;
             $.ajax({
                 url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);delayedReload(500);}

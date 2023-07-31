@@ -1,6 +1,7 @@
 package web.servlet;
 
 import service.UserService;
+import util.EncryptUtil;
 import util.LogUtil;
 import util.VerifyUtil;
 
@@ -56,9 +57,9 @@ public class RegisterServlet extends HttpServlet {
             resp.sendError(400,"至少一个参数缺失");
             return;
         }
-        String pswdOriginal = null; //明文密码
+        String pswdOriginal; //Base64密码
         try {
-            pswdOriginal = pswd.substring(32);
+            pswdOriginal = EncryptUtil.base64Decode(pswd.substring(32));
             pswd = pswd.substring(0,32); //MD5密码
         } catch (IndexOutOfBoundsException e) {
             resp.sendError(400,"参数错误");
