@@ -8,6 +8,8 @@
     <meta http-equiv = "X-UA-Compatible" content = "IE=edge"/>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
+    <script src="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="http://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <link rel="stylesheet" href="style/frames.css">
     <script>
@@ -27,19 +29,27 @@
                 var param="id="+uid;
                 // console.log(param);
                 $.ajax({
-                    url:_root_+"deluser",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(500);}
+                    url:_root_+"deluser",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(750);}
                 });
             }
         }
         function modify(obj) {
-            var pswd=prompt("请输入该用户的新密码"),td=$(obj).parent();
-            if (pswd == null||pswd.length === 0)
-                return;
-            var uid=td.prev().prev().text();
-            pswd=md5(pswd,null,false)+pswd.shuffle().encodeb();
-            var param="uname="+uid+"&new="+pswd;
-            $.ajax({
-                url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);delayedReload(500);}
+            $("#modify").modal("show");
+            $("#dosubmit").on("click",function () {
+                var pswd_input=$("#pswd-input")[0];
+                var pswd=pswd_input.value,td=$(obj).parent();
+                if (pswd == null||pswd.length === 0)
+                    return;
+                var uid=td.prev().prev().text();
+                pswd=md5(pswd,null,false)+pswd.shuffle().encodeb();
+                var param="uname="+uid+"&new="+pswd;
+                $.ajax({
+                    url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);delayedReload(500);}
+                });
+                $(this).off("click");
+                delayedReload(750);
+                $("#modify").modal("hide");
+                pswd_input.value="";
             });
         }
     </script>
@@ -87,6 +97,23 @@
         }
     %></tbody>
 </table>
+<div class="modal" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+            </div>
+            <form class="modal-body">
+                请输入该用户的新密码：<input type="password" class="form-control" id="pswd-input" style="width:200px; display:inline;"/>
+            </form>
+            <p class="modal-footer">
+                <input type="button" class="btn" data-dismiss="modal" value="关闭">
+                <input type="button" id="dosubmit" class="btn btn-primary" value="提交更改">
+            </p>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 <p id="status" style="color: red;font-size: small;font-weight: bold"></p>
 <%
     }

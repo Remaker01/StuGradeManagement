@@ -20,7 +20,7 @@
                 var param="type=2&id="+id+"&name="+name+"&prop="+$("#prop-option").val()+"&tid="+$("#teacher-option").val();
                 $.ajax({url:_root_+"updatecourse",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);}});
                 $(this).off("click");
-                delayedReload(550);
+                delayedReload(750);
                 $("#modify").modal("hide");
             });
         }
@@ -28,20 +28,20 @@
             var td=$(obj).parent();
             var id=$(td).siblings()[0];
             //查找还有多少相关成绩信息
-            $.ajax({url:_root_+"grade",type:"get",data:"type=1&para="+id.innerText,processData:false,async:false,success:function (d) {
+            $.ajax({url:_root_+"grade",type:"get",data:"type=1&para="+id.innerText,processData:false,success:function (d) {
                 if (confirm("确定要删除吗？\n删除该课程后，有关"+d.result+"条成绩信息也将同步删除！")) { //json会自动处理
                     var cid=id.innerText;
                     var param="type=1&id="+cid;
                     $.ajax({url:_root_+"updatecourse",type: "post",data:param,processData:false,success:function (d1) {
                         $("#status").text(d1);
-                        delayedReload(550);
+                        delayedReload(750);
                     }});
                 }
             }});
         }
     </script>
     <%}%></head>
-<body style="margin-top: 10px;margin-left: 10px;">
+<body>
     <% UserDao userDao = new UserDao();
     if (u == null) {
         %><p>您尚未登录！</p>
