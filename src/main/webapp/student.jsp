@@ -14,6 +14,19 @@
     <% User u = (User) session.getAttribute("user");
     if(u != null&&u.isAdmin()) {
     %><script>
+        $(document).ready(function () {
+            var ids=["age-text","phone-text","qq-text"],regexp = /[^\d]/g;
+            for (var i=0; i<ids.length; i++) {
+                var id=ids[i];
+                $("#" + id).keyup(function () { //注意只能在ready之后选取元素
+                    $(this).val($(this).val().replace(regexp, '')); //这里是score_text调用，所以要用this
+                }).on("paste", function () {
+                    $(this).val($(this).val().replace(regexp, ''));
+                }).blur(function () {
+                    $(this).val($(this).val().replace(regexp, ''));
+                });
+            }
+        });
         function del(obj){
             var td=$(obj).parent();
             if (confirm("确认要删除该学生吗？")) {
@@ -91,7 +104,7 @@
                     <h4 class="modal-title" id="myModalLabel">修改学生信息</h4>
                 </div>
                 <form class="modal-body">
-                    <p>年龄：<input type="text" class="form-control" maxlength="3" id="age-text"></p>
+                    <p>年龄：<input type="text" class="form-control" maxlength="2" id="age-text"></p>
                     <p>地址：<input type="text" class="form-control" id="addr-input" style="width:200px; display:inline;"/></p>
                     <p>手机号：<input type="text" class="form-control" maxlength="11" id="phone-text"></p>
                     <p>QQ：<input type="text" class="form-control" maxlength="12" id="qq-text"></p>

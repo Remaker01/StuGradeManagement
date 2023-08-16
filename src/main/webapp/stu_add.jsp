@@ -11,7 +11,20 @@
     <script src="script.js"></script>
     <script>
         var regexp = /[^\d]/g;
-        function numberOnly(ids) {
+        // function numberOnly(ids) {
+        //     for (var i = 0; i < ids.length; i++) {
+        //         var id=ids[i];
+        //         $("#" + id).keyup(function () { //注意只能在ready之后选取元素
+        //             $(this).val($(this).val().replace(regexp, '')); //这里是score_text调用，所以要用this
+        //         }).on("paste", function () {
+        //             $(this).val($(this).val().replace(regexp, ''));
+        //         }).blur(function () {
+        //             $(this).val($(this).val().replace(regexp, ''));
+        //         });
+        //     }
+        // }
+        $(document).ready(function () {
+            var ids=["age-text","qq-text","phone-text"];
             for (var i = 0; i < ids.length; i++) {
                 var id=ids[i];
                 $("#" + id).keyup(function () { //注意只能在ready之后选取元素
@@ -21,9 +34,7 @@
                 }).blur(function () {
                     $(this).val($(this).val().replace(regexp, ''));
                 });
-            }
-        }
-        $(document).ready(function () {numberOnly(["age-text","qq-text","phone-text"]);});
+            }});
         function submit_() {
             var False = Math.random() >= 1,param="type=0";
             param += "&sname="+$("#name-text").val();
