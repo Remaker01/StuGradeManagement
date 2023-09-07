@@ -35,16 +35,21 @@
         }
         function modify(obj) {
             $("#modify").modal("show");
+            $("#doclose").on("click",function () {$("#pswd-input")[0].value="";});
             $("#dosubmit").on("click",function () {
                 var pswd_input=$("#pswd-input")[0];
                 var pswd=pswd_input.value,td=$(obj).parent();
                 if (pswd == null||pswd.length === 0)
                     return;
+                if (!passCheck(pswd)) {
+                    $("#status").text(PASSWORD_REQUIREMENT);
+                    return;
+                }
                 var uid=td.prev().prev().text();
-                pswd=md5(pswd,null,false)+pswd.shuffle().encodeb();
+                pswd=md5(pswd,null,false);
                 var param="uname="+uid+"&new="+pswd;
                 $.ajax({
-                    url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);delayedReload(500);}
+                    url:_root_+"updateuser",type: "post",data: param,processData: false,success:function (d) {$("#status").text(d);}
                 });
                 $(this).off("click");
                 delayedReload(750);
@@ -108,7 +113,7 @@
                 请输入该用户的新密码：<input type="password" class="form-control" id="pswd-input" style="width:200px; display:inline;"/>
             </form>
             <p class="modal-footer">
-                <input type="button" class="btn" data-dismiss="modal" value="关闭">
+                <input type="button" id="doclose" class="btn" data-dismiss="modal" value="关闭">
                 <input type="button" id="dosubmit" class="btn btn-primary" value="提交更改">
             </p>
         </div><!-- /.modal-content -->

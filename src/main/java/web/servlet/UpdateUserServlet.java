@@ -33,13 +33,13 @@ public class UpdateUserServlet extends HttpServlet {
         String uname = req.getParameter("uname"),oldPswd,newPswd;
         oldPswd = req.getParameter("old");
         newPswd = req.getParameter("new");
-        String newPswdOriginal = EncryptUtil.base64Decode(newPswd.substring(32));
+//        String newPswdOriginal = EncryptUtil.base64Decode(newPswd.substring(32));
         newPswd = newPswd.substring(0,32);
         // 检查密码是否符合强度要求
-        if (!VerifyUtil.verifyPassword(newPswdOriginal)) {
-            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
-            return;
-        }
+//        if (!VerifyUtil.verifyPassword(newPswdOriginal)) {
+//            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
+//            return;
+//        }
         if (u.getUsername().equals(uname)) { //管理员只可通过修改密码页面改自己的密码
             if (oldPswd.equals(newPswd)||userService.modifyPassword(uname, oldPswd, newPswd)) { //如和原密码相同则不修改
                 resp.getWriter().write("更新成功！");

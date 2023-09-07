@@ -1,4 +1,5 @@
-var _root_= "/StuGradeManagement/";
+var _root_= "/StuGradeManagement/",PASS_MIN_LEN = 8,PASS_MAX_LEN = 30;
+var PASSWORD_REQUIREMENT = "密码长度不能小于"+PASS_MIN_LEN+"位或大于"+PASS_MAX_LEN+"位，且至少含3个不同字符";
 //登录时，密码进行MD5加密；注册时，把密码进行MD5加密后的结果与原密码拼接起来
 function _callback(f,loc,vcode_id) {
     $("#status").text(f);
@@ -41,7 +42,11 @@ function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不�
 }
 function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
     var uname = $("#"+uname_id).val(),pswd = $("#"+pswd_id).val(),vcode = $("#"+vcode_text_id).val();
-    pswd = md5(pswd)+pswd.shuffle().encodeb(); //后端只用校验长度，因此不用真实密码
+    if (!passCheck(pswd)) {
+        $("#status").text(PASSWORD_REQUIREMENT);
+        return;
+    }
+    pswd = md5(pswd); //后端只用校验长度，因此不用真实密码
     var data_ = "username=" + uname + "&password=" + pswd + "&verifycode=" + vcode;
     // console.debug(data_);
     $.ajax({
@@ -56,7 +61,11 @@ function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
 }
 function submit_updateuser(uname,old_pswd_id,new_pswd_id) {
     var old_pswd=$("#"+old_pswd_id).val(),new_pswd=$("#"+new_pswd_id).val();
-    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false)+new_pswd.shuffle().encodeb();
+    if (!passCheck(new_pswd)) {
+        $("#status").text(PASSWORD_REQUIREMENT);
+        return;
+    }
+    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false);
     var data_ = "uname=" + uname + "&old=" + old_pswd + "&new=" + new_pswd;
     $.ajax({
         url:_root_+"updateuser",
@@ -81,6 +90,21 @@ function getCurrentParam(name) {
 }
 function delayedReload(delay) {
     setTimeout(function (){location.reload();;},delay);
+}
+function passCheck(password) {
+    var len=password.length;
+    if (len < PASS_MIN_LEN||len > PASS_MAX_LEN)
+        return false;
+    var chars=password.split('');
+    chars.sort();
+    var different=1;
+    for (var i=1; i<len; i++) {
+        if (chars[i]!==chars[i-1])
+            different++;
+        if (different>=3)
+            return true;
+    }
+    return false;
 }
 function getPass(data) {
     var _new = '';

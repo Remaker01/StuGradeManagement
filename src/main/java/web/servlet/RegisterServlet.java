@@ -22,10 +22,6 @@ import java.util.logging.Level;
 */
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
-    /*
-    检查密码
-    要求：长度至少7位，至多30位
-     */
     private UserService userService;
     @Override
     public void init() throws ServletException {
@@ -46,9 +42,6 @@ public class RegisterServlet extends HttpServlet {
             //提示信息
 //            request.setAttribute("login_msg", "验证码错误");
             resp.getWriter().write("验证码错误");
-            //跳转登录页面
-//            request.getRequestDispatcher("index.html").forward(request, response);
-            LogUtil.log(Level.WARNING,String.format("(Register)ip=%s,input_vcode=%s,expected=%s",req.getRemoteAddr(),verifyCode,checkcode_server));
             return;
         }
         //开始调用注册服务注册
@@ -57,9 +50,9 @@ public class RegisterServlet extends HttpServlet {
             resp.sendError(400,"至少一个参数缺失");
             return;
         }
-        String pswdOriginal; //Base64密码
+//        String pswdOriginal; //Base64密码
         try {
-            pswdOriginal = EncryptUtil.base64Decode(pswd.substring(32));
+//            pswdOriginal = EncryptUtil.base64Decode(pswd.substring(32));
             pswd = pswd.substring(0,32); //MD5密码
         } catch (IndexOutOfBoundsException e) {
             resp.sendError(400,"参数错误");
@@ -68,9 +61,9 @@ public class RegisterServlet extends HttpServlet {
         if (userService.findUser(uname) != null) {
             resp.getWriter().write("用户已存在");
         }
-        else if (!VerifyUtil.verifyPassword(pswdOriginal)) {
-            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
-        }
+//        else if (!VerifyUtil.verifyPassword(pswdOriginal)) {
+//            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
+//        }
         else {
             if (role == null||role.equalsIgnoreCase("user"))
                 userService.register(uname, pswd);
