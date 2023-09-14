@@ -2,10 +2,15 @@ package service;
 
 import dao.UserDao;
 import domain.User;
+import util.EncryptUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 public class UserService {
+    public static final int LOGIN_EXPIRES = 10*60*1000;
+    public static final int MAX_LOGIN_RETRY = 5;
     private UserDao userDao = new UserDao();
 
     public List<User> findAll() {return userDao.findAll();}
@@ -25,9 +30,36 @@ public class UserService {
      * 执行登录动作
      * @param user 用户对象。只要提供用户名和密码即可，无需提供id
      * @return 登录的用户
+     * @apiNote 本方法不检查是否允许登录，但如密码错误则自动增加登录失败次数
      */
     public User login(User user) {
-        return userDao.findUserByUsernameAndPassword(user.getUsername(),user.getPassword());
+        User result = userDao.findUserByName(user.getUsername());
+        String encrypted = EncryptUtil.encrypt(user.getPassword(), StandardCharsets.ISO_8859_1);
+        if (result != null) {
+            String uname = user.getUsername();
+            if (encrypted.equals(result.getPassword()))
+                userDao.clearFailCount(uname);
+            else {
+                userDao.incrFailCount(uname);
+                result = null;
+            }
+        }
+        return result;
+    }
+    public boolean canLogin(User user) {
+        Map.Entry<Integer,Long> result = userDao.getFailCountAndTime(user.getUsername());
+        //情况1：失败次数为Null，用户不存在，不能登录
+        if (result.getKey() == null)
+            return false;
+        //情况2：失败时间大于expires，无论之前失败了多少次，都允许登录
+        int times = result.getKey();
+        long lastFail = result.getValue();
+        if(System.currentTimeMillis() - lastFail > LOGIN_EXPIRES) {
+            userDao.clearFailCount(user.getUsername());
+            return true;
+        }
+        //情况3：失败时间在expires内，要校验失败次数
+        return times < MAX_LOGIN_RETRY;
     }
     /**
      * 注册用户，用于一般用户

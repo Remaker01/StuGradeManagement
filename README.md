@@ -1,7 +1,9 @@
 ## 学生成绩管理系统
 ### 目前状态
-5.14 尚未完成
-
+9.14 接近完成
+### 9.14 重大更新
+**在数据库Users表中增加字段用于表示用户在一段时间内的失败次数和上次失败时间，详情见sql代码部分。**
+<hr>
 目标：通过采用json返回数据等方式尽量减少jsp页面
 ### 介绍
 JavaEE学生成绩管理系统项目，基于Servlet、JSP、Spring框架
@@ -38,7 +40,9 @@ create table users
     id         int auto_increment primary key,
     username   varchar(255) not null,
     `password` varchar(100) not null,
-    isadmin    tinyint(1) unsigned default 0 null
+    isadmin    tinyint(1) unsigned default 0 null,
+    last_err_time bigint null,
+    err_count     int default 0 null
 ) AUTO_INCREMENT = 1000 CHARACTER SET = utf8mb4;
 
 CREATE TABLE `course` (

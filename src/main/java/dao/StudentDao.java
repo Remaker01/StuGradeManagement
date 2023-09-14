@@ -3,7 +3,6 @@ package dao;
 import domain.Student;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import util.LogUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +11,8 @@ import java.util.*;
 // findall add delete findbyid update findtotalcount findbypage
 public class StudentDao extends AbstractDao {
     static class StudentMapper implements RowMapper<Student> {
+        static final StudentMapper INSTANCE = new StudentMapper();
+        private StudentMapper() {}
         @Override
         public Student mapRow(ResultSet resultSet, int i) throws SQLException {
             Student stud = new Student();
@@ -30,7 +31,7 @@ public class StudentDao extends AbstractDao {
         //使用JDBC操作数据库...
         //1.定义sql
         String sql = "select * from student";
-        return template.query(sql, new StudentMapper());
+        return template.query(sql, StudentMapper.INSTANCE);
     }
 
     public void add(Object obj) {
@@ -66,7 +67,7 @@ public class StudentDao extends AbstractDao {
     public Student findById(int id) {
         String sql = "select * from student where id = ?";
         try {
-            return template.queryForObject(sql, new StudentMapper(), id);
+            return template.queryForObject(sql, StudentMapper.INSTANCE, id);
         } catch (DataAccessException e) {
             return null;
         }
@@ -113,12 +114,11 @@ public class StudentDao extends AbstractDao {
         }
 //        System.out.println(sb.toString());
 //        System.out.println(params);
-
-        return template.queryForObject(sb.toString(), int.class, params.toArray());
+        return template.queryForObject(sb.toString(), params.toArray(), int.class);
     }
 
     public List<Student> findByPage(int start, int rows, Map<String, String[]> condition) {
         String sql = "select * from student  where 1 = 1 ";
-        return super.findByPage(sql, new StudentMapper(), start, rows, condition);
+        return super.findByPage(sql, StudentMapper.INSTANCE, start, rows, condition);
     }
 }

@@ -4,6 +4,7 @@ public class User {
     private int id;
     private String username,password;
     private boolean isAdmin;
+    private int errCount; //总感觉这个没必要
 
     public boolean isAdmin() {
         return isAdmin;
@@ -32,6 +33,14 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getErrCount() {
+        return errCount;
+    }
+    public void setErrCount(int errCount) {
+        this.errCount = errCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

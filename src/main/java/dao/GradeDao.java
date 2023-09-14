@@ -1,12 +1,26 @@
 package dao;
 
 import domain.Grade;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class GradeDao extends AbstractDao{
+    static class GradeMapper implements RowMapper<Grade> {
+        static final GradeMapper INSTANCE = new GradeMapper();
+        private GradeMapper() {}
+        @Override
+        public Grade mapRow(ResultSet resultSet, int i) throws SQLException {
+            Grade grade = new Grade();
+            grade.setStuId(resultSet.getInt("stuid"));
+            grade.setCourseId(resultSet.getInt("courseid"));
+            grade.setScore(resultSet.getShort("score"));
+            return grade;
+        }
+    }
     @Override
     public void add(Object obj) {
         Grade grade = (Grade) obj;
@@ -23,9 +37,7 @@ public class GradeDao extends AbstractDao{
         String sql = "update grade set score=? where stuid=? and courseid=?";
         return template.update(sql,grade.getScore(),grade.getStuId(),grade.getCourseId());
     }
-    /**
-     * 删除学号为sid的学生与课程编号为cid的课程的成绩
-     */
+    /** 删除学号为sid的学生与课程编号为cid的课程的成绩*/
     public void delete(int sid,int cid) {
         String sql = "delete from grade where stuid=? and courseid=?";
         template.update(sql,sid,cid);
@@ -37,7 +49,7 @@ public class GradeDao extends AbstractDao{
      */
     public List<Grade> getByCourseId(int cid) {
         String sql = "select * from grade where courseid=?";
-        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),cid);
+        return template.query(sql,GradeMapper.INSTANCE,cid);
     }
     /**
      * 按学生姓名查找成绩
@@ -48,21 +60,21 @@ public class GradeDao extends AbstractDao{
         String sql = "select grade.stuid, courseid, score from grade " +
                 "inner join student as s on grade.stuid = s.id " +
                 "where s.sname=?";
-        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),stuName);
+        return template.query(sql,GradeMapper.INSTANCE,stuName);
     }
 
     public List<Grade> getByCourseName(String courseName) {
         String sql = "select * from grade " +
                 "inner join course as c on grade.courseid = c.id " +
                 "where c.cname=?";
-        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),courseName);
+        return template.query(sql,GradeMapper.INSTANCE,courseName);
     }
 
     public List<Grade> getByTeacher(int tid) {
         String sql = "select * from grade " +
                 "inner join course c on grade.courseid = c.id " +
                 "where c.teacher=?";
-        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),tid);
+        return template.query(sql,GradeMapper.INSTANCE,tid);
     }
 
     public List<Grade> getByTeacher(String name) { //TODO:这个好像不需要？
@@ -70,11 +82,11 @@ public class GradeDao extends AbstractDao{
                 "inner join course c on grade.courseid = c.id " +
                 "inner join users u on c.teacher = u.id " +
                 "where u.username=?";
-        return template.query(sql,new BeanPropertyRowMapper<>(Grade.class),name);
+        return template.query(sql,GradeMapper.INSTANCE,name);
     }
 
     public List<Grade> findByPage(int start, int rows, Map<String,String []> conditions) {
         String sql = "select * from grade where 1 = 1 ";
-        return super.findByPage(sql,new BeanPropertyRowMapper<>(Grade.class),start,rows,conditions);
+        return super.findByPage(sql,GradeMapper.INSTANCE,start,rows,conditions);
     }
 }

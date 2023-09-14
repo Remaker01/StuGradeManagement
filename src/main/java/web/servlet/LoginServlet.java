@@ -71,9 +71,14 @@ public class LoginServlet extends HttpServlet {
 //        password = EncryptUtil.base64Decode(password);
         user.setUsername(username);
         user.setPassword(password);
-        //5.调用Service查询
+        //5.判断是否允许登录
+        if (!userService.canLogin(user)) {
+            response.getWriter().write(String.format("您的密码错误次数达到上限:%d,请等%d分钟后重试",UserService.MAX_LOGIN_RETRY,UserService.LOGIN_EXPIRES/1000/60));
+            return;
+        }
+        //6.调用Service查询
         User login = userService.login(user);
-        //6.判断是否登录成功
+        //7.判断是否登录成功
         if (login != null) {
             //登录成功
             //将用户存入session
