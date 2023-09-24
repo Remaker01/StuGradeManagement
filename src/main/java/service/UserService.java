@@ -48,9 +48,9 @@ public class UserService {
     }
     public boolean canLogin(User user) {
         Map.Entry<Integer,Long> result = userDao.getFailCountAndTime(user.getUsername());
-        //情况1：失败次数为Null，用户不存在，不能登录
+        //情况1：失败次数为Null，用户不存在
         if (result.getKey() == null)
-            return false;
+            return true;
         //情况2：失败时间大于expires，无论之前失败了多少次，都允许登录
         int times = result.getKey();
         long lastFail = result.getValue();

@@ -26,11 +26,11 @@ public class UnitTest {
     @Test
     public void testVerifyPass() {
         //用例1：只有1种
-        if (VerifyUtil.verifyPassword("11111111"))
+        if (!VerifyUtil.verifyPassword("06612c0d9c73d47a7042afd7024d7c82"))
             throw new AssertionError();
-        if (VerifyUtil.verifyPassword("21111111"))
+        if (VerifyUtil.verifyPassword("06612c0d9c73d47a7042afd7024d7c8。"))
             throw new AssertionError();
-        if (!VerifyUtil.verifyPassword("21111133"))
+        if (VerifyUtil.verifyPassword("21111133"))
             throw new AssertionError();
     }
 }

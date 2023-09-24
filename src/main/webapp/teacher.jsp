@@ -11,21 +11,8 @@
     <script src="http://cdn.staticfile.org/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script>
         function confirm_close() {
-            if(confirm('确认要退出吗？')) {
-                // window.opener=null;
-                window.open(_root_+'exit','_self');
-                // window.close();
-            }
+            if(confirm('确认要退出吗？')) {window.open(_root_+'exit','_self');}
         }
-    </script>
-    <script>
-        // var btn = $("#btn"),body=$("#main_");
-        // var array = ["cadetblue", "#DCDCDC", "mistyrose", "white", "pink", "#DEB887", "coral","#FFF"];
-        // var index = 0;
-        // btn.onclick = function () {
-        //     body.style.backgroundColor = array[index];
-        //     index = (index + 1) % array.length;
-        // }
     </script>
     <style>
         *{margin: 0;padding: 0;}

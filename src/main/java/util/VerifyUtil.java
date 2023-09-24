@@ -1,5 +1,6 @@
 package util;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -19,21 +20,19 @@ public class VerifyUtil {
             return false;
         }
     }
-    @Deprecated
     public static boolean verifyPassword(String password) {
-        int len = password.length();
-        if(len < PASS_MIN_LEN||len > PASS_MAX_LEN)
+        if (password == null)
             return false;
-        char[] chars = password.toCharArray();
-        Arrays.sort(chars);
-        int different = 1;
-        for (int i = 1; i < len; i++) {
-            if (chars[i] != chars[i-1]) {
-                different++;
-                if (different >= 3)
-                    return true;
-            }
+        int len = password.length();
+        if (len != 32)
+            return false;
+        for (int i = 0; i < len; i++) {
+            char ch = password.charAt(i);
+            if (ch > 255)
+                return false;
+            if (!Character.isLetter(ch) && !Character.isDigit(ch))
+                return false;
         }
-        return false;
+        return true;
     }
 }

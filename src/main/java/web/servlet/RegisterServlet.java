@@ -51,11 +51,8 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 //        String pswdOriginal; //Base64密码
-        try {
-//            pswdOriginal = EncryptUtil.base64Decode(pswd.substring(32));
-            pswd = pswd.substring(0,32); //MD5密码
-        } catch (IndexOutOfBoundsException e) {
-            resp.sendError(400,"参数错误");
+        if (!VerifyUtil.verifyPassword(pswd)) {
+            resp.sendError(400,"密码不合法");
             return;
         }
         if (userService.findUser(uname) != null) {
