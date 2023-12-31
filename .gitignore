@@ -3,3 +3,4 @@
 target/*
 ./src/main/resources/jdbc.properties
 /bg2.jpg
+test_stu.sql

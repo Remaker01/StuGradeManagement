@@ -12,6 +12,8 @@
     <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
     <meta http-equiv="Pragma" content="no-cache">
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="script.js"></script>
     <title>Title</title>
     <link rel="stylesheet" href="style/frames.css">
@@ -58,11 +60,22 @@
                 var sid = course.prev();
                 // console.log(sid.attr("value"));console.log(course.attr("value"));
                 var param="type=1&courseid="+course.attr("value")+"&sid="+sid.attr("value")+"&tid=<%=user.getId()%>";
-                console.log(param);
                 $.ajax({
                     url:_root_+"grade", type:"post", data:param, processData:false, contentType:"application/x-www-form-urlencoded", success:function (d) {$("#status").text(d);td.parent().remove();}
                 });
             }
+        }
+        function showStu(obj) {
+            // console.log(tds.length);
+            var para="type=1&id="+obj.innerText;
+            var name=$("#name"),age=$("#age"),phone=$("#phonenum");
+            $.ajax({url:_root_+"student",type:"get",data:para,processData:false,success:function (res){
+                    name[0].innerText="姓名："+res.sname;
+                    age[0].innerText="年龄："+res.age;
+                    phone[0].innerText="手机号："+res.phone;
+                    $("#stuinfo").modal("show");
+                }
+            });
         }
     </script>
 </head>
@@ -93,11 +106,12 @@
         <tr>
             <% str.setLength(0);
             int sid = g.getStuId(),cid=g.getCourseId();
-            request.getRequestDispatcher("student?type=1&id="+sid).include(request,response);
-            Student student = (Student) session.getAttribute("student");
+//            request.getRequestDispatcher("student?type=1&id="+sid).include(request,response);
+//            Student student = (Student) session.getAttribute("student");
+//            TODO:这两行加进来，会导致response.writer被写入内容，导致页面展现奇怪的东西。解决方法：document.ready+ajax，把学号替换为姓名，但会导致额外的网络请求；
             request.getRequestDispatcher("findcourse?type=1&id="+cid).include(request,response);
             Course course = (Course)  session.getAttribute("course");
-            str.append(String.format("<td value='%d'>", sid)).append(student.getSname()).append("</td>\n");
+            str.append(String.format("<td value='%d' onclick='showStu(this)'>", sid)).append(sid).append("</td>\n");
             str.append(String.format("\t\t<td value='%d'>", cid)).append(course.getCname()).append("</td>\n");
             short s = g.getScore();
             String style = (s < 60) ? "style='color:red;'" : "";
@@ -116,6 +130,25 @@
         %></tbody>
     </table>
     <p id="status" style="font-weight: bold;color: red;font-size: small;"></p>
+    <div class="modal" id="stuinfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="myModalLabel">学生信息</h4>
+                </div>
+                <form class="modal-body" id="modal-body">
+                    <p id="name">姓名：</p>
+                    <p id="age">年龄：</p>
+                    <p id="phonenum">手机号：</p>
+                    <p style="font-size: small">更多详细信息，请参考学生信息页面。</p>
+                </form>
+                <p class="modal-footer">
+                    <input type="button" class="btn" data-dismiss="modal" value="关闭" onclick="$('#stuinfo').modal('hide');">
+                </p>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </body>
 </html>
 <%

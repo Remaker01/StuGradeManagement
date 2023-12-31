@@ -4,18 +4,27 @@
 <html>
 <head>
     <title>Title</title>
-    <meta http-equiv = "X-UA-Compatible" content = "IE=edge,chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
-    <script src="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/frames.css">
-    <style>#modify input[type="text"]{display: inline;} </style>
+    <style>#modify input[type="text"] {
+        display: inline;
+    } </style>
+    <script>
+        var submit_ = function () {
+            var val = $("#pageno-text").val();
+            document.location.href = _root_ + "student.jsp?pageno=" + val;
+            return Math.random() > 1;
+        };
+    </script>
     <% User u = (User) session.getAttribute("user");
     if(u != null&&u.isAdmin()) {
     %><script>
         $(document).ready(function () {
-            var ids=["age-text","phone-text","qq-text"],regexp = /[^\d]/g;
+            var ids=["age-text","phone-text","qq-text","pageno-text"],regexp = /[^\d]/g;
             for (var i=0; i<ids.length; i++) {
                 var id=ids[i];
                 $("#" + id).keyup(function () { //注意只能在ready之后选取元素
@@ -45,7 +54,9 @@
             var td=$(obj).parent();
             var td_siblings=$(td).siblings();
             $("#name")[0].innerText="姓名："+td_siblings[1].innerText;//显示姓名
-            $("#age-text").val(td_siblings[3].innerText);$("#addr-text").val(td_siblings[4].innerText);//自动填充一些信息
+            $("#age-text").val(td_siblings[3].innerText);
+            $("#addr-text").val(td_siblings[4].innerText);
+            $("#phone-text").val(td_siblings[5].innerText)//自动填充一些信息
             $("#doclose").on("click",doclose);
             $("#dosubmit").on("click",function () {
                 var id_=td_siblings[0].innerText, sname=td_siblings[1].innerText,gender=td_siblings[2].innerText;//变不了的信息
@@ -97,7 +108,13 @@
         </tr>
         </thead>
         <tbody>
-        <%  request.getRequestDispatcher("/student?type=0").include(request,response);
+        <%  String pageno = request.getParameter("pageno");
+            try {
+                Integer.parseInt(pageno);
+            }catch (NumberFormatException e) {
+                pageno = "1";
+            }
+            request.getRequestDispatcher("/student?type=0&pageno="+pageno).include(request,response);
             List<Student> students = (List<Student>) session.getAttribute("students");
             StringBuilder str = new StringBuilder(48);
             for (Student c:students) {
@@ -149,7 +166,11 @@
     <%
         }
     %><p id="status" style="color: red;font-size: small;font-weight: bold"></p>
-    <div style="text-align:right;"><p>当前第1页</p></div>
+    <div style="text-align:right;">
+        <form id="topage" onsubmit="return submit_();">跳到第<input type="text" id="pageno-text" maxlength="3" required autocomplete="off" style="width: 30px;">页
+        <input type="submit" class="btn" value="GO">&nbsp;
+    </form>
+    </div>
 </body>
 </html>
 <%session.setAttribute("students",null);%>

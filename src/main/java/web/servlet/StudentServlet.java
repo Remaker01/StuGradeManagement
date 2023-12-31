@@ -3,12 +3,13 @@ package web.servlet;
 /*
 参数
 1. 若为get方法则认为是查询信息。需校验用户是否已登录，否则拒绝查询。
-    type==0:根据学号查询单个学生信息
-    type==1:查询所有学生信息，或根据姓名查询
+    type==1:根据学号查询单个学生信息
+    type==0:查询所有学生信息，或根据姓名查询
         1.页数：pageno(可选，默认为1)
         2.学生姓名：name(可选，模糊查询)
 2. 若post方法认为是要修改信息，参数为1.type,2.学生id(删除)学生的各项信息(其他)。需要校验是否为管理员。
  */
+import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Student;
 import domain.User;
 import service.StudentService;
@@ -77,8 +78,13 @@ public class StudentServlet extends HttpServlet {
                 break;
             case 1:
                 try {
+                    resp.setHeader("Content-type","application-json");
                     int id = Integer.parseInt(req.getParameter("id"));
                     Student student = studentService.findStudentById(id);
+                    if (student == null)
+                        resp.getWriter().write("{\"sname\":null}");
+                    else
+                        resp.getWriter().write(new ObjectMapper().writeValueAsString(student));
                     req.getSession().setAttribute("student",student);
                     break;
                 } catch (NumberFormatException e) {
