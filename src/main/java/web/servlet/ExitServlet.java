@@ -18,7 +18,7 @@ public class ExitServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("user");
-        System.out.println(req.getContextPath());
+//        System.out.println(req.getContextPath());
         if (user == null) {
             resp.setContentType("text/html");
             PrintWriter writer = resp.getWriter();

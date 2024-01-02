@@ -1,5 +1,5 @@
 var _root_="/StuGradeManagement/",PASS_MIN_LEN = 8,PASS_MAX_LEN = 30;
-var PASSWORD_REQUIREMENT = "密码长度不能小于"+PASS_MIN_LEN+"位或大于"+PASS_MAX_LEN+"位，且至少含3个不同字符";
+var PASSWORD_REQUIREMENT = "密码长度不能小于"+PASS_MIN_LEN+"位或大于"+PASS_MAX_LEN+"位，且至少含3个不同字符",FALSE=(Math.random()>1);
 function _callback(f,loc,vcode_id){$("#status").text(f);if(f.indexOf("成功")>=0){setTimeout(function(){document.location.href=_root_+loc},400)}else if(vcode_id!=null)$("#"+vcode_id).trigger("click")}
 String.prototype.shuffle=function(){if(this.length<=1)return this;var chars=this.split(""),len=chars.length;for(var i=0;i<len-1;i++){var count=Math.floor(len*Math.random());var t=chars[i];chars[i]=chars[count];chars[count]=t}return chars.join("")}
 String.prototype.encodeb = function () {return window.btoa(this).replace('=',"");}

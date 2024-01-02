@@ -30,11 +30,10 @@
     <script>
         <% if (!user.isAdmin()) {%>
         function modify(obj) {
-            // 思路：弹出对话框输入成绩，点击确认后将成绩作为参数发到后端进行ajax请求，请求结束后刷新
-            // TODO:能不能不弹对话框，直接在网页上生成一个input?
-            // 1.找到成绩
+            //思路：弹出对话框输入成绩，点击确认后将成绩作为参数发到后端进行ajax请求，请求结束后刷新
+            //1.找到成绩
             var td=$(obj).parent().prev();
-            var old_score=td.text(),new_score=prompt("输入新成绩");
+            var new_score=prompt("输入新成绩");
             if (new_score === null)
                 return;
             if (new_score.indexOf('.') >= 0||isNaN(parseInt(new_score))) { //小数也能parseInt
@@ -55,10 +54,8 @@
             // 思路：选取第1，2列，获得其中的name，把两个name作为http参数进行ajax请求至/grade执行真正删除，success后删除该行
             if (confirm("确认删除吗？")) {
                 var td = $(obj).parent();
-                // var score = td.prev();
                 var course = td.prev().prev();
                 var sid = course.prev();
-                // console.log(sid.attr("value"));console.log(course.attr("value"));
                 var param="type=1&courseid="+course.attr("value")+"&sid="+sid.attr("value")+"&tid=<%=user.getId()%>";
                 $.ajax({
                     url:_root_+"grade", type:"post", data:param, processData:false, contentType:"application/x-www-form-urlencoded", success:function (d) {$("#status").text(d);td.parent().remove();}
@@ -66,7 +63,6 @@
             }
         }
         function showStu(obj) {
-            // console.log(tds.length);
             var para="type=1&id="+obj.innerText;
             var name=$("#name"),age=$("#age"),phone=$("#phonenum");
             $.ajax({url:_root_+"student",type:"get",data:para,processData:false,success:function (res){
@@ -76,6 +72,11 @@
                     $("#stuinfo").modal("show");
                 }
             });
+        }
+        function submit_() {
+            var val = $("#pageno-text").val(),type=getCurrentParam("type"),para=getCurrentParam("para");
+            document.location.href = _root_ + "grade.jsp?type="+type+"&para="+para+"&pageno="+val;
+            return FALSE;
         }
     </script>
 </head>
@@ -108,7 +109,6 @@
             int sid = g.getStuId(),cid=g.getCourseId();
 //            request.getRequestDispatcher("student?type=1&id="+sid).include(request,response);
 //            Student student = (Student) session.getAttribute("student");
-//            TODO:这两行加进来，会导致response.writer被写入内容，导致页面展现奇怪的东西。解决方法：document.ready+ajax，把学号替换为姓名，但会导致额外的网络请求；
             request.getRequestDispatcher("findcourse?type=1&id="+cid).include(request,response);
             Course course = (Course)  session.getAttribute("course");
             str.append(String.format("<td value='%d' onclick='showStu(this)'>", sid)).append(sid).append("</td>\n");
@@ -134,7 +134,6 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     <h4 class="modal-title" id="myModalLabel">学生信息</h4>
                 </div>
                 <form class="modal-body" id="modal-body">
@@ -148,6 +147,11 @@
                 </p>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
+    </div>
+    <div style="text-align:right;">
+        <form id="topage" onsubmit="return submit_();">跳到第<input type="text" id="pageno-text" maxlength="3" required autocomplete="off" style="width: 30px;">页
+            <input type="submit" class="btn" value="GO">&nbsp;
+        </form>
     </div>
 </body>
 </html>

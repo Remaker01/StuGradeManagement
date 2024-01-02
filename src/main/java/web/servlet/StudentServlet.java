@@ -82,9 +82,8 @@ public class StudentServlet extends HttpServlet {
                     int id = Integer.parseInt(req.getParameter("id"));
                     Student student = studentService.findStudentById(id);
                     if (student == null)
-                        resp.getWriter().write("{\"sname\":null}");
-                    else
-                        resp.getWriter().write(new ObjectMapper().writeValueAsString(student));
+                        student = new Student();
+                    new ObjectMapper().writeValue(resp.getWriter(),student);
                     req.getSession().setAttribute("student",student);
                     break;
                 } catch (NumberFormatException e) {
@@ -158,8 +157,7 @@ public class StudentServlet extends HttpServlet {
     }
 
     private boolean deleteStudent(String id) throws IOException,RuntimeException {
-        int i = Integer.parseInt(id);
-        return studentService.delStudent(i);
+        return studentService.delStudent(Integer.parseInt(id));
     }
     //paraMap需要学生的所有信息，包括id
     private void modifyStudent(Map<String, String[]> paraMap, HttpServletResponse resp) throws IOException {

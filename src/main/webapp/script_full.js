@@ -1,5 +1,5 @@
 var _root_= "/StuGradeManagement/",PASS_MIN_LEN = 8,PASS_MAX_LEN = 30;
-var PASSWORD_REQUIREMENT = "密码长度不能小于"+PASS_MIN_LEN+"位或大于"+PASS_MAX_LEN+"位，且至少含3个不同字符";
+var PASSWORD_REQUIREMENT = "密码长度不能小于"+PASS_MIN_LEN+"位或大于"+PASS_MAX_LEN+"位，且至少含3个不同字符",FALSE=(Math.random() > 1);
 //登录时，密码进行MD5加密；注册时，把密码进行MD5加密后的结果与原密码拼接起来
 function _callback(f,loc,vcode_id) {
     $("#status").text(f);
