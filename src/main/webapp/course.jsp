@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" import="java.util.List,domain.Course,domain.User,dao.UserDao" %>
-<%--TODO:分页查询，按条件查询；查找教师姓名不再使用UserDao--%>
+<%@ page contentType="text/html;charset=UTF-8" import="java.util.List,domain.Course,domain.User" %>
+<%--TODO:分页查询，按条件查询--%>
 <html>
 <head><%User u = (User) session.getAttribute("user");%>
     <meta http-equiv="Pragma" content="no-cache">
@@ -7,8 +7,8 @@
     <title>Title</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
-    <script src="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/frames.css">
     <%if(u!=null&&u.isAdmin()) {
     %><script>
@@ -42,8 +42,7 @@
     </script>
     <%}%></head>
 <body>
-    <% UserDao userDao = new UserDao();
-    if (u == null) {
+    <% if (u == null) {
         %><p>您尚未登录！</p>
     <% } else {
     %><p>以下为查询结果</p>
@@ -73,7 +72,9 @@
             str.append("\t\t<td>").append(c.getCname()).append("</td>\n");
             str.append("\t\t<td>").append(c.getCtype()).append("</td>\n");
             if (u.isAdmin()) {
-                str.append("\t\t<td>").append(userDao.findById(c.getTeacher()).getUsername()).append("</td>\n");
+                request.getRequestDispatcher(String.format("findusers?type=3&uid=%d",c.getTeacher())).include(request,response);
+                User teacher_ = ((List<User>)session.getAttribute("users")).get(0);
+                str.append("\t\t<td>").append(teacher_.getUsername()).append("</td>\n");
             }
         %><%=str.toString()%>
         <%if (u.isAdmin()) {

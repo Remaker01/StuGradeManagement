@@ -14,7 +14,7 @@ import java.util.List;
 
 /*
 获取用户
-type==0:全部用户,type==1:仅非管理员,type==2:仅管理员
+type==0:全部用户,type==1:仅非管理员,type==2:仅管理员,3:按id查找特定用户
  */
 @WebServlet("/findusers")
 public class FindUsersServlet extends HttpServlet {
@@ -32,7 +32,7 @@ public class FindUsersServlet extends HttpServlet {
             return;
         }
         int type;
-        List<User> users = new ArrayList<>(0);
+        List<User> users = new ArrayList<>(1);
         try {
             type = Integer.parseInt(req.getParameter("type"));
         } catch (NumberFormatException e) {
@@ -46,6 +46,15 @@ public class FindUsersServlet extends HttpServlet {
                 users = userService.findByRole(false);break;
             case 2:
                 users = userService.findByRole(true);break;
+            case 3:
+                try {
+                    int id = Integer.parseInt(req.getParameter("uid"));
+                    users.add(userService.findUser(id));
+                    break;
+                } catch (RuntimeException e) {
+                    resp.sendError(400,"参数uid错误");
+                    return;
+                }
             default:
                 resp.sendError(400,"参数错误");return;
         }

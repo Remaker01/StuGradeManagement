@@ -1,8 +1,11 @@
 package web.servlet;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.json.UTF8JsonGenerator;
 import domain.User;
 import service.UserService;
-import util.EncryptUtil;
 import util.LogUtil;
 import util.VerifyUtil;
 
@@ -19,12 +22,6 @@ import java.util.logging.Level;
  * 登录servlet
  */
 // ajax请求，带body,默认且仅允许post
-/*
-1.数据库密码改为MD5+SHA256加密后的结果
-2.更新index.html,register.html,user_add.jsp,modipass.html
-3.LoginServlet去掉base64部分
-4.更新Register与UpdateUser
- */
 @WebServlet("/login")
 // 访问流程：servlet->service->dao
 public class LoginServlet extends HttpServlet {
@@ -91,11 +88,23 @@ public class LoginServlet extends HttpServlet {
             response.getWriter().write("登录失败,如忘记密码请联系管理员修改");
             session.setAttribute("login_msg", "登录失败");
             //跳转登录页面
-//            request.getRequestDispatcher("login.html").forward(request, response);
         }
-//        request.getRequestDispatcher("welcome.jsp").forward(request,response);
     }
+    //get方法默认为返回已经登录的用户
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendError(405); //Method not allowed
+        User u = (User)request.getSession().getAttribute("user");
+        JsonGenerator generator = new JsonFactory().createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+        generator.writeStartObject();generator.writeBooleanField("infoValid",u != null);
+        if(u != null) {
+            generator.writeObjectFieldStart("userInfo");
+            generator.writeNumberField("id",u.getId());
+            generator.writeStringField("username",u.getUsername());
+            generator.writeBooleanField("admin",u.isAdmin());
+        } else {
+            generator.writeNullField("userInfo");
+        }
+        generator.writeEndObject();
+        response.setHeader("Content-type","application/json");
+        generator.close();
     }
 }

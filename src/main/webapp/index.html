@@ -8,10 +8,15 @@
     <meta name="viewport" content="width=device-width"/>
     <title>欢迎使用学生成绩管理系统</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
-    <script src="http://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script src="https://cdn.staticfile.org/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <script src="script.js"></script>
     <script>
         $(document).ready(function () {
+            $.ajax({url:_root_+"login",type:"get",success:function (d) {
+                    if (d.infoValid)
+                        document.location.href=_root_+(d.userInfo.admin?"admin.jsp":"teacher.jsp");
+                }
+            });
             document.onkeyup = function (ev) {
                 if (ev.key === "Enter"&&$("#vcode").is(":focus"))
                     $("#loginBtn").trigger("click");
