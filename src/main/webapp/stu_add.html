@@ -1,28 +1,25 @@
-<%@ page contentType="text/html;charset=UTF-8" import="domain.User" %>
-<!--
-思路：1.首先校验是否为管理员，如果不是则拒绝
-2.输入相关信息，用Ajax请求添加学生
--->
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="script.js"></script>
     <script>
         var regexp = /[^\d]/g;
-        // function numberOnly(ids) {
-        //     for (var i = 0; i < ids.length; i++) {
-        //         var id=ids[i];
-        //         $("#" + id).keyup(function () { //注意只能在ready之后选取元素
-        //             $(this).val($(this).val().replace(regexp, '')); //这里是score_text调用，所以要用this
-        //         }).on("paste", function () {
-        //             $(this).val($(this).val().replace(regexp, ''));
-        //         }).blur(function () {
-        //             $(this).val($(this).val().replace(regexp, ''));
-        //         });
-        //     }
-        // }
+        $(document).ready(function () {
+            checkLogin(function(data) {
+                if (data.infoValid){
+                    if(!data.userInfo.admin) {
+                        $("form")[0].innerHTML="<p>非管理员不得访问本页</p>"
+                    }
+                    else $("form")[0].onsubmit=function() {return submit_();}
+                    return;
+                }
+                $("form")[0].innerHTML="<p>您尚未登录</p>"
+            });
+        });
         $(document).ready(function () {
             var ids=["age-text","qq-text","phone-text"];
             for (var i = 0; i < ids.length; i++) {
@@ -36,7 +33,7 @@
                 });
             }});
         function submit_() {
-            var False = Math.random() >= 1,param="type=0";
+            var param="type=0";
             param += "&sname="+$("#name-text").val();
             param += "&gender="+$("#gender-option").val();
             param += "&age="+$("#age-text").val();
@@ -46,33 +43,24 @@
             if (phone.length>0) {
                 if (phone[0] !== '1'||phone.length !== 11) {
                     $("#status").text("手机号格式错误");
-                    return False;
+                    return FALSE;
                 }
                 param+=phone;
             }
             var qq=$("#qq-text").val();param += "&qq=";
             if (qq.length>0) param+=qq;
             // console.log(param);
-            $.ajax({
-                url:_root_+"student",
-                type:"post",
-                data:param,
-                processData:false,
-                success:function (d) {$("#status").text(d);}
+            $.ajax({url:_root_+"student", type:"post", data:param, processData:false, success:function (d) {
+                $("#status").text(d);
+            }
             });
-            return False;
+            return FALSE;
         }
     </script>
     <link rel="stylesheet" href="style/frames.css">
 </head>
 <body>
-<%  User u = (User) session.getAttribute("user");
-    if (u == null||!u.isAdmin()) {
-%><p>您尚未登录！</p>
-<%
-    } else {
-%>
-<form onsubmit="return submit_()">
+<form>
     <p>学生姓名：<input type="text" id="name-text" maxlength="10" required/></p>
     <p>学生性别：
         <select id="gender-option" class="form-control" style="width: 200px;display: inline" required>
@@ -86,6 +74,5 @@
     <input type="submit" value="提交" class="btn btn-primary">
     <p style="color:red;font-size: small;font-weight: bold" id="status"></p>
 </form>
-<%}%>
 </body>
 </html>

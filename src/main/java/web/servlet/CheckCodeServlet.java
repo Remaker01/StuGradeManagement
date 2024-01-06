@@ -37,28 +37,12 @@ public class CheckCodeServlet extends HttpServlet {
         response.setHeader("pragma", "no-cache");
         response.setHeader("cache-control", "no-cache");
         response.setHeader("Content-type", "image/jpeg");
-//在内存中创建一个长80，宽30的图片，默认黑色背景
-        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
-//获取画笔
-        Graphics g = image.getGraphics();
-//设置画笔颜色为灰色
-        g.setColor(Color.gray);
-//填充图片
-        g.fillRect(0, 0, WIDTH, HEIGHT);
 //产生随机验证码
         Map.Entry<String, String> checkCode = getArithmeticCheckCode();
         String expression = checkCode.getKey();
-//将验证码放入session回话中
+//将验证码放入session中
         request.getSession().setAttribute("CHECKCODE_SERVER", checkCode.getValue());
-//设置画笔颜色为黄色
-        g.setColor(getRandomColor());
-//设置字体
-        g.setFont(new Font("宋体", Font.BOLD, 20));
-//向图片上写入验证码
-        g.drawString(expression, 10, 25);
-//添加随机曲线干扰
-        g.setColor(getRandomColor());
-        g.drawArc(0, 0, WIDTH, HEIGHT, random.nextInt(180), random.nextInt(180));
+        BufferedImage image = generateImage(expression);
 //将内存中的图片输出到浏览器
         ImageIO.write(image, "JPG", response.getOutputStream());
     }
@@ -85,5 +69,32 @@ public class CheckCodeServlet extends HttpServlet {
             return new SimpleImmutableEntry<>(String.format("%d-%d=?",first,second),Integer.toString(first-second));
         }
         return new SimpleImmutableEntry<>(String.format("%d+%d=?",first,second),Integer.toString(first+second));
+    }
+    private BufferedImage generateImage(String text) {
+        //在内存中创建一个长80，宽30的图片，默认黑色背景
+        BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+//获取画笔
+        Graphics g = image.getGraphics();
+//设置画笔颜色为灰色
+        g.setColor(Color.gray);
+//填充图片&添加随机点干扰
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        for(int i = 0; i < 20; i++) {
+            g.setColor(getRandomColor());
+            g.drawString(".",random.nextInt(WIDTH),random.nextInt(HEIGHT));
+        }
+//设置画笔颜色
+        g.setColor(getRandomColor());
+//设置字体
+        g.setFont(new Font("宋体", Font.BOLD, 20));
+//向图片上写入验证码
+        for (int i = 0; i < text.length(); i++) {
+            g.drawString(text.substring(i,i+1), i*12+10, HEIGHT/2+5+random.nextInt(5));
+        }
+//        g.drawString(text, 10, 25);
+//添加随机曲线干扰
+        g.setColor(getRandomColor());
+        g.drawArc(0, 0, WIDTH, HEIGHT, random.nextInt(180), random.nextInt(180));
+        return image;
     }
 }

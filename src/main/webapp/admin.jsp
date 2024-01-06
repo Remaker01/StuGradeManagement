@@ -1,6 +1,3 @@
-<%--
-  管理员页面
---%>
 <%@ page contentType="text/html;charset=UTF-8" import="domain.User,java.net.URLEncoder" %>
 <html>
 <head>
@@ -135,7 +132,7 @@
                 <a href="#none"><em class="ico ico2"></em>学生管理<i></i></a>
                 <ul class="level2">
                     <li><a href="student.jsp" target="yem">学生信息</a></li>
-                    <li><a href="stu_add.jsp" target="yem">新增学生</a> </li>
+                    <li><a href="stu_add.html" target="yem">新增学生</a> </li>
                 </ul>
             </li>
             <li class="level1">
@@ -156,7 +153,7 @@
             <li class="level1">
                 <a href="#none"><em class="ico ico1"></em>用户管理<i></i></a>
                 <ul class="level2">
-                    <li><a href="user_add.jsp" target="yem">新增用户</a></li>
+                    <li><a href="user_add.html" target="yem">新增用户</a></li>
                     <li><a href="users.jsp?type=0" target="yem">用户信息管理</a></li>
                     <li><a href="modipass.html?uname=<%=URLEncoder.encode(user.getUsername(),"UTF-8")%>" target="yem">修改密码</a></li>
                 </ul>

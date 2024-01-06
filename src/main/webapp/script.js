@@ -9,3 +9,4 @@ function submit_updateuser(uname,old_pswd_id,new_pswd_id){var old_pswd=$("#"+old
 function getCurrentParam(name) {var params = document.location.search.split("&"),index = -1;for (var i = 0; i < params.length; i++) {if (params[i].indexOf(name) >= 0) {index = i;break;}}if (index < 0) return "";return params[index].split("=")[1];}
 function delayedReload(delay) {setTimeout(function (){location.reload();;},delay);}
 function passCheck(password){var len=password.length;if(len<PASS_MIN_LEN||len>PASS_MAX_LEN)return false;var chars=password.split('');chars.sort();var different=1;for(var i=1;i<len;i++){if(chars[i]!==chars[i-1])different++;if(different>=3)return true}return false;}
+function checkLogin(callback) {$.ajax({url: _root_+"login",type: "get",success:callback});}

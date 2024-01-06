@@ -106,6 +106,9 @@ function passCheck(password) {
     }
     return false;
 }
+function checkLogin(callback) {
+    $.ajax({url: "login",type: "get",success:callback});
+}
 function getPass(data) {
     var _new = '';
     data = window.btoa(data).replace('=','');
