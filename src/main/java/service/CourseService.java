@@ -1,14 +1,16 @@
 package service;
 
-import com.sun.istack.internal.NotNull;
 import dao.CourseDao;
 import domain.Course;
 import domain.User;
+import util.cache.Cache;
+import util.cache.LRUCache;
 
 import java.util.List;
 
 public class CourseService {
     private CourseDao courseDao = new CourseDao();
+    private static Cache<Integer,Course> cache = new LRUCache<>(20);
 
     public String getCourseNameById(int id) {
         return courseDao.getNameById(id);
@@ -18,7 +20,14 @@ public class CourseService {
         return courseDao.getByTeacherId(tid);
     }
 
-    public Course getByCourseId(int id) {return courseDao.getById(id);}
+    public Course getByCourseId(int id) {
+        Course result = cache.get(id);
+        if (result == null) {
+            result=courseDao.getById(id);
+            cache.put(id,result);
+        }
+        return result;
+    }
 
     public List<Course> getAllCourses() {return courseDao.getAll();}
 
@@ -36,10 +45,23 @@ public class CourseService {
     }
 
     public void deleteCourse(int id) {
+        Course inCache = cache.get(id);
+        if (inCache != null){
+            cache.invalidate(id);
+        }
         courseDao.delete(id);
     }
 
     public int updateCourse(Course course) {
-         return courseDao.update(course);
+        Course inCache = cache.get(course.getId());
+        if (inCache != null){
+            cache.put(course.getId(), course);
+            return 1;
+        }
+        int ret = courseDao.update(course);
+        if (ret > 0&&cache.getSize() <= cache.getCapacity() - 1) {
+            cache.put(course.getId(), course);
+        }
+        return ret;
     }
 }
