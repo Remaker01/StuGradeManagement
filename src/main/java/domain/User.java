@@ -1,5 +1,8 @@
 package domain;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class User {
     private int id;
     private String username,password;
@@ -43,16 +46,18 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
-        return id == user.id;
+
+        if (id != user.id) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        return password != null ? password.equals(user.password) : user.password == null;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return Arrays.hashCode(new Object[]{id, username, password}); //用户属性一旦确定不能修改
     }
 }

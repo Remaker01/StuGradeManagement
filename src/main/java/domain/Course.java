@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Arrays;
+
 public class Course {
     private int id;
     private String cname,ctype;
@@ -38,17 +40,18 @@ public class Course {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Course course = (Course) o;
 
-        return id == course.id;
+        if (id != course.id) return false;
+        if (teacher != course.teacher) return false;
+        return ctype != null ? ctype.equals(course.ctype) : course.ctype == null;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return Arrays.hashCode(new Object[]{id,teacher,ctype}); //课程名一旦确定不能更改
     }
 }

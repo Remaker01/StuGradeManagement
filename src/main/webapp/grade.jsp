@@ -28,6 +28,9 @@
         }
     </style>
     <script>
+        $(document).ready(function () {
+            $("#topage>input").on("keyup paste blur",function (){$(this)[0].value=$(this).val().replace(/[^\d]/g, '');})
+        })
         <% if (!user.isAdmin()) {%>
         function modify(obj) {
             //思路：弹出对话框输入成绩，点击确认后将成绩作为参数发到后端进行ajax请求，请求结束后刷新

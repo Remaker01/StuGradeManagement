@@ -2,6 +2,7 @@ package service;
 
 import dao.CourseDao;
 import domain.Course;
+import domain.Student;
 import domain.User;
 import util.cache.Cache;
 import util.cache.LRUCache;
@@ -11,9 +12,9 @@ import java.util.List;
 public class CourseService {
     private CourseDao courseDao = new CourseDao();
     private static Cache<Integer,Course> cache = new LRUCache<>(20);
-
+    @Deprecated
     public String getCourseNameById(int id) {
-        return courseDao.getNameById(id);
+        return getByCourseId(id).getCname();
     }
 
     public List<Course> getCoursesByTeacherId(int tid) {
@@ -56,12 +57,7 @@ public class CourseService {
         Course inCache = cache.get(course.getId());
         if (inCache != null){
             cache.put(course.getId(), course);
-            return 1;
         }
-        int ret = courseDao.update(course);
-        if (ret > 0&&cache.getSize() <= cache.getCapacity() - 1) {
-            cache.put(course.getId(), course);
-        }
-        return ret;
+        return courseDao.update(course);
     }
 }

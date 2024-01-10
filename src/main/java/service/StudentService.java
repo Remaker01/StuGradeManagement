@@ -11,7 +11,6 @@ import java.util.List;
 
 public class StudentService {
     private StudentDao stuDao = new StudentDao();
-    //Write-back，写分配，不设额外写回缓冲
     private static Cache<Integer,Student> cache = new LRUCache<>(50);
     /**页面大小，=20*/
     public static final int PAGE_SIZE = 20;
@@ -47,9 +46,9 @@ public class StudentService {
             return false;
         }
     }
-
+    @Deprecated
     public String findNameById(int id) {
-        return stuDao.findStudentNameById(id);
+        return findStudentById(id).getSname();
     }
 
     public Student findStudentById(int id) {
@@ -68,16 +67,10 @@ public class StudentService {
     }
     public int update(@NonNull Student student) {
         Student studentInCache = cache.get(student.getId());
-        //写命中，只更新缓存
+        //写命中，更新缓存+数据库
         if (studentInCache != null) {
             cache.put(student.getId(), student);
-            return 1;
         }
-        int ret = stuDao.update(student);
-        //写不命中且缓存未满则写分配
-        if (ret > 0&&cache.getSize() < cache.getCapacity()) {
-            cache.put(student.getId(), student);
-        }
-        return ret;
+        return stuDao.update(student);
     }
 }
