@@ -79,7 +79,10 @@ public class GradeServlet extends HttpServlet {
 //                    break;
 //                }
                 try {
-                    grades = gradeService.getGradesByTeacherId(Integer.parseInt(para));
+                    if (pageno == null)
+                        grades = gradeService.getGradesByTeacherId(Integer.parseInt(para));
+                    else
+                        grades = gradeService.getGradesByTeacherId(Integer.parseInt(para),Integer.parseInt(pageno));
                 } catch (NumberFormatException e) {
                     resp.sendError(400,"参数错误");
                     break;

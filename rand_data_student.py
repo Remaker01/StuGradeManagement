@@ -11,7 +11,7 @@ def getRandomNameWithGender():
         name += random.choice(names_man if gender == 0 else names_woman)
     return "男" if gender == 0 else "女",name
 def getRandomPhone():
-    return int(1e10)+random.randrange(int(2e9),int(1e10))
+    return int(1e10)+random.randrange(int(3e9),int(1e10))
 def getRandomProvince():
     provinces = ("河北","河南","湖北","湖南","江苏","江西","山东","陕西","山西","广东","浙江","福建","辽宁","吉林","黑龙江","甘肃","青海","云南","海南","四川")
     return random.choice(provinces)
@@ -29,7 +29,7 @@ if __name__ == "__main__":
         string.write("'{}',".format(a[1]))
         string.write("'{}',".format(a[0]))
         string.write("'{}省xx市xx区',".format(getRandomProvince()))
-        string.write(str(random.randint(18,25))+',')
+        string.write(str(random.randint(18,24))+',')
         string.write(str(getRandomPhone()))
         string.write(');\n')
         fp.write(string.getvalue())

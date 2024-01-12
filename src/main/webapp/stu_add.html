@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,37 +7,38 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="script.js"></script>
     <script>
-        var regexp = /[^\d]/g;
+        var regexp = /\D/g;
+        var PROVINCES = ["北京市","天津市","上海市","重庆市","河北省","山西省","内蒙古自治区","辽宁省","吉林省","黑龙江省","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省","广西壮族自治区","宁夏回族自治区","新疆维吾尔自治区","西藏自治区","台湾省","香港特别行政区","澳门特别行政区"];
         $(document).ready(function () {
             checkLogin(function(data) {
                 if (data.infoValid){
                     if(!data.userInfo.admin) {
                         $("form")[0].innerHTML="<p>非管理员不得访问本页</p>"
                     }
-                    else $("form")[0].onsubmit=function() {return submit_();}
+                    else{
+                        var addr_select=$("#addr-select")[0];
+                        for(var i=0;i<PROVINCES.length;i++) {
+                            addr_select.innerHTML+="<option value='"+PROVINCES[i]+"'>"+PROVINCES[i]+"</option>";
+                        }
+                        $("form")[0].onsubmit=function (){return submit_();}
+                    }
                     return;
                 }
-                $("form")[0].innerHTML="<p>您尚未登录</p>"
+                $("form")[0].innerHTML="<p>您尚未登录</p>";
             });
-        });
-        $(document).ready(function () {
             var ids=["age-text","qq-text","phone-text"];
             for (var i = 0; i < ids.length; i++) {
-                var id=ids[i];
-                $("#" + id).keyup(function () { //注意只能在ready之后选取元素
-                    $(this).val($(this).val().replace(regexp, '')); //这里是score_text调用，所以要用this
-                }).on("paste", function () {
-                    $(this).val($(this).val().replace(regexp, ''));
-                }).blur(function () {
+                $("#" + ids[i]).on("keyup paste blur", function () {
                     $(this).val($(this).val().replace(regexp, ''));
                 });
-            }});
+            }
+        });
         function submit_() {
             var param="type=0";
             param += "&sname="+$("#name-text").val();
             param += "&gender="+$("#gender-option").val();
             param += "&age="+$("#age-text").val();
-            var addr=$("#addr-text").val();param += "&address=";
+            var addr=$("#addr-select").val()+$("#addr-text").val();param += "&address=";
             if (addr.length>0) param+=addr;
             var phone=$("#phone-text").val();param += "&phone=";
             if (phone.length>0) {
@@ -68,7 +69,8 @@
             <option value="女">女</option>
         </select></p>
     <p>学生年龄：<input type="text" maxlength="2" id="age-text" required></p>
-    <p>地址：&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="addr-text"></p>
+    <p>地址：&nbsp;&nbsp;&nbsp;&nbsp;<select id="addr-select" class="form-control" style="width: 180px;display: inline"></select>&nbsp;
+        <input type="text" id="addr-text" placeholder="请输入具体地址"></p>
     <p>QQ：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" maxlength="12" id="qq-text"></p>
     <p>手机号：<input type="text" maxlength="11" id="phone-text"></p>
     <input type="submit" value="提交" class="btn btn-primary">

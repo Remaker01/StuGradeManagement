@@ -77,12 +77,11 @@ public class GradeDao extends AbstractDao{
         return template.query(sql,GradeMapper.INSTANCE,tid);
     }
 
-    public List<Grade> getByTeacher(String name) { //TODO:这个好像不需要？
+    public List<Grade> getByTeacher(int tid,int start,int rows) {
         String sql = "select * from grade " +
                 "inner join course c on grade.courseid = c.id " +
-                "inner join users u on c.teacher = u.id " +
-                "where u.username=?";
-        return template.query(sql,GradeMapper.INSTANCE,name);
+                "where c.teacher=? limit ?,?";
+        return template.query(sql,GradeMapper.INSTANCE,tid,start,rows);
     }
 
     public List<Grade> findByPage(int start, int rows, Map<String,String []> conditions) {
