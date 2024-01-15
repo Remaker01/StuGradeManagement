@@ -27,7 +27,7 @@ String.prototype.encodeb = function () {return window.btoa(this).replace('=','')
 ///提交到后端
 function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不能为submit，否则调用不了这个函数
     var uname = $("#"+uname_id).val(),pswd = $("#"+pswd_id).val(),vcode = $("#"+vcode_text_id).val(),token = Date.parse(new Date())/1000;//这里不能.value，否则均为undefined
-    pswd = md5(pswd,null,false);
+    pswd = md5(pswd,null,false).encodeb();
     var data_ = "username=" + uname + "&password=" + pswd + "&verifycode=" + vcode + "&token=" + token; //前面不能加'?'，否则后端无法处理
     // console.debug(data_);
     $.ajax({
@@ -46,7 +46,7 @@ function submit_register(uname_id, pswd_id, vcode_text_id, vcode_id) {
         $("#status").text(PASSWORD_REQUIREMENT);
         return;
     }
-    pswd = md5(pswd); //后端只用校验长度，因此不用真实密码
+    pswd = md5(pswd).encodeb(); //后端只用校验长度，因此不用真实密码
     var data_ = "username=" + uname + "&password=" + pswd + "&verifycode=" + vcode;
     // console.debug(data_);
     $.ajax({
@@ -65,7 +65,7 @@ function submit_updateuser(uname,old_pswd_id,new_pswd_id) {
         $("#status").text(PASSWORD_REQUIREMENT);
         return;
     }
-    old_pswd = md5(old_pswd,null,false);new_pswd = md5(new_pswd,null,false);
+    old_pswd = md5(old_pswd,null,false).encodeb();new_pswd = md5(new_pswd,null,false).encodeb();
     var data_ = "uname=" + uname + "&old=" + old_pswd + "&new=" + new_pswd;
     $.ajax({
         url:_root_+"updateuser",
@@ -108,15 +108,4 @@ function passCheck(password) {
 }
 function checkLogin(callback) {
     $.ajax({url: "login",type: "get",success:callback});
-}
-function getPass(data) {
-    var _new = '';
-    data = window.btoa(data).replace('=','');
-    for (var i = 0; i < data.length; i += 2) {
-        if (i+1>data.length)
-            break;
-        _new += data[i+1];
-        _new += data[i];
-    }
-    return _new;
 }

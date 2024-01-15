@@ -20,9 +20,9 @@ public class EncryptUtil {
             LogUtil.log(e);
         }
     }
-    @Deprecated
     public static String base64Decode(String base64) {
-//        base64 = new StringBuilder(base64).reverse().toString();
+        if(base64 == null)
+            return null;
         byte[] bytes;
         Base64.Decoder decoder = Base64.getDecoder();
         try {
