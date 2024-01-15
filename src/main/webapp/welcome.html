@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        $(document).ready(function (){
+            checkLogin(function (user) {
+                if (!user.infoValid) {
+                    $("body")[0].innerHTML="<p>您尚未登录！</p>"
+                } else {
+                    var redirect=user.userInfo.admin?"admin.jsp":"teacher.jsp";
+                    $("body a").attr("href",redirect);
+                    $("body p").text("欢迎" + (user.userInfo.admin?"管理员":"教师") + user.userInfo.username+"登录");
+                    setTimeout(function () {document.location.href=_root_+redirect;},1000);
+                }
+            });
+        });
+    </script>
+    <title>欢迎页面</title>
+</head>
+<body>
+<p></p>
+<a>点击跳转</a>
+</body>
+</html>

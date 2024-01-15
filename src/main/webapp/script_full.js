@@ -36,7 +36,7 @@ function submit_login(uname_id, pswd_id, vcode_text_id,vcode_id) { //名称不�
         data:data_,
         processData: false,
         contentType:"application/x-www-form-urlencoded",
-        success:function (f) {_callback(f,"welcome.jsp",vcode_id);},
+        success:function (f) {_callback(f,"welcome.html",vcode_id);},
         error:function (xhr) {$("#status").text("登陆失败，请尝试刷新页面或验证码。错误码："+xhr.status);}
     });
 }

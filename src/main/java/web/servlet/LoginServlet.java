@@ -3,7 +3,6 @@ package web.servlet;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.json.UTF8JsonGenerator;
 import domain.User;
 import service.UserService;
 import util.LogUtil;
@@ -82,16 +81,17 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", login);
             //跳转页面
             response.getWriter().write("登录成功");
-            session.setAttribute("login_msg", "登录成功");
+//            session.setAttribute("login_msg", "登录成功");
         } else {
             //登录失败提示信息
             response.getWriter().write("登录失败,如忘记密码请联系管理员修改");
-            session.setAttribute("login_msg", "登录失败");
+//            session.setAttribute("login_msg", "登录失败");
             //跳转登录页面
         }
     }
     //get方法默认为返回已经登录的用户
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("cache-control","no-cache");
         User u = (User)request.getSession().getAttribute("user");
         JsonGenerator generator = new JsonFactory().createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
         generator.writeStartObject();generator.writeBooleanField("infoValid",u != null);
