@@ -3,10 +3,14 @@ package dao;
 import domain.Course;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
+@Repository
 public class CourseDao extends AbstractDao{
     static class CourseMapper implements RowMapper<Course> {
         static final CourseMapper INSTANCE = new CourseMapper();
@@ -47,6 +51,11 @@ public class CourseDao extends AbstractDao{
     public List<Course> getAll() {
         String sql = "select * from course";
         return template.query(sql,CourseMapper.INSTANCE);
+    }
+
+    public List<Course> findByPage(int start, int rows, Map<String, String[]> condition) {
+        String sql = "select * from course where 1 = 1 ";
+        return super.findByPage(sql, CourseMapper.INSTANCE, start, rows, condition);
     }
     @Override
     public void add(Object obj) {

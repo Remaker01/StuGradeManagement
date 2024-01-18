@@ -1,9 +1,13 @@
 package web.servlet;
 
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.UserService;
 import util.LogUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,12 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 //参数：id:待删除用户
 @WebServlet("/deluser")
+@Component
 public class DelUserServlet extends HttpServlet {
+    @Autowired
     private UserService userService;
     @Override
-    public void init() throws ServletException {
-        super.init();
-        userService = new UserService();
+    public void init(ServletConfig conf) throws ServletException {
+        super.init(conf);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,conf.getServletContext());
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

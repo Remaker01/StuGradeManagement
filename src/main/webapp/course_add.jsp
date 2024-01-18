@@ -5,17 +5,17 @@
     <title>Title</title>
     <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
     <script src="script.js"></script>
-    <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/frames.css">
     <script>
         function submit_() {
-            var False=Math.random()>=1,tid=$("#user-option").val(),cname=$("#name-text").val();
+            var tid=$("#user-option").val(),cname=$("#name-text").val();
             var ctype=$("#type-option").val();
             var param="type=0&name="+cname+"&tid="+tid+"&prop="+ctype;
             $.ajax({
-                url:_root_+"updatecourse",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(500);}
+                url:_root_+"course",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(500);}
             });
-            return False;
+            return FALSE;
         }
     </script>
     <style>select.form-control {width: 200px;display: inline;}</style>

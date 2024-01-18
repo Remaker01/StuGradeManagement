@@ -1,10 +1,14 @@
 package web.servlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.UserService;
 import util.EncryptUtil;
 import util.LogUtil;
 import util.VerifyUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,12 +25,14 @@ import java.util.logging.Level;
 2.调用服务注册用户
 */
 @WebServlet("/register")
+@Component
 public class RegisterServlet extends HttpServlet {
+    @Autowired
     private UserService userService;
     @Override
-    public void init() throws ServletException {
+    public void init(ServletConfig conf) throws ServletException {
         super.init();
-        userService = new UserService();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,conf.getServletContext());
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,7 +56,7 @@ public class RegisterServlet extends HttpServlet {
             resp.sendError(400,"至少一个参数缺失");
             return;
         }
-//        String pswdOriginal; //Base64密码
+        pswd = EncryptUtil.base64Decode(pswd);
         if (!VerifyUtil.verifyPassword(pswd)) {
             resp.sendError(400,"密码不合法");
             return;
@@ -58,9 +64,6 @@ public class RegisterServlet extends HttpServlet {
         if (userService.findUser(uname) != null) {
             resp.getWriter().write("用户已存在");
         }
-//        else if (!VerifyUtil.verifyPassword(pswdOriginal)) {
-//            resp.getWriter().write(VerifyUtil.PASSWORD_REQUIREMENT);
-//        }
         else {
             if (role == null||role.equalsIgnoreCase("user"))
                 userService.register(uname, pswd);

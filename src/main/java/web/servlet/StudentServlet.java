@@ -12,9 +12,13 @@ package web.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Student;
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.StudentService;
 import util.LogUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,13 +30,15 @@ import java.util.Map;
 
 //TODO:像StudentServlet这样整合用户有关的servlet
 @WebServlet("/student")
+@Component
 public class StudentServlet extends HttpServlet {
-    private StudentService studentService = null;
+    @Autowired
+    private StudentService studentService;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        studentService = new StudentService();
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,7 +58,7 @@ public class StudentServlet extends HttpServlet {
             case 0:
                 String name = req.getParameter("name"), pagenoStr = req.getParameter("pageno");
                 List<Student> students;
-                if (pagenoStr == null)
+                if (pagenoStr == null||pagenoStr.length()==0)
                     pagenoStr = "1";
                 //name为null
                 if (name == null) {
@@ -142,10 +148,6 @@ public class StudentServlet extends HttpServlet {
         infos[3] = paraMap.get("address")[0];
         infos[4] = paraMap.get("phone")[0];
         infos[5] = paraMap.get("qq")[0];
-//        for (int i = 0; i < infos.length; i++) {
-//            if (infos[i].length() == 0)
-//                infos[i] = null;
-//        }
         Student student = new Student();
         student.setSname(infos[0]);
         student.setAge(Short.parseShort(infos[1]));

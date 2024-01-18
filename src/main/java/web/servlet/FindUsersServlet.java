@@ -1,8 +1,12 @@
 package web.servlet;
 
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.UserService;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,13 +21,15 @@ import java.util.List;
 type==0:全部用户,type==1:仅非管理员,type==2:仅管理员,3:按id查找特定用户
  */
 @WebServlet("/findusers")
+@Component
 public class FindUsersServlet extends HttpServlet {
-    UserService userService = null;
+    @Autowired
+    private UserService userService = null;
 
     @Override
-    public void init() throws ServletException {
+    public void init(ServletConfig conf) throws ServletException {
         super.init();
-        userService = new UserService();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,conf.getServletContext());
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

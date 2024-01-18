@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" import="java.util.List,domain.Course,domain.User" %>
-<%--TODO:分页查询，按条件查询--%>
+<%--TODO:按条件查询--%>
+<!--页面参数：userid,pageno-->
 <html>
 <head><%User u = (User) session.getAttribute("user");%>
     <meta http-equiv="Pragma" content="no-cache">
@@ -18,9 +19,10 @@
             $("#dosubmit").on("click",function () {
                 var id=tds[0].innerText,name=tds[1].innerText;
                 var param="type=2&id="+id+"&name="+name+"&prop="+$("#prop-option").val()+"&tid="+$("#teacher-option").val();
-                $.ajax({url:_root_+"updatecourse",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);}});
+                $.ajax(
+                    {url:_root_+"course",type:"post",data:param,processData:false,success:function (d) {$("#status").text(d);delayedReload(750);}}
+                );
                 $(this).off("click");
-                delayedReload(750);
                 $("#modify").modal("hide");
             });
         }
@@ -32,7 +34,7 @@
                 if (confirm("确定要删除吗？\n删除该课程后，有关"+d.result+"条成绩信息也将同步删除！")) { //json会自动处理
                     var cid=id.innerText;
                     var param="type=1&id="+cid;
-                    $.ajax({url:_root_+"updatecourse",type: "post",data:param,processData:false,success:function (d1) {
+                    $.ajax({url:_root_+"course",type: "post",data:param,processData:false,success:function (d1) {
                         $("#status").text(d1);
                         delayedReload(750);
                     }});
@@ -40,7 +42,18 @@
             }});
         }
     </script>
-    <%}%></head>
+    <%}%>
+    <script>
+    $(document).ready(function () {
+        $("#topage>input").on("keyup paste blur",function (){$(this)[0].value=$(this).val().replace(/[^\d]/g, '');})
+    });
+    function submit_() {
+        var page = $("#topage>input").val(),uid=getCurrentParam("userid");
+        document.location.href = _root_+"course.jsp?userid="+uid+"&pageno="+page;
+        return FALSE;
+    }
+    </script>
+</head>
 <body>
     <% if (u == null) {
         %><p>您尚未登录！</p>
@@ -60,8 +73,9 @@
             %></tr>
         </thead>
         <tbody>
-    <%  String uid = request.getParameter("userid");
-        request.getRequestDispatcher("/findcourse?type=0&userid="+uid).include(request,response);
+    <%  String uid = request.getParameter("userid"),pg=request.getParameter("pageno");
+        request.getRequestDispatcher(String.format("/course?type=0&userid=%s&pageno=%s", uid, pg == null ? "" : pg))
+                .include(request,response);
         List<Course> courses = (List<Course>) session.getAttribute("courses");
         StringBuilder str = new StringBuilder(32);
         for (Course c:courses) {
@@ -129,6 +143,11 @@
     </div>
     <%}%>
     <p id="status" style="color: red;font-size: small;font-weight: bold"></p>
+    <div style="text-align:right;">
+        <form id="topage" onsubmit="return submit_();">跳到第<input type="text" id="pageno-text" maxlength="3" required autocomplete="off" style="width: 30px;">页
+            <input type="submit" class="btn" value="GO">&nbsp;
+        </form>
+    </div>
 <%}%>
 </body>
 </html>

@@ -1,5 +1,4 @@
-<%@ page import="java.util.List,domain.Student,domain.Course,dao.StudentDao" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.util.List,domain.Course" contentType="text/html;charset=UTF-8"%>
 <!-- 传参数：uid:教师编号 ajax提交请求 -->
 <html>
 <head>
@@ -16,12 +15,12 @@
         }
         else {
             int uid = Integer.parseInt(request.getParameter("uid"));
-            request.getRequestDispatcher(String.format("findcourse?type=0&userid=%d",uid)).include(request,response);
+            request.getRequestDispatcher(String.format("course?type=0&userid=%d",uid)).include(request,response);
             List<Course> courses = (List<Course>) session.getAttribute("courses");%>
     <script>
         var regexp = /[^\d]/g;
         $(document).ready(function () {
-            document.onkeydown=function (ev) {return ev.key !== "Enter"||!$("#score-text").is(":focus");} //临时性缓解http500
+            // document.onkeydown=function (ev) {return ev.key !== "Enter"||!$("#score-text").is(":focus");} //临时性缓解http500
             $("#score-text").on("keyup paste",function() { //注意只能在ready之后选取元素
                 $(this).val($(this).val().replace(regexp,'')); //这里是score_text调用，所以要用this
             }).blur(function () {

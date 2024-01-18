@@ -3,10 +3,15 @@ package web.servlet;
 import domain.Course;
 import domain.Grade;
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.CourseService;
 import service.GradeService;
 import util.LogUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,14 +36,18 @@ post请求参数：
 3.score:分数，删除时忽略
  */
 @WebServlet("/grade")
+@Component
 public class GradeServlet extends HttpServlet {
-    private GradeService gradeService = null;
-    private CourseService courseService = null;
+    @Autowired
+    private GradeService gradeService;
+    @Autowired
+    @Lazy
+    private CourseService courseService;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        gradeService = new GradeService();
+    public void init(ServletConfig conf) throws ServletException {
+        super.init(conf);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,conf.getServletContext());
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,7 +66,7 @@ public class GradeServlet extends HttpServlet {
         }
         switch (type) {
             case 0:
-                if (pageno == null)
+                if (pageno == null||pageno.isEmpty())
                     pageno = "1";
                 try {
                     grades = gradeService.getGrades(Integer.parseInt(pageno));
@@ -128,8 +137,6 @@ public class GradeServlet extends HttpServlet {
             LogUtil.log(e);
             return;
         }
-        if (courseService == null)
-            courseService = new CourseService();
         Course c = courseService.getByCourseId(courseId);
         if (c == null) {
             resp.getWriter().write("课程不存在");

@@ -1,9 +1,13 @@
 package web.servlet;
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.UserService;
 import util.EncryptUtil;
 import util.VerifyUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +18,15 @@ import java.io.IOException;
 // 更新用户信息。参数：id:待修改的用户，uname:用户名，old_pswd:旧密码，new_pswd:新密码。
 //带body，用post
 @WebServlet("/updateuser")
+@Component
 public class UpdateUserServlet extends HttpServlet {
+    @Autowired
     private UserService userService;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        userService = new UserService();
+    public void init(ServletConfig conf) throws ServletException {
+        super.init(conf);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,conf.getServletContext());
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,9 +37,8 @@ public class UpdateUserServlet extends HttpServlet {
             return;
         }
         String uname = req.getParameter("uname"),oldPswd,newPswd;
-        oldPswd = req.getParameter("old");
-        newPswd = req.getParameter("new");
-//        String newPswdOriginal = EncryptUtil.base64Decode(newPswd.substring(32));
+        oldPswd = EncryptUtil.base64Decode(req.getParameter("old"));
+        newPswd = EncryptUtil.base64Decode(req.getParameter("new"));
         if (!VerifyUtil.verifyPassword(newPswd)) {
             resp.sendError(400,"密码不合法");
             return;

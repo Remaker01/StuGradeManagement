@@ -4,13 +4,18 @@ import dao.CourseDao;
 import domain.Course;
 import domain.Student;
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import util.cache.Cache;
 import util.cache.LRUCache;
 
+import java.util.HashMap;
 import java.util.List;
-
+@Service
 public class CourseService {
-    private CourseDao courseDao = new CourseDao();
+    @Autowired
+    private CourseDao courseDao;
+    public static final int PAGE_SIZE = 15; //课程数可能较少
     private static Cache<Integer,Course> cache = new LRUCache<>(20);
     @Deprecated
     public String getCourseNameById(int id) {
@@ -19,6 +24,12 @@ public class CourseService {
 
     public List<Course> getCoursesByTeacherId(int tid) {
         return courseDao.getByTeacherId(tid);
+    }
+
+    public List<Course> getCoursesByTeacherId(int tid,int pageno) {
+        HashMap<String,String[]> condition = new HashMap<>(1);
+        condition.put("teacher",new String[]{Integer.toString(tid)});
+        return courseDao.findByPage((pageno-1)*PAGE_SIZE,PAGE_SIZE,condition);
     }
 
     public Course getByCourseId(int id) {
@@ -31,6 +42,10 @@ public class CourseService {
     }
 
     public List<Course> getAllCourses() {return courseDao.getAll();}
+
+    public List<Course> getCourses(int pageno) {
+        return courseDao.findByPage((pageno-1) * PAGE_SIZE,PAGE_SIZE,new HashMap<>(0));
+    }
 
     public void addCourse(String cname,String ctype,int teacher) {
         Course c = new Course();

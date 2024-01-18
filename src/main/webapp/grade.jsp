@@ -30,7 +30,7 @@
     <script>
         $(document).ready(function () {
             $("#topage>input").on("keyup paste blur",function (){$(this)[0].value=$(this).val().replace(/[^\d]/g, '');})
-        })
+        });
         <% if (!user.isAdmin()) {%>
         function modify(obj) {
             //思路：弹出对话框输入成绩，点击确认后将成绩作为参数发到后端进行ajax请求，请求结束后刷新
@@ -84,7 +84,7 @@
     </script>
 </head>
 <body>
-    <p>以下为查询结果</p>
+<p>以下为查询结果</p>
     <table class="main-table">
         <thead>
         <tr>
@@ -108,12 +108,10 @@
             for (Grade g:grades) {
             %>
         <tr>
-            <% str.setLength(0);
-            int sid = g.getStuId(),cid=g.getCourseId();
-//            request.getRequestDispatcher("student?type=1&id="+sid).include(request,response);
-//            Student student = (Student) session.getAttribute("student");
-            request.getRequestDispatcher("findcourse?type=1&id="+cid).include(request,response);
-            Course course = (Course)  session.getAttribute("course");
+        <% str.setLength(0);
+            int sid = g.getStuId(), cid = g.getCourseId();
+            request.getRequestDispatcher("course?type=1&id=" + cid).include(request, response);
+            Course course = (Course) session.getAttribute("course");
             str.append(String.format("<td value='%d' onclick='showStu(this)'>", sid)).append(sid).append("</td>\n");
             str.append(String.format("\t\t<td value='%d'>", cid)).append(course.getCname()).append("</td>\n");
             short s = g.getScore();

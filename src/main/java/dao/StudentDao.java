@@ -3,12 +3,17 @@ package dao;
 import domain.Student;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 // findall add delete findbyid update findtotalcount findbypage
+@Repository
 public class StudentDao extends AbstractDao {
     static class StudentMapper implements RowMapper<Student> {
         static final StudentMapper INSTANCE = new StudentMapper();

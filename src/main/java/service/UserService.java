@@ -2,16 +2,19 @@ package service;
 
 import dao.UserDao;
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import util.EncryptUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-
+@Service
 public class UserService {
     public static final int LOGIN_EXPIRES = 10*60*1000;
     public static final int MAX_LOGIN_RETRY = 5;
-    private UserDao userDao = new UserDao();
+    @Autowired
+    private UserDao userDao;
 
     public List<User> findAll() {return userDao.findAll();}
 

@@ -3,6 +3,7 @@ package dao;
 import domain.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import util.EncryptUtil;
 import util.LogUtil;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 /**
  * 用户Dao
  */
+@Repository
 public class UserDao extends AbstractDao{
     static class UserMapper implements RowMapper<User> {
         static final UserMapper INSTANCE = new UserMapper();

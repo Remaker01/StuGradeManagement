@@ -2,15 +2,18 @@ package service;
 
 import dao.StudentDao;
 import domain.Student;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Service;
 import util.cache.Cache;
 import util.cache.LRUCache;
 
 import java.util.HashMap;
 import java.util.List;
-
+@Service
 public class StudentService {
-    private StudentDao stuDao = new StudentDao();
+    @Autowired //注意加了autowired，不能在initializer、构造方法中使用
+    private StudentDao stuDao;
     private static Cache<Integer,Student> cache = new LRUCache<>(50);
     /**页面大小，=20*/
     public static final int PAGE_SIZE = 20;

@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/updatecourse")
-// type==0:增，type==1:删，type==2:改
-//type==0:name,tid,prop:用户id,课程名,教师id，课程属性(类型)
+@Deprecated
 public class UpdateCourseServlet extends HttpServlet {
     CourseService courseService = null;
 

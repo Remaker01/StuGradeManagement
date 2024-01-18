@@ -2,6 +2,8 @@ package service;
 
 import dao.GradeDao;
 import domain.Grade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +11,10 @@ import java.util.List;
 需要分页的表：学生、成绩。
 课程、用户不会太多，故不需分页？
 */
+@Service
 public class GradeService {
-    private GradeDao gradeDao = new GradeDao();
+    @Autowired
+    private GradeDao gradeDao;
     public static final int PAGE_SIZE = 20;
 
     public List<Grade> getGrades(int page) {

@@ -4,10 +4,15 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.UserService;
+import util.EncryptUtil;
 import util.LogUtil;
 import util.VerifyUtil;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,13 +27,15 @@ import java.util.logging.Level;
  */
 // ajax请求，带body,默认且仅允许post
 @WebServlet("/login")
+@Component
 // 访问流程：servlet->service->dao
 public class LoginServlet extends HttpServlet {
-    private UserService userService = null;
+    @Autowired
+    private UserService userService;
     @Override
-    public void init() throws ServletException {
+    public void init(ServletConfig conf) throws ServletException {
         super.init();
-        userService = new UserService();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,conf.getServletContext());
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,7 +71,7 @@ public class LoginServlet extends HttpServlet {
             response.sendError(400,"至少一个参数缺失或出现错误");
             return;
         }
-//        password = EncryptUtil.base64Decode(password);
+        password = EncryptUtil.base64Decode(password);
         user.setUsername(username);
         user.setPassword(password);
         //5.判断是否允许登录

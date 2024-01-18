@@ -17,7 +17,11 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="ApplicationContext" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/applicationContext.xml</file>
+        </fileset>
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
@@ -65,6 +69,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.2.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:5.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.14.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.14.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.14.2" level="project" />
