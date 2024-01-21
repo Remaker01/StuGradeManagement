@@ -49,6 +49,8 @@ public class Student {
         this.qq = qq;
     }
 
+    public String getQq() {return qq;} //JSTL使用
+
     public String getPhone() {
         return phone;
     }

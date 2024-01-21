@@ -16,7 +16,7 @@ public class CourseService {
     @Autowired
     private CourseDao courseDao;
     public static final int PAGE_SIZE = 15; //课程数可能较少
-    private static Cache<Integer,Course> cache = new LRUCache<>(20);
+    private static Cache<Integer,Course> cache = new LRUCache<>(50);
     @Deprecated
     public String getCourseNameById(int id) {
         return getByCourseId(id).getCname();
@@ -62,7 +62,7 @@ public class CourseService {
 
     public void deleteCourse(int id) {
         Course inCache = cache.get(id);
-        if (inCache != null){
+        if (inCache != null) {
             cache.invalidate(id);
         }
         courseDao.delete(id);
@@ -70,7 +70,7 @@ public class CourseService {
 
     public int updateCourse(Course course) {
         Course inCache = cache.get(course.getId());
-        if (inCache != null){
+        if (inCache != null) {
             cache.put(course.getId(), course);
         }
         return courseDao.update(course);

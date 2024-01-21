@@ -1,6 +1,6 @@
-<%@ page import="domain.Student,java.util.List,domain.User" %>
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%--TODO:分页查询，按条件查询--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!--TODO:按条件查询-->
 <html>
 <head>
     <title>Title</title>
@@ -20,9 +20,9 @@
             return Math.random() > 1;
         };
     </script>
-    <% User u = (User) session.getAttribute("user");
-    if(u != null&&u.isAdmin()) {
-    %><script>
+    <c:set var="u" value="${sessionScope.user}" scope="page"/>
+    <c:if test="${u ne null and u.admin}">
+    <script>
         $(document).ready(function () {
             var ids=["age-text","phone-text","qq-text","pageno-text"],regexp = /[^\d]/g;
             for (var i=0; i<ids.length; i++) {
@@ -56,7 +56,8 @@
             $("#name")[0].innerText="姓名："+td_siblings[1].innerText;//显示姓名
             $("#age-text").val(td_siblings[3].innerText);
             $("#addr-text").val(td_siblings[4].innerText);
-            $("#phone-text").val(td_siblings[5].innerText)//自动填充一些信息
+            $("#phone-text").val(td_siblings[5].innerText);//自动填充一些信息
+            $("#qq-text").val(td_siblings[6].innerText);
             $("#doclose").on("click",doclose);
             $("#dosubmit").on("click",function () {
                 var id_=td_siblings[0].innerText, sname=td_siblings[1].innerText,gender=td_siblings[2].innerText;//变不了的信息
@@ -80,14 +81,14 @@
             });
         }
         function checkphone(phone) {
-            if (typeof phone !== "string")
+            if (typeof phone !== "string"||isNaN(phone))
                 return false;
             if (phone.length === 0)
                 return true;
-            return phone[0] === '1' && phone.length === 11;
+            return phone[0] === '1' && phone.length === 11 && phone[1] != '0' && phone[1] != '1';
         }
     </script>
-    <%}%></head>
+    </c:if></head>
 <body>
     <p>以下为查询到的学生信息</p>
     <table class="main-table">
@@ -100,49 +101,35 @@
             <th>地址</th>
             <th>手机号</th>
             <th>QQ</th>
-            <% if (u != null&&u.isAdmin()) {
-            %><th>操作</th>
-            <%
-            }
-            %>
+            <c:if test="${u ne null and u.admin}">
+            <th>操作</th>
+            </c:if>
         </tr>
         </thead>
         <tbody>
         <%  String pageno = request.getParameter("pageno");
-            try {
-                Integer.parseInt(pageno);
-            }catch (NumberFormatException e) {
-                pageno = "1";
-            }
-            request.getRequestDispatcher("/student?type=0&pageno="+pageno).include(request,response);
-            List<Student> students = (List<Student>) session.getAttribute("students");
-            StringBuilder str = new StringBuilder(48);
-            for (Student c:students) {
-        %>
+            request.getRequestDispatcher("/student?type=0&pageno="+(pageno == null ? "" : pageno)).include(request,response);%>
+        <c:forEach items="${sessionScope.students}" var="stu">
         <tr>
-            <%  str.setLength(0);
-                str.append("<td>").append(c.getId()).append("</td>\n");
-                str.append("\t\t<td>").append(c.getSname()).append("</td>\n");
-                str.append("\t\t<td>").append(c.getGender()).append("</td>\n");
-                str.append("\t\t<td>").append(c.getAge()).append("</td>\n");
-                str.append("\t\t<td>").append(c.getAddress() == null ? "" : c.getAddress()).append("</td>\n");
-                str.append("\t\t<td>").append(c.getPhone() == null ? "" : c.getPhone()).append("</td>\n");
-                str.append("\t\t<td>").append(c.getQQ() == null ? "" : c.getQQ()).append("</td>\n");
-            %><%=str.toString()%>
-                <%if (u != null&&u.isAdmin()) {
-                %><td>
+            <td>${stu.id}</td>
+            <td>${stu.sname}</td>
+            <td>${stu.gender}</td>
+            <td>${stu.age}</td>
+            <td>${stu.address}</td>
+            <td>${stu.phone}</td>
+            <td>${stu.qq}</td>
+            <c:if test="${u ne null and u.admin}">
+            <td>
                 <input type="button" value="修改" class="btn-in-table" style="background-color: #5050ff;font-size: 13px;" onclick="modify(this)"/>
-                <input type="button" value="删除" class="btn-in-table" style="background-color: red;font-size: 13px;" onclick="del(this)"/></td>
-            <%
-                }
-            %></tr>
-        <%
-            }
-        %>
+                <input type="button" value="删除" class="btn-in-table" style="background-color: red;font-size: 13px;" onclick="del(this)"/>
+            </td>
+            </c:if>
+        </tr>
+        </c:forEach>
         </tbody>
     </table>
-    <%if (u != null&&u.isAdmin()) {
-    %><div class="modal" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <c:if test="${u ne null and u.admin}">
+    <div class="modal" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -162,15 +149,13 @@
                 </p>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
-    </div>
-    <%
-        }
-    %><p id="status" style="color: red;font-size: small;font-weight: bold"></p>
+    </div></c:if>
+    <p id="status" style="color: red;font-size: small;font-weight: bold"></p>
     <div style="text-align:right;">
         <form id="topage" onsubmit="return submit_();">跳到第<input type="text" id="pageno-text" maxlength="3" required autocomplete="off" style="width: 30px;">页
         <input type="submit" class="btn" value="GO">&nbsp;
     </form>
     </div>
 </body>
-</html>
+</html><c:remove var="u" scope="page"/>
 <%session.setAttribute("students",null);%>

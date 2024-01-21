@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.UserService;
 import util.EncryptUtil;
+import util.JsonUtil;
 import util.LogUtil;
 import util.VerifyUtil;
 
@@ -100,18 +101,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setHeader("cache-control","no-cache");
         User u = (User)request.getSession().getAttribute("user");
-        JsonGenerator generator = new JsonFactory().createGenerator(response.getOutputStream(), JsonEncoding.UTF8);
-        generator.writeStartObject();generator.writeBooleanField("infoValid",u != null);
-        if(u != null) {
-            generator.writeObjectFieldStart("userInfo");
-            generator.writeNumberField("id",u.getId());
-            generator.writeStringField("username",u.getUsername());
-            generator.writeBooleanField("admin",u.isAdmin());
-        } else {
-            generator.writeNullField("userInfo");
-        }
-        generator.writeEndObject();
         response.setHeader("Content-type","application/json");
-        generator.close();
+        JsonUtil.writeUser(u,response.getOutputStream());
     }
 }

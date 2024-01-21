@@ -25,7 +25,7 @@ class LogFormatter extends Formatter {
         //拼接日志内容
         builder.append(record.getMessage().trim());
         //日志换行
-        builder.append('\n');
+        builder.append("\n\n");
         return builder.toString();
     }
 }

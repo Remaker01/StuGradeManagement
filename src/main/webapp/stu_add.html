@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="script.js"></script>
     <script>
-        var regexp = /\D/g;
+        var regexp = /\D/g,yearNow=new Date().getFullYear(),monthNow=new Date().getMonth();//已过去的月份
         var PROVINCES = ["北京市","天津市","上海市","重庆市","河北省","山西省","内蒙古自治区","辽宁省","吉林省","黑龙江省","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","海南省","四川省","贵州省","云南省","陕西省","甘肃省","青海省","广西壮族自治区","宁夏回族自治区","新疆维吾尔自治区","西藏自治区","台湾省","香港特别行政区","澳门特别行政区"];
         $(document).ready(function () {
             checkLogin(function(data) {
@@ -16,9 +16,16 @@
                         $("form")[0].innerHTML="<p>非管理员不得访问本页</p>"
                     }
                     else{
-                        var addr_select=$("#addr-select")[0];
+                        var addr_select=$("#addr-select")[0],year_select=$("#birth-select-y")[0],month_select=$("#birth-select-m")[0];
                         for(var i=0;i<PROVINCES.length;i++) {
                             addr_select.innerHTML+="<option value='"+PROVINCES[i]+"'>"+PROVINCES[i]+"</option>";
+                        }
+                        for(i=1; i<=12; i++) {
+                            month_select.innerHTML+="<option value='"+i+"'>"+i+"</option>";
+                        }
+                        //1.计算今年是哪年
+                        for(i=1980; i<=yearNow-10; i++) { //为防极个别神童，放宽年龄限制
+                            year_select.innerHTML+="<option value='"+i+"'>"+i+"</option>";
                         }
                         $("form")[0].onsubmit=function (){return submit_();}
                     }
@@ -34,15 +41,15 @@
             }
         });
         function submit_() {
-            var param="type=0";
+            var param="type=0",y=parseInt($("#birth-select-y").val()),m=parseInt($("#birth-select-m").val());
             param += "&sname="+$("#name-text").val();
             param += "&gender="+$("#gender-option").val();
-            param += "&age="+$("#age-text").val();
+            param += "&age="+getAge(y,m);
             var addr=$("#addr-select").val()+$("#addr-text").val();param += "&address=";
             if (addr.length>0) param+=addr;
             var phone=$("#phone-text").val();param += "&phone=";
             if (phone.length>0) {
-                if (phone[0] !== '1'||phone.length !== 11) {
+                if (phone[0] !== '1'||phone.length !== 11||phone[1] === '0'||phone[1] === '1') {
                     $("#status").text("手机号格式错误");
                     return FALSE;
                 }
@@ -57,19 +64,25 @@
             });
             return FALSE;
         }
+        function getAge(y,m) {
+            var result = (yearNow-y-1)*12+(monthNow)+(12-m);
+            return Math.round(result/12.0);
+        }
     </script>
     <link rel="stylesheet" href="style/frames.css">
+    <style>select.form-control {width: 190px;display: inline;}</style>
 </head>
 <body>
 <form>
     <p>学生姓名：<input type="text" id="name-text" maxlength="10" required/></p>
     <p>学生性别：
-        <select id="gender-option" class="form-control" style="width: 200px;display: inline" required>
+        <select id="gender-option" class="form-control" required>
             <option value="男">男</option>
             <option value="女">女</option>
         </select></p>
-    <p>学生年龄：<input type="text" maxlength="2" id="age-text" required></p>
-    <p>地址：&nbsp;&nbsp;&nbsp;&nbsp;<select id="addr-select" class="form-control" style="width: 180px;display: inline"></select>&nbsp;
+    <p>出生年月：<select id="birth-select-y" class="form-control" required></select>年
+        <select id="birth-select-m" class="form-control"></select>月</p>
+    <p>地址：&nbsp;&nbsp;&nbsp;&nbsp;<select id="addr-select" class="form-control" ></select>&nbsp;
         <input type="text" id="addr-text" placeholder="请输入具体地址"></p>
     <p>QQ：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" maxlength="12" id="qq-text"></p>
     <p>手机号：<input type="text" maxlength="11" id="phone-text"></p>

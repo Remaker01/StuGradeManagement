@@ -9,13 +9,13 @@ package web.servlet;
         2.学生姓名：name(可选，模糊查询)
 2. 若post方法认为是要修改信息，参数为1.type,2.学生id(删除)学生的各项信息(其他)。需要校验是否为管理员。
  */
-import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Student;
 import domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.StudentService;
+import util.JsonUtil;
 import util.LogUtil;
 
 import javax.servlet.ServletConfig;
@@ -84,12 +84,10 @@ public class StudentServlet extends HttpServlet {
                 break;
             case 1:
                 try {
-                    resp.setHeader("Content-type","application-json");
+                    resp.setHeader("Content-type","application/json");
                     int id = Integer.parseInt(req.getParameter("id"));
                     Student student = studentService.findStudentById(id);
-                    if (student == null)
-                        student = new Student();
-                    new ObjectMapper().writeValue(resp.getWriter(),student);
+                    JsonUtil.writeStudent(student,resp.getOutputStream());
                     req.getSession().setAttribute("student",student);
                     break;
                 } catch (NumberFormatException e) {

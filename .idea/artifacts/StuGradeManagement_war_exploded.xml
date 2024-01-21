@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="StuGradeManagement:war exploded">
-    <output-path>$PROJECT_DIR$/target/StuGradeManagement-1.0-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/target/StuGradeManagement</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -24,6 +24,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.14.2" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.14.2" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.14.2" />

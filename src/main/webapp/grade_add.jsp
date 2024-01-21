@@ -1,4 +1,5 @@
-<%@ page import="java.util.List,domain.Course" contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 传参数：uid:教师编号 ajax提交请求 -->
 <html>
 <head>
@@ -16,7 +17,7 @@
         else {
             int uid = Integer.parseInt(request.getParameter("uid"));
             request.getRequestDispatcher(String.format("course?type=0&userid=%d",uid)).include(request,response);
-            List<Course> courses = (List<Course>) session.getAttribute("courses");%>
+    %>
     <script>
         var regexp = /[^\d]/g;
         $(document).ready(function () {
@@ -35,7 +36,7 @@
                     type: "get",
                     data: para,
                     processData: false,
-                    success:function (d) {$("#stu-name")[0].innerText=(d.sname == null)?"学生不存在！":("学生姓名:" + d.sname);}
+                    success:function (d) {$("#stu-name")[0].innerText=(!d.infoValid?"学生不存在！":("学生姓名:" + d.stuInfo.sname));}
                 });
             });
         });
@@ -79,16 +80,10 @@
         <span id="stu-name" style="font-size: small;"></span>
     </p>
     <p>课程：<select id="course-option" class="form-control">
-        <%  StringBuilder str = new StringBuilder(32);
-            for (Course c : courses) {
-            str.setLength(0);
-            str.append(String.format("<option value='%d'>",c.getId()))
-                    .append(c.getCname())
-                    .append("</option>\n");
-        %><%=str.toString()%>
-        <%
-            }
-        %></select></p>
+        <c:forEach items="${sessionScope.courses}" var="c">
+            <option value="${c.id}">${c.cname}</option>
+        </c:forEach>
+        </select></p>
     <p>分数：<input type="text" id="score-text" placeholder="请输入分数" class="i2" maxlength="3"/></p>
     <p><input type="button" value="提交" onclick="submit_()" class="btn btn-primary"/></p>
     <p style="color: red;font-size: small" id="status"></p>
